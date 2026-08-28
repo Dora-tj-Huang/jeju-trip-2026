@@ -1,1 +1,7 @@
-
+my-jeju-trip/
+│
+├── index.html
+│
+└── images/
+    ├── cu_snacks.png
+    └── convenience_drinks.png
