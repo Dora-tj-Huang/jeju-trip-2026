@@ -539,3 +539,537 @@
             >
               <i class="fa-solid fa-book-open mr-1"></i> 查看必買/必吃攻略
             </a>
+            <a 
+              :href="getNaverMapUrl(shop.nameKo)" 
+              target="_blank" 
+              class="py-2 px-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs"
+            >
+              Naver
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md frosted-glass rounded-3xl border border-white/60 shadow-lg px-6 py-2.5 z-50 flex justify-around items-center">
+      
+      <button 
+        @click="activeTab = 'itinerary'" 
+        :class="['flex flex-col items-center transition-colors', activeTab === 'itinerary' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
+      >
+        <i class="fa-solid fa-location-dot text-lg"></i>
+        <span class="text-[11px] mt-0.5">行程</span>
+      </button>
+
+      <button 
+        @click="activeTab = 'pocket'" 
+        :class="['flex flex-col items-center transition-colors', activeTab === 'pocket' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
+      >
+        <i class="fa-solid fa-basket-shopping text-lg"></i>
+        <span class="text-[11px] mt-0.5">口袋名單</span>
+      </button>
+
+      <button 
+        @click="activeTab = 'info'" 
+        :class="['flex flex-col items-center transition-colors', activeTab === 'info' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
+      >
+        <i class="fa-solid fa-circle-info text-lg"></i>
+        <span class="text-[11px] mt-0.5">資訊中心</span>
+      </button>
+
+    </nav>
+
+  </div>
+
+  <script>
+    const { createApp, ref, computed } = Vue;
+
+    createApp({
+      setup() {
+        const activeTab = ref('itinerary');
+        const selectedDayIdx = ref(0);
+        const activePocketTab = ref('cu_snack');
+
+        // 匯率計算機
+        const exchangeRate = ref(42.5); // 1 TWD = 42.5 KRW
+        const krwInput = ref(30000);
+        const convertedTwd = computed(() => {
+          if (!krwInput.value) return 0;
+          return Math.round(krwInput.value / exchangeRate.value).toLocaleString();
+        });
+
+        // 導航 Helper
+        const getGoogleMapUrl = (name, addr) => {
+          const q = addr || (name + ' 濟州島');
+          return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+        };
+
+        const getNaverMapUrl = (query) => {
+          return `https://map.naver.com/v5/search/${encodeURIComponent(query)}`;
+        };
+
+        const getCategoryBadge = (cat) => {
+          switch(cat) {
+            case '景點': return 'bg-emerald-50 text-emerald-700';
+            case '美食': return 'bg-orange-50 text-orange-700';
+            case '咖啡': return 'bg-amber-50 text-amber-800';
+            case '購物': return 'bg-purple-50 text-purple-700';
+            case '住宿': return 'bg-blue-50 text-fuji-dark';
+            default: return 'bg-gray-50 text-gray-700';
+          }
+        };
+
+        // 四天行程資料庫
+        const itineraryData = ref([
+          {
+            weekday: 'FRI',
+            dateNumber: '10/23',
+            title: '西部涯月海岸線 ➔ 入住溫氣齋 ➔ 營火炸雞',
+            charterTime: '10:30 ～ 18:30 (約8小時)',
+            weather: {
+              condition: '秋高氣爽 • 晴時多雲',
+              icon: 'fa-solid fa-sun',
+              temp: '19°C',
+              feelTemp: '18°C'
+            },
+            spots: [
+              {
+                isFlight: true,
+                time: '09:35 - 10:25',
+                desc: '抵達濟州國際機場 (CJU)，入境提領行李並與包車司機會合，準備開啟濟州島自駕與包車假期。'
+              },
+              {
+                time: '10:45 - 11:15',
+                nameZh: '梨湖木筏海邊（紅白小馬燈塔）',
+                nameKo: '이호테우해수욕장',
+                nameEn: 'Iho Tewoo Beach',
+                category: '景點',
+                highlightTag: '📸 必拍打卡',
+                hours: '全天開放',
+                ticket: '免費參觀',
+                desc: '濟州最具代表性的紅白成對小馬燈塔，拍照超可愛，海岸邊吹海風拍照 30 分鐘。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://judyer.com/r%EF%BD%97hligh/',
+                image: 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=600&auto=format&fit=crop&q=80'
+              },
+              {
+                time: '11:30 - 13:00',
+                nameZh: 'NORABA 海鮮拉麵',
+                nameKo: '노라바',
+                nameEn: 'NORABA Seafood Ramen',
+                category: '美食',
+                highlightTag: '🍜 必吃海鮮',
+                hours: '10:00 - 17:30 (週四休)',
+                desc: '涯月必吃超狂整隻章魚、花蟹、鮑魚海鮮拉麵，露台可邊看海邊吃，建議先取號候位。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://www.google.com/search?q=NORABA',
+                image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop&q=80'
+              },
+              {
+                time: '13:30 - 14:40',
+                nameZh: 'SOGILBYEOLHA (孝利家民宿原址)',
+                nameKo: '소길별하',
+                nameEn: 'Sogilbyeolha',
+                category: '購物',
+                highlightTag: '🏷️ 必逛選物 (需預約)',
+                hours: '預約制 13:30 場次',
+                ticket: '預約門票含飲品點心',
+                desc: '知名綜藝《孝利家民宿》拍攝原址改建之文創選物空間，庭院綠意清幽好拍。',
+                transitFromPrev: '車程約 20 分',
+                blogUrl: 'https://vivafifty.tw/jeju-hyoris-homestay-travel/'
+              },
+              {
+                time: '15:00 - 16:15',
+                nameZh: 'Saebil 咖啡廳 ＆ 晨星岳周邊',
+                nameKo: '새빌 (Saebil Cafe)',
+                nameEn: 'Saebil Cafe / Saebyul Oreum',
+                category: '咖啡',
+                highlightTag: '🌾 必拍粉黛亂子草',
+                hours: '09:00 - 19:00',
+                desc: '由舊度假飯店改造，10月外圍盛開大片夢幻粉紅亂子草，眺望晨星岳絕佳視野。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://www.tourscombine.com/article/2023122072',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80'
+              },
+              {
+                time: '16:45 - 17:30',
+                nameZh: 'Stay 溫氣齋 Check-in',
+                nameKo: '온기재',
+                nameEn: 'Stay Ongijae',
+                category: '住宿',
+                highlightTag: '🏡 8人包棟',
+                hours: '16:00 Check-in',
+                address: '항몽로 29, 濟州特別自治道 63051',
+                desc: '入住獨棟美學韓屋民宿，放行李、稍作休息，準備今晚的庭院派對。',
+                transitFromPrev: '車程約 20 分',
+                blogUrl: 'https://www.tourscombine.com/article/2023122072'
+              },
+              {
+                time: '17:45 - 18:30',
+                nameZh: 'Cheetah Chicken 外帶 ＆ 超商採買',
+                nameKo: '치타치킨',
+                nameEn: 'Cheetah Chicken',
+                category: '美食',
+                highlightTag: '🍗 必吃炸雞',
+                hours: '16:00 - 23:00',
+                desc: '外帶酥脆在地特色炸雞，並於周邊 CU/GS25 超商採購 Highball 調酒、啤酒與泡麵。',
+                transitFromPrev: '車程約 15 分 (18:30 包車結束)',
+                blogUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/'
+              },
+              {
+                time: '19:00 以後',
+                nameZh: '溫氣齋庭院「불멍 營火之夜」',
+                nameKo: '불멍 & 치맥 파티',
+                nameEn: 'Bonfire & Chimaek Party',
+                category: '住宿',
+                highlightTag: '🔥 營火炸雞酒派對',
+                desc: '在民宿戶外庭院生營火（불멍 放空看火），8個人一邊吃炸雞、喝柚子調酒談天。'
+              }
+            ]
+          },
+          {
+            weekday: 'SAT',
+            dateNumber: '10/24',
+            title: '東部自然秋景 ➔ 橘子提籃 ➔ 月汀里黑豬肉',
+            charterTime: '09:30 ～ 18:30 (剛好9小時)',
+            weather: {
+              condition: '微風晴朗',
+              icon: 'fa-solid fa-cloud-sun',
+              temp: '18°C',
+              feelTemp: '17°C'
+            },
+            spots: [
+              {
+                time: '09:30',
+                nameZh: '民宿出發',
+                nameKo: '숙소 출발',
+                nameEn: 'Depart from Stay Ongijae',
+                category: '景點',
+                desc: '準時集合上車，前往濟州東部欣賞秋季限定美景。'
+              },
+              {
+                time: '10:30 - 11:50',
+                nameZh: '山君不離',
+                nameKo: '산굼부리',
+                nameEn: 'Sangumburi Crater',
+                category: '景點',
+                highlightTag: '🌾 10月金色芒草海',
+                hours: '09:00 - 18:00',
+                ticket: '成人約 6,000 韓元',
+                desc: '濟州島秋天必訪！一望無際的金色芒草浪隨風搖曳，火山口平緩好走，拍照絕美。',
+                transitFromPrev: '車程約 50 分',
+                blogUrl: 'https://damei17.com/sangumburi/',
+                image: 'https://images.unsplash.com/photo-1508873696983-2df5293cb32b?w=600&auto=format&fit=crop&q=80'
+              },
+              {
+                time: '12:05 - 13:35',
+                nameZh: '松堂童話村（橡子共和國 Corico）',
+                nameKo: '송당동화마을 (도토리숲)',
+                nameEn: 'Songdang Fairy Tale Village',
+                category: '景點',
+                highlightTag: '🌳 吉卜力庭園散步',
+                hours: '10:00 - 19:00',
+                ticket: '園區免門票',
+                desc: '結合吉卜力龍貓橡子共和國、魔女宅急便麵包房與精緻造景的童話庭園，好拍好買。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://vocus.cc/article/6a79e484fd897800010940b8'
+              },
+              {
+                time: '13:55 - 15:15',
+                nameZh: 'Cafe The Container',
+                nameKo: '카페 더 콘테이너',
+                nameEn: 'Cafe The Container',
+                category: '咖啡',
+                highlightTag: '🍊 橘子提籃送餐',
+                hours: '10:30 - 17:00 (週三休)',
+                desc: '外觀是巨大橘子收集籃！餐點用繩索橘子籃垂降送餐，特色柑橘咖啡與甜點極受歡迎。',
+                transitFromPrev: '車程約 20 分',
+                blogUrl: 'https://mamahuhu.blog/overseas/cafe-the-container/'
+              },
+              {
+                time: '15:45 - 17:15',
+                nameZh: '月高家 月汀里本店',
+                nameKo: '월고집 월정리본점',
+                nameEn: 'Wolgojip Black Pork',
+                category: '美食',
+                highlightTag: '🥩 專人代烤黑豬肉',
+                hours: '11:00 - 22:00',
+                desc: '濟州必吃頂級黑豬肉厚切，專人炭火代烤至外酥內嫩，沾上特製滾燙鯷魚醬汁。',
+                transitFromPrev: '車程約 25 分',
+                blogUrl: 'https://debjp.pixnet.net/blog'
+              },
+              {
+                time: '17:15 - 18:30',
+                nameZh: '月汀里出發 ➔ 返回民宿',
+                nameKo: '월정리 출발 ➔ 숙소 복귀',
+                nameEn: 'Return to Stay Ongijae',
+                category: '住宿',
+                desc: '傍晚返回 Stay 溫氣齋休息、聊天放鬆，結束豐富的東部行程。',
+                transitFromPrev: '車程約 55-65 分 (包車結束)'
+              }
+            ]
+          },
+          {
+            weekday: 'SUN',
+            dateNumber: '10/25',
+            title: '濟州市區集中採買 ➔ 文創海景 ➔ 鮑魚牛排骨湯',
+            charterTime: '09:30 ～ 18:30 (剛好9小時)',
+            weather: {
+              condition: '晴朗多雲',
+              icon: 'fa-solid fa-sun-cloud',
+              temp: '20°C',
+              feelTemp: '19°C'
+            },
+            spots: [
+              {
+                time: '09:30',
+                nameZh: '民宿出發',
+                nameKo: '숙소 출발',
+                nameEn: 'Depart from Stay Ongijae',
+                category: '景點',
+                desc: '準備進濟州市區展開伴手禮與棉被大採購！'
+              },
+              {
+                time: '10:00 - 11:30',
+                nameZh: '中央地下街（iRis 棉被 ＆ 網紅爺爺伴手禮）',
+                nameKo: '제주 중앙지하상가 (아이리스 이불)',
+                nameEn: 'Jeju Jungang Underground Shopping Mall',
+                category: '購物',
+                highlightTag: '🛍️ 必買四季被 (336/344號)',
+                hours: '09:00 - 21:00',
+                address: '제주시 일도일동 1425-3 중앙지하상가 344호 (近12號出口)',
+                desc: '直奔 12 號出口對面地下街！採購 iRis 超親膚真空壓縮棉被（010-5804-3066），以及爺爺伴手禮。',
+                transitFromPrev: '車程約 30 分'
+              },
+              {
+                time: '11:30 - 12:10',
+                nameZh: '東門傳統市場',
+                nameKo: '동문재래시장',
+                nameEn: 'Dongmun Traditional Market',
+                category: '購物',
+                highlightTag: '🍊 橘子乾/伴手禮採購',
+                hours: '08:00 - 21:00',
+                desc: '緊鄰地下街，採買橘子巧克力、柑橘乾片、在地特產糕餅。',
+                transitFromPrev: '步行約 5 分',
+                blogUrl: 'https://www.funliday.com/posts/jeju_dongmun_food/'
+              },
+              {
+                time: '12:30 - 13:40',
+                nameZh: 'DOTOREE Kitchen (橡果廚房)',
+                nameKo: '도토리키친',
+                nameEn: 'DOTOREE Kitchen',
+                category: '美食',
+                highlightTag: '🍜 必吃柑橘蕎麥涼麵',
+                hours: '11:00 - 17:00',
+                desc: '超人氣特色料理！爽口日式蕎麥冷麵鋪滿新鮮柑橘薄片，酸甜解膩又驚豔。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://lizzzstyle.tw/dotoree-kitchen/'
+              },
+              {
+                time: '14:00 - 14:50',
+                nameZh: 'MOOD JEJU',
+                nameKo: '무드제주',
+                nameEn: 'MOOD JEJU',
+                category: '購物',
+                highlightTag: '🕯️ 海景文創選物',
+                hours: '10:00 - 19:00',
+                desc: '坐落於海邊的清新文創選物店，質感香氛、濟州明信片與海浪杯盤。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://popbee.com/lifestyle/jeju-travel-mood-findmeinagit-cafe-2026'
+              },
+              {
+                time: '15:10 - 17:00',
+                nameZh: 'LOTTE Mart 濟州店',
+                nameKo: '롯데마트 제주점',
+                nameEn: 'Lotte Mart Jeju Branch',
+                category: '購物',
+                highlightTag: '🛒 零食泡麵箱裝大採購',
+                hours: '10:00 - 23:00',
+                desc: '大賣場集中掃貨！買齊所有海苔、辛拉麵、零食與打包裝箱。',
+                transitFromPrev: '車程約 15 分',
+                blogUrl: 'https://creatrip.com/zh-TW/blog/14777'
+              },
+              {
+                time: '17:20 - 18:30',
+                nameZh: '蓮洞本家',
+                nameKo: '연동본가',
+                nameEn: 'Yeondong Bonga',
+                category: '美食',
+                highlightTag: '🍲 大塊鮑魚牛排骨湯',
+                hours: '09:00 - 21:00',
+                desc: '濟州市在地老字號，濃郁清甜的牛排骨高湯搭配整顆鮮美大鮑魚，暖胃補氣。',
+                transitFromPrev: '車程約 10 分',
+                blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454'
+              },
+              {
+                time: '18:30 - 19:00',
+                nameZh: '返回溫氣齋 ＆ 整理行李',
+                nameKo: '숙소 복귀 및 짐 정리',
+                nameEn: 'Pack Luggage at Ongijae',
+                category: '住宿',
+                desc: '返回民宿，包車結束；8人集中裝箱、利用真空袋打包棉被與戰利品。',
+                transitFromPrev: '車程約 25 分'
+              }
+            ]
+          },
+          {
+            weekday: 'MON',
+            dateNumber: '10/26',
+            title: '退房 ➔ 機場限定夾心餅 ➔ 返回台灣',
+            charterTime: '08:00 ～ 08:30 (專車送機)',
+            weather: {
+              condition: '晨間微涼',
+              icon: 'fa-solid fa-plane',
+              temp: '17°C',
+              feelTemp: '16°C'
+            },
+            spots: [
+              {
+                time: '07:40 - 08:00',
+                nameZh: '民宿退房準備',
+                nameKo: '온기재 체크아웃',
+                nameEn: 'Check-out Ongijae',
+                category: '住宿',
+                desc: '檢查隨身物品與行李，準時於 08:00 搭乘專車出發。'
+              },
+              {
+                time: '08:00 - 08:30',
+                nameZh: '專車接送：Stay 溫氣齋 ➔ 濟州機場',
+                nameKo: '제주국제공항 이동',
+                nameEn: 'Transfer to Jeju Airport',
+                category: '景點',
+                desc: '前往濟州國際機場 (CJU)，車程約 25-30 分鐘。',
+                transitFromPrev: '車程約 30 分'
+              },
+              {
+                time: '08:30 - 09:20',
+                nameZh: '虎航櫃台報到 ＆ 託運行李',
+                nameKo: '타이거항공 체크인',
+                nameEn: 'Tigerair Check-in (IT655)',
+                category: '景點',
+                desc: '辦理 IT655 登機手續，每人已加購 25kg 託運行李額度（單件不超過 30kg）。'
+              },
+              {
+                time: '09:20 - 10:00',
+                nameZh: 'Paris Baguette 搶購機場限定花生夾心餅',
+                nameKo: '파리바게뜨 제주마음샌드',
+                nameEn: 'Jeju Maeum Sand (Paris Baguette)',
+                category: '購物',
+                highlightTag: '🍪 機場限定必買',
+                desc: '濟州機場必搶的「濟州心型花生夾心餅 (제주마음샌드)」，牛油香脆餅乾包裹花生焦糖醬！'
+              },
+              {
+                time: '10:00 - 11:10',
+                nameZh: '安檢出境 ＆ 免稅店採買',
+                nameKo: '출국심사 & 면세점',
+                nameEn: 'Security Check & Duty Free',
+                category: '購物',
+                desc: '完成安檢出境手續，於管制區內免稅店逛街、準時前往登機門。'
+              },
+              {
+                time: '11:40 - 12:55',
+                nameZh: '搭乘 IT655 起飛 ➔ 抵達台灣桃園 T1',
+                nameKo: '대만 타오위안 공항 귀국',
+                nameEn: 'Arrive at Taipei (TPE T1)',
+                category: '景點',
+                desc: '飛行時間 2 小時 15 分，順利返台，結束完美的濟州島 4 天 3 夜之旅！'
+              }
+            ]
+          }
+        ]);
+
+        const currentDay = computed(() => itineraryData.value[selectedDayIdx.value]);
+
+        // 口袋名單資料
+        const pocketTabs = ref([
+          { id: 'cu_snack', name: '🍫 CU必買零食榜' },
+          { id: 'alcohol', name: '🍻 超商必買酒類榜' },
+          { id: 'must_buy', name: '🌟 必吃必買攻略' }
+        ]);
+
+        const alcoholList = ref([
+          { id: 1, nameZh: '柚子 Highball', nameKo: '리얼 유자 하이볼', feature: '酸甜・柚子香氣濃郁，附真實檸檬片' },
+          { id: 2, nameZh: '青河 氣泡酒', nameKo: '별빛 청하 스파클링', feature: '清爽微甜・氣泡感十足，搭炸雞超絕配' },
+          { id: 3, nameZh: '抹茶 Highball', nameKo: '말차 하이볼 (MATCHA)', feature: '抹茶香＋清冽酒味・甜度適中不膩' },
+          { id: 4, nameZh: '養樂多 Highball', nameKo: '요하볼 (Yogurt Highball)', feature: '甜甜乳酸感・酒感較低，女生最愛' },
+          { id: 5, nameZh: '真露 Fresh 燒酒', nameKo: '참이슬 fresh', feature: '韓國國民經典燒酒・不甜順口' },
+          { id: 6, nameZh: 'Cass Light 啤酒', nameKo: '카스 라이트 (Cass Light)', feature: '清爽型啤酒・熱量較低無負擔' },
+          { id: 7, nameZh: 'Kirin 一番搾', nameKo: '기린 이치방', feature: '麥香濃厚・經典百搭啤酒' },
+          { id: 8, nameZh: '罐裝葡萄酒 (白/紅)', nameKo: '캔 와인 (Nadia/Katia)', feature: '綠色白葡萄更推薦・果香馥郁便攜' }
+        ]);
+
+        const specialPicks = ref([
+          {
+            type: '必買推薦',
+            badgeColor: 'bg-purple-100 text-purple-700',
+            location: '中央地下街 336/344 號',
+            nameZh: 'iRis 韓國四季親膚棉被',
+            nameKo: '아이리스 이불 (Iris Bedding)',
+            nameEn: 'iRis Korean Bedding',
+            desc: '超柔軟極細纖維被，可機洗速乾，現場提供專業真空壓縮打包，輕鬆裝進行李箱！(電話 010-5804-3066)',
+            blogUrl: 'https://creatrip.com/zh-TW/blog/14777'
+          },
+          {
+            type: '機場限定必買',
+            badgeColor: 'bg-amber-100 text-amber-800',
+            location: '濟州機場管制區內外',
+            nameZh: '濟州心型花生奶油夾心餅',
+            nameKo: '파리바게뜨 제주마음샌드',
+            nameEn: 'Jeju Maeum Sand',
+            desc: 'Paris Baguette 濟州機場限定！濃郁牛油餅乾夾入牛島花生粒與焦糖奶油餡，送禮第一名。',
+            blogUrl: 'https://allinjeju.com'
+          },
+          {
+            type: '必吃美食',
+            badgeColor: 'bg-orange-100 text-orange-700',
+            location: '涯月海岸線',
+            nameZh: 'NORABA 活海鮮拉麵',
+            nameKo: '노라바 해물라면',
+            nameEn: 'NORABA Seafood Ramen',
+            desc: '大螃蟹、鮑魚與章魚滿出來的微辣海鮮湯拉麵，坐在頂樓露台看海吃麵是一大享受。',
+            blogUrl: 'https://www.google.com/search?q=NORABA'
+          },
+          {
+            type: '必吃黑豬肉',
+            badgeColor: 'bg-red-100 text-red-700',
+            location: '月汀里海水浴場旁',
+            nameZh: '月高家 月汀里本店',
+            nameKo: '월고집 월정리본점',
+            nameEn: 'Wolgojip Black Pork',
+            desc: '濟州島在地人大推的厚切黑豬肉五花與梅花肉，炭火高溫鎖住肉汁，專人桌邊代烤。',
+            blogUrl: 'https://debjp.pixnet.net'
+          },
+          {
+            type: '必吃暖胃湯品',
+            badgeColor: 'bg-emerald-100 text-emerald-800',
+            location: '濟州市連洞',
+            nameZh: '蓮洞本家 鮑魚牛排骨湯',
+            nameKo: '연동본가 갈비탕',
+            nameEn: 'Yeondong Bonga Rib Soup',
+            desc: '燉煮得軟嫩脫骨的大根牛排骨與新鮮活鮑魚，清甜濃郁，採買完晚餐的最佳選擇。',
+            blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454'
+          }
+        ]);
+
+        return {
+          activeTab,
+          selectedDayIdx,
+          activePocketTab,
+          exchangeRate,
+          krwInput,
+          convertedTwd,
+          itineraryData,
+          currentDay,
+          pocketTabs,
+          alcoholList,
+          specialPicks,
+          getGoogleMapUrl,
+          getNaverMapUrl,
+          getCategoryBadge
+        };
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>
