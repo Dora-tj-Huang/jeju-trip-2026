@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>2026 濟州島 4D3N 旅程助手</title>
   
+  <!-- Vue 3 -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Zen Maru Gothic & Noto Sans TC -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <script>
@@ -34,10 +38,6 @@
           },
           fontFamily: {
             sans: ['"Zen Maru Gothic"', '"Noto Sans TC"', 'sans-serif']
-          },
-          borderRadius: {
-            '2xl': '1.25rem',
-            '3xl': '1.75rem'
           }
         }
       }
@@ -59,7 +59,7 @@
       scrollbar-width: none;
     }
     .frosted-glass {
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.9);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -69,15 +69,16 @@
 
   <div id="app" class="max-w-md mx-auto min-h-screen relative">
 
+    <!-- Header Banner -->
     <header class="relative bg-gradient-to-b from-blue-500 via-fuji to-blue-400 text-white pt-8 pb-16 px-5 rounded-b-[2.5rem] shadow-sm">
-      <div class="flex justify-between items-center mb-3">
+      <div class="flex justify-between items-center mb-2">
         <div>
-          <span class="text-xs bg-white/20 text-white font-medium px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">Jeju Island 2026</span>
+          <span class="text-[11px] bg-white/20 text-white font-medium px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">Jeju Island 2026</span>
           <h1 class="text-2xl font-bold mt-1 tracking-tight">濟州秋日假期 🍂</h1>
         </div>
         <div class="text-right">
           <p class="text-xs text-blue-100">4 對情侶・8 人包車遊</p>
-          <p class="text-sm font-semibold tracking-wide">10/23 - 10/26</p>
+          <p class="text-sm font-bold tracking-wide">10/23 - 10/26</p>
         </div>
       </div>
       <p class="text-xs text-blue-100 leading-relaxed max-w-[90%]">
@@ -85,8 +86,10 @@
       </p>
     </header>
 
+    <!-- TAB 1: 每日行程 (以地標 ICON 為主) -->
     <main v-if="activeTab === 'itinerary'" class="px-4 -mt-10 relative z-10 space-y-4">
       
+      <!-- 橫向滑動日期選單 (星期大、日期小) -->
       <div class="flex space-x-2.5 overflow-x-auto no-scrollbar py-2 px-1">
         <button 
           v-for="(day, idx) in itineraryData" 
@@ -104,6 +107,7 @@
         </button>
       </div>
 
+      <!-- 當日簡介 & 天氣資訊 (顯示於第一個行程上方) -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-warmgray-border space-y-3">
         <div class="flex items-center justify-between border-b border-warmgray-border pb-3">
           <div>
@@ -116,6 +120,7 @@
           </div>
         </div>
 
+        <!-- 濟州島天氣卡片 -->
         <div class="bg-fuji-light/70 rounded-xl p-3 flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-amber-500 text-xl shadow-xs">
@@ -124,21 +129,23 @@
             <div>
               <div class="flex items-center space-x-1.5">
                 <span class="text-sm font-bold text-warmgray-dark">{{ currentDay.weather.condition }}</span>
-                <span class="text-xs text-gray-500">濟州島</span>
+                <span class="text-xs text-gray-500">濟州</span>
               </div>
               <p class="text-[11px] text-warmgray-subtext">體感溫度 {{ currentDay.weather.feelTemp }}</p>
             </div>
           </div>
           <div class="text-right">
             <div class="text-xl font-bold text-fuji-dark">{{ currentDay.weather.temp }}</div>
-            <span class="text-[10px] text-gray-500">10月秋季涼爽宜人</span>
+            <span class="text-[10px] text-gray-500">秋季涼爽舒適</span>
           </div>
         </div>
       </div>
 
+      <!-- 行程卡片清單 -->
       <div class="space-y-3.5 pt-1">
         <div v-for="(item, itemIdx) in currentDay.spots" :key="itemIdx" class="relative">
           
+          <!-- 行程間交通時間指示 (開車 ICON) -->
           <div v-if="item.transitFromPrev" class="flex items-center justify-center py-2 text-xs text-gray-400 space-x-2">
             <div class="h-px bg-dashed bg-gray-200 flex-1"></div>
             <span class="bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full flex items-center gap-1 font-medium text-[11px]">
@@ -147,9 +154,9 @@
             <div class="h-px bg-dashed bg-gray-200 flex-1"></div>
           </div>
 
+          <!-- (A) 專屬樣式：航班抵達資訊卡片 (Day 1 第一個行程) -->
           <div v-if="item.isFlight" class="bg-gradient-to-br from-white to-blue-50/60 rounded-3xl p-4 border border-blue-100 shadow-sm relative overflow-hidden">
-            <div class="absolute -right-4 -bottom-4 text-blue-100/50 text-7xl font-black">✈️</div>
-            <div class="flex items-center justify-between mb-2.5">
+            <div class="flex items-center justify-between mb-2">
               <span class="text-xs font-bold text-white bg-blue-500 px-2.5 py-0.5 rounded-full">航班抵達</span>
               <span class="text-xs font-semibold text-gray-500">{{ item.time }}</span>
             </div>
@@ -175,6 +182,7 @@
             </p>
           </div>
 
+          <!-- (B) 一般景點 / 美食 / 購物卡片 -->
           <div v-else class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border transition-all hover:shadow-md">
             
             <div class="flex items-center justify-between mb-2">
@@ -186,23 +194,24 @@
                   {{ item.category }}
                 </span>
               </div>
+              <!-- 彩色亮點標籤 (必吃/必買/必拍) -->
               <span v-if="item.highlightTag" class="text-[11px] font-bold text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
                 {{ item.highlightTag }}
               </span>
             </div>
 
+            <!-- 景點中韓英三語對照 -->
             <div class="mt-1">
               <h3 class="text-base font-bold text-warmgray-dark">{{ item.nameZh }}</h3>
               <p class="text-xs text-gray-400 mt-0.5 font-medium">{{ item.nameKo }} • {{ item.nameEn }}</p>
             </div>
 
+            <!-- 景點照片 -->
             <div v-if="item.image" class="mt-3 rounded-2xl overflow-hidden h-36 w-full relative bg-gray-100">
               <img :src="item.image" :alt="item.nameZh" class="w-full h-full object-cover" loading="lazy" />
-              <div v-if="item.imageNote" class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-md backdrop-blur-xs">
-                {{ item.imageNote }}
-              </div>
             </div>
 
+            <!-- 詳細欄位：營業時間 / 門票 / 描敘 -->
             <div class="mt-3 space-y-1.5 text-xs text-gray-600 bg-warmgray/70 p-2.5 rounded-xl">
               <div v-if="item.hours" class="flex items-center">
                 <i class="fa-regular fa-clock w-4 text-fuji text-[11px]"></i>
@@ -220,11 +229,12 @@
               </div>
             </div>
 
+            <!-- 雙導航 + 攻略連結按鈕 -->
             <div class="mt-3.5 pt-2.5 border-t border-gray-100 flex flex-wrap gap-2">
               <a 
                 :href="getGoogleMapUrl(item.nameZh, item.address)" 
                 target="_blank"
-                class="flex-1 min-w-[5rem] py-2 px-2.5 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1.5 border border-gray-200 transition-colors"
+                class="flex-1 min-w-[5rem] py-2 px-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-semibold text-xs flex items-center justify-center gap-1.5 border border-gray-200 transition-colors"
               >
                 <i class="fa-brands fa-google text-red-500"></i> Google Map
               </a>
@@ -232,7 +242,7 @@
               <a 
                 :href="getNaverMapUrl(item.nameKo || item.nameZh)" 
                 target="_blank"
-                class="flex-1 min-w-[5rem] py-2 px-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold text-xs flex items-center justify-center gap-1.5 border border-emerald-200 transition-colors"
+                class="flex-1 min-w-[5rem] py-2 px-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold text-xs flex items-center justify-center gap-1.5 border border-emerald-200 transition-colors"
               >
                 <span class="font-black text-emerald-600 text-[10px]">N</span> Naver Map
               </a>
@@ -252,8 +262,197 @@
       </div>
     </main>
 
+    <!-- TAB 2: 口袋名單 (以購物籃 ICON 呈現，整合原圖與結構化資料) -->
+    <main v-if="activeTab === 'pocket'" class="px-4 -mt-10 relative z-10 space-y-4">
+      
+      <!-- 快速切換標籤 -->
+      <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-warmgray-border flex gap-1">
+        <button 
+          v-for="sub in pocketTabs" 
+          :key="sub.id"
+          @click="activePocketTab = sub.id"
+          :class="[
+            'flex-1 py-2 rounded-xl text-xs font-bold transition-all text-center',
+            activePocketTab === sub.id 
+              ? 'bg-fuji text-white shadow-xs' 
+              : 'text-gray-500 hover:bg-gray-50'
+          ]"
+        >
+          {{ sub.name }}
+        </button>
+      </div>
+
+      <!-- 1. CU 必買零食榜 (原圖預覽 + Lightbox + 結構化清單) -->
+      <div v-if="activePocketTab === 'cu_snack'" class="space-y-3.5">
+        
+        <!-- 原圖展示卡片 (支援點擊全螢幕放大) -->
+        <div class="bg-white rounded-3xl p-3 shadow-sm border border-warmgray-border">
+          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100" @click="openLightbox('./images/cu_snacks.png')">
+            <img 
+              src="./images/cu_snacks.png" 
+              alt="CU 必買零食榜" 
+              class="w-full h-auto object-cover transition-transform group-hover:scale-102"
+              @error="handleImgError"
+            />
+            <div class="absolute bottom-2.5 right-2.5 bg-black/70 text-white text-[11px] px-3 py-1 rounded-full backdrop-blur-sm flex items-center gap-1.5 font-medium">
+              <i class="fa-solid fa-magnifying-glass-plus"></i> 點擊放大原圖
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-blue-50/80 p-3 rounded-2xl text-xs text-blue-900 flex items-center gap-2 border border-blue-100">
+          <i class="fa-solid fa-lightbulb text-amber-500 text-sm flex-shrink-0"></i>
+          <span>小提醒：包裝上有「<strong>쫀득(軟Q)</strong>」字樣的，多半是麻糬口感，可以先買小包試試看！</span>
+        </div>
+
+        <!-- No.1 杜拜風味麻糬夾心餅乾 -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-amber-200">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="text-xs font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">🏆 No.1 剛剛好又好吃的卡通圖款</span>
+            <span class="text-xs font-bold text-gray-500">首選推薦</span>
+          </div>
+          <h3 class="text-sm font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 (두바이 쫀득쿠키)</h3>
+          <p class="text-[11px] text-gray-400">Dubai Style Chewy Cookie</p>
+          
+          <ul class="mt-2.5 text-xs space-y-1.5 text-gray-600 bg-warmgray p-3 rounded-2xl">
+            <li class="flex items-start gap-1.5">
+              <span class="text-emerald-600 font-bold">1. 淺綠色款（開心果口味）：</span> 內餡最濃郁，推薦必買！
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-blue-600 font-bold">2. 淺綠盒款：</span> 內餡和冠軍款差不多，外皮巧克力粉微苦剛好。
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-gray-500 font-medium">3. 綠盒款：</span> 內餡不夠濃郁，中規中矩。
+            </li>
+            <li class="flex items-start gap-1.5">
+              <span class="text-gray-500 font-medium">4. 咖啡色盒款：</span> 內餡偏甜。
+            </li>
+          </ul>
+        </div>
+
+        <!-- No.2 Twizel 軟Q棉花糖 -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="text-xs font-black text-gray-700 bg-gray-100 px-2.5 py-0.5 rounded-full">🥈 No.2 濃郁首選</span>
+            <span class="text-xs font-bold text-pink-500">兩款口味都好吃！</span>
+          </div>
+          <h3 class="text-sm font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득딸기 / 쫀득초코)</h3>
+          <p class="text-[11px] text-gray-400">Twizel Chewy Marshmallow</p>
+          <div class="grid grid-cols-2 gap-2 mt-2.5 text-xs">
+            <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-100">
+              <p class="font-bold text-rose-700 flex items-center gap-1">🍓 草莓口味 (紅袋)</p>
+              <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">酸甜草莓凍乾，香氣非常濃郁。</p>
+            </div>
+            <div class="bg-amber-50 p-2.5 rounded-2xl border border-amber-100">
+              <p class="font-bold text-amber-800 flex items-center gap-1">🍫 巧克力口味 (米色袋)</p>
+              <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">餅乾碎口感，奶香巧克力極推！</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- No.3 普通款 -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
+          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+            <span class="text-xs font-black text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-full">🥉 No.3 普遍款</span>
+            <span class="text-xs text-gray-400">不會特別驚豔</span>
+          </div>
+          <h3 class="text-sm font-bold text-warmgray-dark mt-2">隨手包麻糬飲品 (한끼한포)</h3>
+          <p class="text-xs text-gray-600 mt-1.5 bg-gray-50 p-2.5 rounded-xl">外皮像麻糬但內餡不夠濃郁，部分口味偏甜奶味重，可依個人喜好嘗試。</p>
+        </div>
+
+        <!-- 避雷黑榜 -->
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-red-200">
+          <h3 class="text-xs font-bold text-red-500 flex items-center gap-1.5 mb-2.5">
+            <i class="fa-solid fa-circle-xmark"></i> 避雷不推薦專區
+          </h3>
+          <div class="space-y-2 text-xs">
+            <div class="bg-red-50/60 p-2.5 rounded-2xl border border-red-100">
+              <p class="font-bold text-gray-800">❌ 獨立小包裝麻糬巧克力</p>
+              <p class="text-[11px] text-gray-600 mt-0.5">外皮太厚偏硬，口感普通。</p>
+            </div>
+            <div class="bg-red-50/60 p-2.5 rounded-2xl border border-red-100">
+              <p class="font-bold text-gray-800">❌ 1.0 巧克力</p>
+              <p class="text-[11px] text-gray-600 mt-0.5">雖有巧克力脆球且微苦不膩，但整體表現中規中矩。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 2. 超商必買酒類榜 (原圖預覽 + 雙欄中韓卡片) -->
+      <div v-if="activePocketTab === 'alcohol'" class="space-y-3.5">
+        
+        <!-- 原圖展示卡片 -->
+        <div class="bg-white rounded-3xl p-3 shadow-sm border border-warmgray-border">
+          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100" @click="openLightbox('./images/convenience_drinks.png')">
+            <img 
+              src="./images/convenience_drinks.png" 
+              alt="超商必買酒類榜" 
+              class="w-full h-auto object-cover transition-transform group-hover:scale-102"
+              @error="handleImgError"
+            />
+            <div class="absolute bottom-2.5 right-2.5 bg-black/70 text-white text-[11px] px-3 py-1 rounded-full backdrop-blur-sm flex items-center gap-1.5 font-medium">
+              <i class="fa-solid fa-magnifying-glass-plus"></i> 點擊放大原圖
+            </div>
+          </div>
+        </div>
+
+        <p class="text-xs text-gray-500 px-1 font-medium">CU / GS25 超商看到必買（營火炸雞派對 🍻）</p>
+
+        <!-- 雙欄卡片 -->
+        <div class="grid grid-cols-2 gap-2.5">
+          <div v-for="alc in alcoholList" :key="alc.id" class="bg-white p-3.5 rounded-3xl border border-warmgray-border shadow-xs flex flex-col justify-between">
+            <div>
+              <span class="w-5 h-5 rounded-full bg-fuji text-white text-[10px] font-bold flex items-center justify-center mb-1.5">{{ alc.id }}</span>
+              <h4 class="font-bold text-xs text-warmgray-dark">{{ alc.nameZh }}</h4>
+              <p class="text-[10px] text-gray-400 mt-0.5">{{ alc.nameKo }}</p>
+            </div>
+            <p class="text-[11px] text-fuji-dark font-medium mt-2.5 bg-fuji-light p-2 rounded-xl">{{ alc.feature }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 必吃攻略 & 必買伴手禮 -->
+      <div v-if="activePocketTab === 'must_buy'" class="space-y-3.5">
+        <div v-for="(shop, idx) in specialPicks" :key="idx" class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border">
+          <div class="flex items-center justify-between">
+            <span :class="shop.badgeColor" class="text-[10px] font-bold px-2 py-0.5 rounded-full">{{ shop.type }}</span>
+            <span class="text-xs text-gray-400">{{ shop.location }}</span>
+          </div>
+          
+          <h3 class="text-sm font-bold text-warmgray-dark mt-2">{{ shop.nameZh }}</h3>
+          <p class="text-xs text-gray-400">{{ shop.nameKo }} • {{ shop.nameEn }}</p>
+
+          <p class="text-xs text-gray-600 mt-2 bg-warmgray p-2.5 rounded-xl leading-relaxed">
+            {{ shop.desc }}
+          </p>
+
+          <div class="mt-3 flex gap-2">
+            <a 
+              v-if="shop.blogUrl" 
+              :href="shop.blogUrl" 
+              target="_blank" 
+              class="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-fuji text-center rounded-xl font-bold text-xs transition-colors"
+            >
+              <i class="fa-solid fa-book-open mr-1"></i> 查看必吃/必買攻略
+            </a>
+            <a 
+              :href="getNaverMapUrl(shop.nameKo)" 
+              target="_blank" 
+              class="py-2 px-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs"
+            >
+              Naver
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- TAB 3: 旅程資訊中心 (以 i ICON 呈現) -->
     <main v-if="activeTab === 'info'" class="px-4 -mt-10 relative z-10 space-y-4">
       
+      <!-- 匯率換算工具 -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
@@ -294,11 +493,13 @@
         </div>
       </section>
 
+      <!-- 去回程航班卡片 -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-4">
         <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
           <i class="fa-solid fa-plane-departure text-fuji"></i> 航班資訊 (台灣虎航)
         </h2>
 
+        <!-- 去程 -->
         <div class="border border-blue-100 rounded-2xl p-3.5 bg-blue-50/30">
           <div class="flex justify-between items-center mb-1.5">
             <span class="text-xs font-bold text-fuji bg-white px-2 py-0.5 rounded-md border border-blue-200">去程 • IT654</span>
@@ -325,6 +526,7 @@
           </div>
         </div>
 
+        <!-- 回程 -->
         <div class="border border-amber-100 rounded-2xl p-3.5 bg-amber-50/30">
           <div class="flex justify-between items-center mb-1.5">
             <span class="text-xs font-bold text-amber-700 bg-white px-2 py-0.5 rounded-md border border-amber-200">回程 • IT655</span>
@@ -352,6 +554,7 @@
         </div>
       </section>
 
+      <!-- 住宿詳細資訊 -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3">
         <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
           <i class="fa-solid fa-house text-fuji"></i> 住宿資訊 (4天連住)
@@ -367,7 +570,7 @@
           </div>
           
           <div class="pt-1 text-gray-600 space-y-1">
-            <p><strong>韓文地址：</strong>항몽로 29, 濟州島, 濟州特別自治道 63051, 南韓</p>
+            <p><strong>韓文地址：</strong>항몽로 29, 濟州特別自治道 63051, 南韓</p>
             <p><strong>英文/中文：</strong>29, Hangmong-ro, Jeju-si, Jeju-do</p>
           </div>
 
@@ -390,6 +593,7 @@
         </div>
       </section>
 
+      <!-- 緊急求助 -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border">
         <h2 class="text-base font-bold text-warmgray-dark mb-3 flex items-center gap-2">
           <i class="fa-solid fa-truck-medical text-red-500"></i> 緊急應變求助 (點擊直撥)
@@ -399,7 +603,7 @@
             <div class="w-9 h-9 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-sm">112</div>
             <div>
               <p class="text-xs font-bold text-gray-800">韓國警察局</p>
-              <p class="text-[10px] text-gray-500">犯罪 / 緊急報案</p>
+              <p class="text-[10px] text-gray-500">犯罪報案</p>
             </div>
           </a>
 
@@ -407,7 +611,7 @@
             <div class="w-9 h-9 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-sm">119</div>
             <div>
               <p class="text-xs font-bold text-gray-800">消防 / 救護車</p>
-              <p class="text-[10px] text-gray-500">急診火警事故</p>
+              <p class="text-[10px] text-gray-500">急診火警</p>
             </div>
           </a>
 
@@ -415,8 +619,8 @@
             <div class="flex items-center gap-3">
               <div class="w-9 h-9 rounded-full bg-fuji text-white flex items-center justify-center font-bold text-sm">1330</div>
               <div>
-                <p class="text-xs font-bold text-gray-800">韓國觀光公社 24hr 中文翻譯熱線</p>
-                <p class="text-[10px] text-gray-500">溝通障礙、旅遊求助、計程車溝通</p>
+                <p class="text-xs font-bold text-gray-800">韓國觀光公社 24hr 中文翻譯</p>
+                <p class="text-[10px] text-gray-500">旅遊求助、計程車即時溝通</p>
               </div>
             </div>
             <i class="fa-solid fa-phone text-fuji mr-2"></i>
@@ -426,134 +630,23 @@
 
     </main>
 
-    <main v-if="activeTab === 'pocket'" class="px-4 -mt-10 relative z-10 space-y-4">
+    <!-- 全螢幕 Lightbox 圖片預覽彈窗 -->
+    <div 
+      v-if="lightboxImage" 
+      class="fixed inset-0 z-50 bg-black/90 flex flex-col justify-center items-center p-4 backdrop-blur-md"
+      @click="lightboxImage = null"
+    >
+      <button class="absolute top-6 right-6 text-white text-2xl w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <img :src="lightboxImage" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl" @click.stop />
+      <p class="text-white/80 text-xs mt-3">點擊任意處關閉預覽</p>
+    </div>
+
+    <!-- 底部浮動導覽條 (浮動樣式) -->
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md frosted-glass rounded-3xl border border-white/60 shadow-lg px-6 py-2.5 z-40 flex justify-around items-center">
       
-      <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-warmgray-border flex gap-1">
-        <button 
-          v-for="sub in pocketTabs" 
-          :key="sub.id"
-          @click="activePocketTab = sub.id"
-          :class="[
-            'flex-1 py-2 rounded-xl text-xs font-bold transition-all text-center',
-            activePocketTab === sub.id 
-              ? 'bg-fuji text-white shadow-xs' 
-              : 'text-gray-500 hover:bg-gray-50'
-          ]"
-        >
-          {{ sub.name }}
-        </button>
-      </div>
-
-      <div v-if="activePocketTab === 'cu_snack'" class="space-y-3">
-        <div class="bg-blue-50/70 p-3 rounded-2xl text-xs text-blue-800 flex items-center gap-2">
-          <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
-          <span>小提醒：包裝上有「<strong>쫀득(軟Q)</strong>」字樣多為麻糬口感！</span>
-        </div>
-
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-amber-200">
-          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-            <span class="text-xs font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">🏆 No.1 冠軍推薦</span>
-            <span class="text-xs font-bold text-gray-500">卡通圖款・超濃郁</span>
-          </div>
-          <h3 class="text-sm font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 / 開心果</h3>
-          <p class="text-[11px] text-gray-400">두바이 쫀득쿠키 (Dubai Chewy Cookie)</p>
-          
-          <ul class="mt-2 text-xs space-y-1.5 text-gray-600 bg-gray-50 p-2.5 rounded-xl">
-            <li class="flex items-start gap-1.5">
-              <span class="text-emerald-500 font-bold">● 淺綠色款（首選）：</span> 開心果內餡最濃郁，外皮巧克力微苦不膩！
-            </li>
-            <li class="flex items-start gap-1.5">
-              <span class="text-amber-500 font-bold">● 綠盒/咖啡盒：</span> 內餡相對普通或偏甜。
-            </li>
-          </ul>
-        </div>
-
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
-          <div class="flex items-center justify-between pb-2 border-b border-gray-100">
-            <span class="text-xs font-black text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-full">🥈 No.2 濃郁首選</span>
-            <span class="text-xs font-bold text-pink-500">草莓 / 巧克力雙口味</span>
-          </div>
-          <h3 class="text-sm font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득마시멜로)</h3>
-          <div class="grid grid-cols-2 gap-2 mt-2 text-xs">
-            <div class="bg-rose-50 p-2 rounded-xl">
-              <p class="font-bold text-rose-700">🍓 草莓口味 (紅袋)</p>
-              <p class="text-[11px] text-gray-600 mt-0.5">酸甜草莓凍乾，香氣非常濃郁！</p>
-            </div>
-            <div class="bg-amber-50 p-2 rounded-xl">
-              <p class="font-bold text-amber-800">🍫 巧克力口味 (米色袋)</p>
-              <p class="text-[11px] text-gray-600 mt-0.5">餅乾碎口感，奶香巧克力極推薦！</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-red-100">
-          <h3 class="text-xs font-bold text-red-500 flex items-center gap-1.5 mb-2">
-            <i class="fa-solid fa-circle-xmark"></i> 避雷不推薦榜（普通或踩雷）
-          </h3>
-          <div class="space-y-2 text-xs text-gray-600">
-            <div class="bg-red-50/50 p-2 rounded-xl">
-              <span class="font-bold text-gray-700">❌ 獨立小包裝麻糬巧克力：</span> 外皮偏厚偏硬，口感不佳。
-            </div>
-            <div class="bg-red-50/50 p-2 rounded-xl">
-              <span class="font-bold text-gray-700">❌ 1.0 巧克力：</span> 雖有巧克力脆球，但整體表現中規中矩。
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="activePocketTab === 'alcohol'" class="space-y-3">
-        <p class="text-xs text-gray-500 px-1">CU / GS25 超商看到必買推薦（營火派對必備 🍻）</p>
-
-        <div class="grid grid-cols-2 gap-2.5">
-          <div v-for="alc in alcoholList" :key="alc.id" class="bg-white p-3 rounded-2xl border border-gray-100 shadow-xs flex flex-col justify-between">
-            <div>
-              <span class="w-5 h-5 rounded-full bg-fuji text-white text-[10px] font-bold flex items-center justify-center mb-1.5">{{ alc.id }}</span>
-              <h4 class="font-bold text-xs text-warmgray-dark">{{ alc.nameZh }}</h4>
-              <p class="text-[10px] text-gray-400 mt-0.5">{{ alc.nameKo }}</p>
-            </div>
-            <p class="text-[11px] text-fuji-dark font-medium mt-2 bg-blue-50/60 p-1.5 rounded-lg">{{ alc.feature }}</p>
-          </div>
-        </div>
-      </div>
-
-      <div v-if="activePocketTab === 'must_buy'" class="space-y-3">
-        <div v-for="(shop, idx) in specialPicks" :key="idx" class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border">
-          <div class="flex items-center justify-between">
-            <span :class="shop.badgeColor" class="text-[10px] font-bold px-2 py-0.5 rounded-full">{{ shop.type }}</span>
-            <span class="text-xs text-gray-400">{{ shop.location }}</span>
-          </div>
-          
-          <h3 class="text-sm font-bold text-warmgray-dark mt-2">{{ shop.nameZh }}</h3>
-          <p class="text-xs text-gray-400">{{ shop.nameKo }} • {{ shop.nameEn }}</p>
-
-          <p class="text-xs text-gray-600 mt-2 bg-warmgray p-2.5 rounded-xl leading-relaxed">
-            {{ shop.desc }}
-          </p>
-
-          <div class="mt-3 flex gap-2">
-            <a 
-              v-if="shop.blogUrl" 
-              :href="shop.blogUrl" 
-              target="_blank" 
-              class="flex-1 py-2 bg-blue-50 hover:bg-blue-100 text-fuji text-center rounded-xl font-bold text-xs transition-colors"
-            >
-              <i class="fa-solid fa-book-open mr-1"></i> 查看必買/必吃攻略
-            </a>
-            <a 
-              :href="getNaverMapUrl(shop.nameKo)" 
-              target="_blank" 
-              class="py-2 px-3 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs"
-            >
-              Naver
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </main>
-
-    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md frosted-glass rounded-3xl border border-white/60 shadow-lg px-6 py-2.5 z-50 flex justify-around items-center">
-      
+      <!-- Tab 1: 行程 (地標 ICON) -->
       <button 
         @click="activeTab = 'itinerary'" 
         :class="['flex flex-col items-center transition-colors', activeTab === 'itinerary' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
@@ -562,6 +655,7 @@
         <span class="text-[11px] mt-0.5">行程</span>
       </button>
 
+      <!-- Tab 2: 口袋名單 (購物籃 ICON) -->
       <button 
         @click="activeTab = 'pocket'" 
         :class="['flex flex-col items-center transition-colors', activeTab === 'pocket' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
@@ -570,12 +664,13 @@
         <span class="text-[11px] mt-0.5">口袋名單</span>
       </button>
 
+      <!-- Tab 3: 資訊 (i ICON) -->
       <button 
         @click="activeTab = 'info'" 
         :class="['flex flex-col items-center transition-colors', activeTab === 'info' ? 'text-fuji font-bold scale-105' : 'text-gray-400']"
       >
         <i class="fa-solid fa-circle-info text-lg"></i>
-        <span class="text-[11px] mt-0.5">資訊中心</span>
+        <span class="text-[11px] mt-0.5">資訊</span>
       </button>
 
     </nav>
@@ -590,9 +685,19 @@
         const activeTab = ref('itinerary');
         const selectedDayIdx = ref(0);
         const activePocketTab = ref('cu_snack');
+        const lightboxImage = ref(null);
+
+        const openLightbox = (url) => {
+          lightboxImage.value = url;
+        };
+
+        const handleImgError = (e) => {
+          // 若本地尚未放置圖片，顯示美觀提示佔位
+          e.target.style.opacity = '0.5';
+        };
 
         // 匯率計算機
-        const exchangeRate = ref(42.5); // 1 TWD = 42.5 KRW
+        const exchangeRate = ref(42.5);
         const krwInput = ref(30000);
         const convertedTwd = computed(() => {
           if (!krwInput.value) return 0;
@@ -620,7 +725,7 @@
           }
         };
 
-        // 四天行程資料庫
+        // 4天行程資料
         const itineraryData = ref([
           {
             weekday: 'FRI',
@@ -637,7 +742,7 @@
               {
                 isFlight: true,
                 time: '09:35 - 10:25',
-                desc: '抵達濟州國際機場 (CJU)，入境提領行李並與包車司機會合，準備開啟濟州島自駕與包車假期。'
+                desc: '抵達濟州國際機場 (CJU)，入境提領行李並與包車司機會合，準備開啟濟州島假期。'
               },
               {
                 time: '10:45 - 11:15',
@@ -648,7 +753,7 @@
                 highlightTag: '📸 必拍打卡',
                 hours: '全天開放',
                 ticket: '免費參觀',
-                desc: '濟州最具代表性的紅白成對小馬燈塔，拍照超可愛，海岸邊吹海風拍照 30 分鐘。',
+                desc: '濟州最具代表性的紅白成對小馬燈塔，海邊漫步拍照約 30 分鐘。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://judyer.com/r%EF%BD%97hligh/',
                 image: 'https://images.unsplash.com/photo-1596401057633-54a8fe8ef647?w=600&auto=format&fit=crop&q=80'
@@ -661,7 +766,7 @@
                 category: '美食',
                 highlightTag: '🍜 必吃海鮮',
                 hours: '10:00 - 17:30 (週四休)',
-                desc: '涯月必吃超狂整隻章魚、花蟹、鮑魚海鮮拉麵，露台可邊看海邊吃，建議先取號候位。',
+                desc: '涯月必吃整隻章魚、花蟹與活鮑魚海鮮拉麵，露台坐擁海景。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://www.google.com/search?q=NORABA',
                 image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop&q=80'
@@ -675,7 +780,7 @@
                 highlightTag: '🏷️ 必逛選物 (需預約)',
                 hours: '預約制 13:30 場次',
                 ticket: '預約門票含飲品點心',
-                desc: '知名綜藝《孝利家民宿》拍攝原址改建之文創選物空間，庭院綠意清幽好拍。',
+                desc: '知名綜藝拍攝原址改建之美學選物空間，庭院綠意清幽。',
                 transitFromPrev: '車程約 20 分',
                 blogUrl: 'https://vivafifty.tw/jeju-hyoris-homestay-travel/'
               },
@@ -687,7 +792,7 @@
                 category: '咖啡',
                 highlightTag: '🌾 必拍粉黛亂子草',
                 hours: '09:00 - 19:00',
-                desc: '由舊度假飯店改造，10月外圍盛開大片夢幻粉紅亂子草，眺望晨星岳絕佳視野。',
+                desc: '由舊度假飯店改造，10月盛開大片夢幻粉紅亂子草，眺望晨星岳絕佳視野。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072',
                 image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80'
@@ -701,7 +806,7 @@
                 highlightTag: '🏡 8人包棟',
                 hours: '16:00 Check-in',
                 address: '항몽로 29, 濟州特別自治道 63051',
-                desc: '入住獨棟美學韓屋民宿，放行李、稍作休息，準備今晚的庭院派對。',
+                desc: '入住獨棟美學民宿，放行李、稍作休息，準備今晚的庭院派對。',
                 transitFromPrev: '車程約 20 分',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072'
               },
@@ -713,7 +818,7 @@
                 category: '美食',
                 highlightTag: '🍗 必吃炸雞',
                 hours: '16:00 - 23:00',
-                desc: '外帶酥脆在地特色炸雞，並於周邊 CU/GS25 超商採購 Highball 調酒、啤酒與泡麵。',
+                desc: '外帶酥脆在地特色炸雞，並於 CU/GS25 超商採購 Highball 調酒與零食。',
                 transitFromPrev: '車程約 15 分 (18:30 包車結束)',
                 blogUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/'
               },
@@ -724,7 +829,7 @@
                 nameEn: 'Bonfire & Chimaek Party',
                 category: '住宿',
                 highlightTag: '🔥 營火炸雞酒派對',
-                desc: '在民宿戶外庭院生營火（불멍 放空看火），8個人一邊吃炸雞、喝柚子調酒談天。'
+                desc: '在民宿戶外庭院生營火（불멍 放空看火），8個人邊吃炸雞、喝 Highball 調酒暢聊。'
               }
             ]
           },
@@ -746,7 +851,7 @@
                 nameKo: '숙소 출발',
                 nameEn: 'Depart from Stay Ongijae',
                 category: '景點',
-                desc: '準時集合上車，前往濟州東部欣賞秋季限定美景。'
+                desc: '集合上車，前往濟州東部欣賞秋季限定美景。'
               },
               {
                 time: '10:30 - 11:50',
@@ -757,7 +862,7 @@
                 highlightTag: '🌾 10月金色芒草海',
                 hours: '09:00 - 18:00',
                 ticket: '成人約 6,000 韓元',
-                desc: '濟州島秋天必訪！一望無際的金色芒草浪隨風搖曳，火山口平緩好走，拍照絕美。',
+                desc: '濟州島秋天必訪！一望無際的金色芒草浪隨風搖曳，拍照絕美。',
                 transitFromPrev: '車程約 50 分',
                 blogUrl: 'https://damei17.com/sangumburi/',
                 image: 'https://images.unsplash.com/photo-1508873696983-2df5293cb32b?w=600&auto=format&fit=crop&q=80'
@@ -771,7 +876,7 @@
                 highlightTag: '🌳 吉卜力庭園散步',
                 hours: '10:00 - 19:00',
                 ticket: '園區免門票',
-                desc: '結合吉卜力龍貓橡子共和國、魔女宅急便麵包房與精緻造景的童話庭園，好拍好買。',
+                desc: '結合吉卜力龍貓橡子共和國、魔女宅急便麵包房與精緻庭園。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://vocus.cc/article/6a79e484fd897800010940b8'
               },
@@ -783,7 +888,7 @@
                 category: '咖啡',
                 highlightTag: '🍊 橘子提籃送餐',
                 hours: '10:30 - 17:00 (週三休)',
-                desc: '外觀是巨大橘子收集籃！餐點用繩索橘子籃垂降送餐，特色柑橘咖啡與甜點極受歡迎。',
+                desc: '巨大橘子收集籃造型！餐點使用繩索橘子籃垂降送餐，特色柑橘咖啡必試。',
                 transitFromPrev: '車程約 20 分',
                 blogUrl: 'https://mamahuhu.blog/overseas/cafe-the-container/'
               },
@@ -795,7 +900,7 @@
                 category: '美食',
                 highlightTag: '🥩 專人代烤黑豬肉',
                 hours: '11:00 - 22:00',
-                desc: '濟州必吃頂級黑豬肉厚切，專人炭火代烤至外酥內嫩，沾上特製滾燙鯷魚醬汁。',
+                desc: '頂級厚切黑豬肉，專人炭火代烤至外酥內嫩，沾上滾燙鯷魚醬汁極美味。',
                 transitFromPrev: '車程約 25 分',
                 blogUrl: 'https://debjp.pixnet.net/blog'
               },
@@ -805,7 +910,7 @@
                 nameKo: '월정리 출발 ➔ 숙소 복귀',
                 nameEn: 'Return to Stay Ongijae',
                 category: '住宿',
-                desc: '傍晚返回 Stay 溫氣齋休息、聊天放鬆，結束豐富的東部行程。',
+                desc: '傍晚返回 Stay 溫氣齋休息，結束東部行程。',
                 transitFromPrev: '車程約 55-65 分 (包車結束)'
               }
             ]
@@ -828,7 +933,7 @@
                 nameKo: '숙소 출발',
                 nameEn: 'Depart from Stay Ongijae',
                 category: '景點',
-                desc: '準備進濟州市區展開伴手禮與棉被大採購！'
+                desc: '前往濟州市區展開集中採買。'
               },
               {
                 time: '10:00 - 11:30',
@@ -839,7 +944,7 @@
                 highlightTag: '🛍️ 必買四季被 (336/344號)',
                 hours: '09:00 - 21:00',
                 address: '제주시 일도일동 1425-3 중앙지하상가 344호 (近12號出口)',
-                desc: '直奔 12 號出口對面地下街！採購 iRis 超親膚真空壓縮棉被（010-5804-3066），以及爺爺伴手禮。',
+                desc: '12 號出口對面地下街！採購 iRis 超親膚真空壓縮棉被（010-5804-3066）與爺爺伴手禮。',
                 transitFromPrev: '車程約 30 分'
               },
               {
@@ -850,7 +955,7 @@
                 category: '購物',
                 highlightTag: '🍊 橘子乾/伴手禮採購',
                 hours: '08:00 - 21:00',
-                desc: '緊鄰地下街，採買橘子巧克力、柑橘乾片、在地特產糕餅。',
+                desc: '緊鄰地下街，採買橘子巧克力、柑橘乾片與在地特色特產。',
                 transitFromPrev: '步行約 5 分',
                 blogUrl: 'https://www.funliday.com/posts/jeju_dongmun_food/'
               },
@@ -862,7 +967,7 @@
                 category: '美食',
                 highlightTag: '🍜 必吃柑橘蕎麥涼麵',
                 hours: '11:00 - 17:00',
-                desc: '超人氣特色料理！爽口日式蕎麥冷麵鋪滿新鮮柑橘薄片，酸甜解膩又驚豔。',
+                desc: '特色料理！清爽蕎麥冷麵鋪滿新鮮柑橘薄片，酸甜解膩。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://lizzzstyle.tw/dotoree-kitchen/'
               },
@@ -874,7 +979,7 @@
                 category: '購物',
                 highlightTag: '🕯️ 海景文創選物',
                 hours: '10:00 - 19:00',
-                desc: '坐落於海邊的清新文創選物店，質感香氛、濟州明信片與海浪杯盤。',
+                desc: '海邊清新文創選物店，質感香氛、明信片與海浪杯盤。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://popbee.com/lifestyle/jeju-travel-mood-findmeinagit-cafe-2026'
               },
@@ -886,7 +991,7 @@
                 category: '購物',
                 highlightTag: '🛒 零食泡麵箱裝大採購',
                 hours: '10:00 - 23:00',
-                desc: '大賣場集中掃貨！買齊所有海苔、辛拉麵、零食與打包裝箱。',
+                desc: '大賣場集中掃貨！買齊所有海苔、泡麵、零食與打包裝箱。',
                 transitFromPrev: '車程約 15 分',
                 blogUrl: 'https://creatrip.com/zh-TW/blog/14777'
               },
@@ -898,7 +1003,7 @@
                 category: '美食',
                 highlightTag: '🍲 大塊鮑魚牛排骨湯',
                 hours: '09:00 - 21:00',
-                desc: '濟州市在地老字號，濃郁清甜的牛排骨高湯搭配整顆鮮美大鮑魚，暖胃補氣。',
+                desc: '老字號清甜牛排骨湯搭配鮮美大鮑魚，暖胃補氣。',
                 transitFromPrev: '車程約 10 分',
                 blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454'
               },
@@ -908,7 +1013,7 @@
                 nameKo: '숙소 복귀 및 짐 정리',
                 nameEn: 'Pack Luggage at Ongijae',
                 category: '住宿',
-                desc: '返回民宿，包車結束；8人集中裝箱、利用真空袋打包棉被與戰利品。',
+                desc: '返回民宿包車結束；8人集中裝箱、真空打包棉被與戰利品。',
                 transitFromPrev: '車程約 25 分'
               }
             ]
@@ -931,7 +1036,7 @@
                 nameKo: '온기재 체크아웃',
                 nameEn: 'Check-out Ongijae',
                 category: '住宿',
-                desc: '檢查隨身物品與行李，準時於 08:00 搭乘專車出發。'
+                desc: '檢查隨身物品與行李，08:00 專車出發。'
               },
               {
                 time: '08:00 - 08:30',
@@ -948,7 +1053,7 @@
                 nameKo: '타이거항공 체크인',
                 nameEn: 'Tigerair Check-in (IT655)',
                 category: '景點',
-                desc: '辦理 IT655 登機手續，每人已加購 25kg 託運行李額度（單件不超過 30kg）。'
+                desc: '辦理 IT655 登機手續，每人已加購 25kg 託運行李。'
               },
               {
                 time: '09:20 - 10:00',
@@ -957,7 +1062,7 @@
                 nameEn: 'Jeju Maeum Sand (Paris Baguette)',
                 category: '購物',
                 highlightTag: '🍪 機場限定必買',
-                desc: '濟州機場必搶的「濟州心型花生夾心餅 (제주마음샌드)」，牛油香脆餅乾包裹花生焦糖醬！'
+                desc: '機場必搶「濟州心型花生夾心餅」，酥脆餅乾包裹花生焦糖醬！'
               },
               {
                 time: '10:00 - 11:10',
@@ -965,7 +1070,7 @@
                 nameKo: '출국심사 & 면세점',
                 nameEn: 'Security Check & Duty Free',
                 category: '購物',
-                desc: '完成安檢出境手續，於管制區內免稅店逛街、準時前往登機門。'
+                desc: '完成安檢出境手續，於免稅店採買並前往登機門。'
               },
               {
                 time: '11:40 - 12:55',
@@ -973,7 +1078,7 @@
                 nameKo: '대만 타오위안 공항 귀국',
                 nameEn: 'Arrive at Taipei (TPE T1)',
                 category: '景點',
-                desc: '飛行時間 2 小時 15 分，順利返台，結束完美的濟州島 4 天 3 夜之旅！'
+                desc: '飛行 2 小時 15 分，順利返台，結束美好濟州行！'
               }
             ]
           }
@@ -981,22 +1086,21 @@
 
         const currentDay = computed(() => itineraryData.value[selectedDayIdx.value]);
 
-        // 口袋名單資料
         const pocketTabs = ref([
-          { id: 'cu_snack', name: '🍫 CU必買零食榜' },
+          { id: 'cu_snack', name: '🍫 CU 必買零食榜' },
           { id: 'alcohol', name: '🍻 超商必買酒類榜' },
-          { id: 'must_buy', name: '🌟 必吃必買攻略' }
+          { id: 'must_buy', name: '🌟 必吃攻略' }
         ]);
 
         const alcoholList = ref([
-          { id: 1, nameZh: '柚子 Highball', nameKo: '리얼 유자 하이볼', feature: '酸甜・柚子香氣濃郁，附真實檸檬片' },
-          { id: 2, nameZh: '青河 氣泡酒', nameKo: '별빛 청하 스파클링', feature: '清爽微甜・氣泡感十足，搭炸雞超絕配' },
-          { id: 3, nameZh: '抹茶 Highball', nameKo: '말차 하이볼 (MATCHA)', feature: '抹茶香＋清冽酒味・甜度適中不膩' },
-          { id: 4, nameZh: '養樂多 Highball', nameKo: '요하볼 (Yogurt Highball)', feature: '甜甜乳酸感・酒感較低，女生最愛' },
-          { id: 5, nameZh: '真露 Fresh 燒酒', nameKo: '참이슬 fresh', feature: '韓國國民經典燒酒・不甜順口' },
-          { id: 6, nameZh: 'Cass Light 啤酒', nameKo: '카스 라이트 (Cass Light)', feature: '清爽型啤酒・熱量較低無負擔' },
-          { id: 7, nameZh: 'Kirin 一番搾', nameKo: '기린 이치방', feature: '麥香濃厚・經典百搭啤酒' },
-          { id: 8, nameZh: '罐裝葡萄酒 (白/紅)', nameKo: '캔 와인 (Nadia/Katia)', feature: '綠色白葡萄更推薦・果香馥郁便攜' }
+          { id: 1, nameZh: '柚子 Highball', nameKo: '리얼 유자 하이볼', feature: '酸甜・柚子香氣濃郁' },
+          { id: 2, nameZh: '青河 氣泡酒', nameKo: '별빛 청하 스파클링', feature: '清爽・微甜・氣泡感十足' },
+          { id: 3, nameZh: '抹茶 Highball', nameKo: '말차 하이볼 (MATCHA)', feature: '抹茶香＋酒味・不會太甜' },
+          { id: 4, nameZh: '養樂多 Highball', nameKo: '요하볼 (Yogurt Highball)', feature: '甜甜的・酒感較低' },
+          { id: 5, nameZh: '真露 Fresh 燒酒', nameKo: '참이슬 fresh', feature: '經典燒酒・不甜・好入口' },
+          { id: 6, nameZh: 'Cass Light 啤酒', nameKo: '카스 라이트 (Cass Light)', feature: '清爽型啤酒・熱量較低' },
+          { id: 7, nameZh: 'Kirin 一番搾', nameKo: '기린 이치방', feature: '麥香濃厚・經典啤酒' },
+          { id: 8, nameZh: '罐裝葡萄酒 (白/紅)', nameKo: '캔 와인 (Nadia/Katia)', feature: '綠色白葡萄更推薦・果香濃郁' }
         ]);
 
         const specialPicks = ref([
@@ -1007,27 +1111,27 @@
             nameZh: 'iRis 韓國四季親膚棉被',
             nameKo: '아이리스 이불 (Iris Bedding)',
             nameEn: 'iRis Korean Bedding',
-            desc: '超柔軟極細纖維被，可機洗速乾，現場提供專業真空壓縮打包，輕鬆裝進行李箱！(電話 010-5804-3066)',
+            desc: '超親膚極細纖維被，可機洗速乾，現場真空壓縮打包輕鬆裝箱！(電話 010-5804-3066)',
             blogUrl: 'https://creatrip.com/zh-TW/blog/14777'
           },
           {
             type: '機場限定必買',
             badgeColor: 'bg-amber-100 text-amber-800',
-            location: '濟州機場管制區內外',
+            location: '濟州機場管制區',
             nameZh: '濟州心型花生奶油夾心餅',
             nameKo: '파리바게뜨 제주마음샌드',
             nameEn: 'Jeju Maeum Sand',
-            desc: 'Paris Baguette 濟州機場限定！濃郁牛油餅乾夾入牛島花生粒與焦糖奶油餡，送禮第一名。',
+            desc: 'Paris Baguette 濟州機場限定！牛油香脆餅乾包裹花生焦糖餡，送禮第一名。',
             blogUrl: 'https://allinjeju.com'
           },
           {
-            type: '必吃美食',
+            type: '必吃海鮮',
             badgeColor: 'bg-orange-100 text-orange-700',
             location: '涯月海岸線',
             nameZh: 'NORABA 活海鮮拉麵',
             nameKo: '노라바 해물라면',
             nameEn: 'NORABA Seafood Ramen',
-            desc: '大螃蟹、鮑魚與章魚滿出來的微辣海鮮湯拉麵，坐在頂樓露台看海吃麵是一大享受。',
+            desc: '大螃蟹、鮑魚與整隻章魚的微辣海鮮湯拉麵，邊看海邊吃極致享受。',
             blogUrl: 'https://www.google.com/search?q=NORABA'
           },
           {
@@ -1037,17 +1141,17 @@
             nameZh: '月高家 月汀里本店',
             nameKo: '월고집 월정리본점',
             nameEn: 'Wolgojip Black Pork',
-            desc: '濟州島在地人大推的厚切黑豬肉五花與梅花肉，炭火高溫鎖住肉汁，專人桌邊代烤。',
+            desc: '在地人大推的厚切黑豬肉五花與梅花肉，炭火高溫專人桌邊代烤。',
             blogUrl: 'https://debjp.pixnet.net'
           },
           {
-            type: '必吃暖胃湯品',
+            type: '必吃排骨湯',
             badgeColor: 'bg-emerald-100 text-emerald-800',
             location: '濟州市連洞',
             nameZh: '蓮洞本家 鮑魚牛排骨湯',
             nameKo: '연동본가 갈비탕',
             nameEn: 'Yeondong Bonga Rib Soup',
-            desc: '燉煮得軟嫩脫骨的大根牛排骨與新鮮活鮑魚，清甜濃郁，採買完晚餐的最佳選擇。',
+            desc: '燉煮得軟嫩脫骨的大根牛排骨與新鮮活鮑魚，清甜濃郁暖胃首選。',
             blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454'
           }
         ]);
@@ -1056,6 +1160,9 @@
           activeTab,
           selectedDayIdx,
           activePocketTab,
+          lightboxImage,
+          openLightbox,
+          handleImgError,
           exchangeRate,
           krwInput,
           convertedTwd,
