@@ -92,7 +92,7 @@
         </div>
 
         <!-- 每日行程上方：天氣資訊卡片 -->
-        <div class="bg-gradient-to-br from-fuji-light to-white p-4 rounded-3xl border border-fuji-blue/20 shadow-sm flex items-center justify-between mb-4">
+        <div class="bg-gradient-to-br from-fuji-light to-white p-4 rounded-3xl border border-fuji-blue/20 shadow-sm flex items-center justify-between mb-3">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center shadow-inner text-2xl text-amber-500">
               <i :class="currentDayData.weather.icon"></i>
@@ -111,11 +111,11 @@
           </div>
         </div>
 
-        <!-- 行程標題與包車時間提示 -->
-        <div class="mb-3 px-1 flex flex-col gap-1">
-          <div class="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-            <i class="fa-solid fa-route text-fuji-blue"></i>
-            <span>{{ currentDayData.title }}</span>
+        <!-- 當日行程走向與包車時間提示 -->
+        <div class="mb-4 bg-white p-3.5 rounded-2xl border border-gray-100 shadow-xs space-y-1.5">
+          <div class="text-xs font-bold text-gray-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-map-location-dot text-fuji-blue"></i>
+            <span>當日走向：{{ currentDayData.routeSummary }}</span>
           </div>
           <div v-if="currentDayData.charterTime" class="text-[11px] font-semibold text-fuji-dark bg-sky-50 px-2.5 py-1 rounded-xl flex items-center gap-1.5 border border-sky-100">
             <i class="fa-solid fa-van-shuttle text-fuji-blue"></i>
@@ -123,7 +123,7 @@
           </div>
         </div>
 
-        <!-- 行程卡片清單 (無分類下拉選單，依序條列) -->
+        <!-- 行程卡片清單 (含時間軸、實景照片、中英韓對照) -->
         <div class="space-y-4">
           <div 
             v-for="(item, itemIdx) in currentDayData.items" 
@@ -163,39 +163,46 @@
             </div>
 
             <!-- 情況 B: 一般景點、美食、購物、住宿卡片 -->
-            <div v-else class="space-y-2.5">
-              <div class="flex justify-between items-start gap-2">
-                <div>
-                  <div class="flex items-center gap-1.5 mb-1 flex-wrap">
-                    <span 
-                      :class="{
-                        'bg-amber-100 text-amber-700': item.category === '美食',
-                        'bg-emerald-100 text-emerald-700': item.category === '景點',
-                        'bg-purple-100 text-purple-700': item.category === '購物',
-                        'bg-rose-100 text-rose-700': item.category === '住宿'
-                      }"
-                      class="text-[11px] font-bold px-2 py-0.5 rounded-lg"
-                    >
-                      {{ item.category }}
-                    </span>
-                    <span v-for="tag in item.tags" :key="tag.text" :class="tag.color" class="text-[10px] font-bold px-2 py-0.5 rounded-lg">
-                      {{ tag.text }}
-                    </span>
-                  </div>
-                  <h3 class="font-bold text-gray-800 text-base leading-snug">{{ item.nameZh }}</h3>
-                  <div class="text-xs text-gray-400 font-medium flex gap-2 mt-0.5">
-                    <span>{{ item.nameKr }}</span>
-                    <span>•</span>
-                    <span>{{ item.nameEn }}</span>
-                  </div>
+            <div v-else class="space-y-3">
+              
+              <!-- 照片呈現 -->
+              <div v-if="item.image" class="w-full h-36 rounded-2xl overflow-hidden shadow-inner bg-gray-100 relative">
+                <img :src="item.image" :alt="item.nameZh" class="w-full h-full object-cover" />
+                <span class="absolute top-2.5 right-2.5 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full font-bold backdrop-blur-xs">
+                  {{ item.timeline }}
+                </span>
+              </div>
+
+              <div>
+                <div class="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <span 
+                    :class="{
+                      'bg-amber-100 text-amber-700': item.category === '美食',
+                      'bg-emerald-100 text-emerald-700': item.category === '景點',
+                      'bg-purple-100 text-purple-700': item.category === '購物',
+                      'bg-rose-100 text-rose-700': item.category === '住宿'
+                    }"
+                    class="text-[11px] font-bold px-2 py-0.5 rounded-lg"
+                  >
+                    {{ item.category }}
+                  </span>
+                  <span v-for="tag in item.tags" :key="tag.text" :class="tag.color" class="text-[10px] font-bold px-2 py-0.5 rounded-lg">
+                    {{ tag.text }}
+                  </span>
+                </div>
+                <h3 class="font-bold text-gray-800 text-base leading-snug">{{ item.nameZh }}</h3>
+                <div class="text-xs text-gray-400 font-medium flex gap-1.5 mt-0.5 flex-wrap">
+                  <span>{{ item.nameKr }}</span>
+                  <span>•</span>
+                  <span>{{ item.nameEn }}</span>
                 </div>
               </div>
 
               <!-- 時間、營業時間與門票 -->
-              <div class="text-xs text-gray-500 space-y-1 pt-1">
+              <div class="text-xs text-gray-500 space-y-1">
                 <div v-if="item.timeline" class="flex items-center gap-2 text-fuji-blue font-bold">
                   <i class="fa-regular fa-clock w-3.5"></i>
-                  <span>建議時段: {{ item.timeline }}</span>
+                  <span>時間軸時段: {{ item.timeline }}</span>
                 </div>
                 <div v-if="item.hours" class="flex items-center gap-2">
                   <i class="fa-solid fa-store w-3.5 text-gray-400"></i>
@@ -371,42 +378,41 @@
       </section>
 
 
-      <!-- ================= 視圖 3：口袋名單 (超商零食、酒類、伴手禮圖鑑) ================= -->
+      <!-- ================= 視圖 3：口袋名單 (零食榜、酒類榜、必吃攻略) ================= -->
       <section v-if="currentTab === 'wishlist'" class="space-y-4">
         
-        <!-- 三級快速切換標籤 -->
+        <!-- 三大快速切換標籤 -->
         <div class="flex bg-white p-1 rounded-2xl border border-gray-200 shadow-sm">
           <button 
             @click="wishlistSubTab = 'snacks'" 
             :class="wishlistSubTab === 'snacks' ? 'bg-fuji-blue text-white shadow' : 'text-gray-500'"
             class="flex-1 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1"
           >
-            <i class="fa-solid fa-cookie-bite"></i> CU 必買零食
+            <i class="fa-solid fa-cookie-bite"></i> CU 零食榜
           </button>
           <button 
             @click="wishlistSubTab = 'drinks'" 
             :class="wishlistSubTab === 'drinks' ? 'bg-fuji-blue text-white shadow' : 'text-gray-500'"
             class="flex-1 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1"
           >
-            <i class="fa-solid fa-wine-bottle"></i> 必買酒類
+            <i class="fa-solid fa-wine-bottle"></i> 必買酒類榜
           </button>
           <button 
-            @click="wishlistSubTab = 'souvenirs'" 
-            :class="wishlistSubTab === 'souvenirs' ? 'bg-fuji-blue text-white shadow' : 'text-gray-500'"
+            @click="wishlistSubTab = 'food'" 
+            :class="wishlistSubTab === 'food' ? 'bg-fuji-blue text-white shadow' : 'text-gray-500'"
             class="flex-1 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1"
           >
-            <i class="fa-solid fa-gift"></i> 必買伴手禮
+            <i class="fa-solid fa-utensils"></i> 必吃攻略
           </button>
         </div>
 
-        <!-- 標籤 A: CU 必買零食榜 (含原圖卡片) -->
+        <!-- 標籤 1: CU 必買零食榜 (含原圖點擊放大) -->
         <div v-if="wishlistSubTab === 'snacks'" class="space-y-3">
           
-          <!-- 原圖縮圖卡片（可點擊放大檢視） -->
           <div class="bg-white rounded-3xl p-3 border border-gray-100 shadow-sm">
             <div class="flex justify-between items-center mb-2 px-1">
               <span class="text-xs font-bold text-gray-700 flex items-center gap-1.5">
-                <i class="fa-solid fa-image text-fuji-blue"></i> 韓國超商必買零食全指南
+                <i class="fa-solid fa-image text-fuji-blue"></i> 韓國超商必買零食全圖鑑
               </span>
               <span class="text-[10px] text-fuji-blue font-semibold">點圖放大</span>
             </div>
@@ -415,13 +421,11 @@
             </a>
           </div>
 
-          <!-- 小提醒標語 -->
           <div class="bg-amber-50 border border-amber-200/80 p-3 rounded-2xl flex items-center gap-2.5 text-xs text-amber-800">
             <i class="fa-regular fa-lightbulb text-amber-500 text-sm flex-shrink-0"></i>
             <span><strong>選購小訣竅：</strong>包裝上有「<strong>쫀득 (軟Q)</strong>」字樣的，多半是麻糬口感，看到先拿！</span>
           </div>
 
-          <!-- 排行榜條列 -->
           <div v-for="item in cuSnacks" :key="item.rank" class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 space-y-2">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
@@ -445,7 +449,6 @@
             </div>
           </div>
 
-          <!-- 避雷專區 -->
           <div class="bg-rose-50/70 border border-rose-200/60 rounded-3xl p-4 space-y-2">
             <div class="flex items-center gap-2 text-rose-700 font-bold text-xs">
               <i class="fa-solid fa-circle-xmark text-sm"></i>
@@ -458,10 +461,9 @@
           </div>
         </div>
 
-        <!-- 標籤 B: 超商必買酒類推薦 (含原圖卡片) -->
+        <!-- 標籤 2: 超商必買酒類榜 (含原圖點擊放大) -->
         <div v-if="wishlistSubTab === 'drinks'" class="space-y-3">
           
-          <!-- 原圖縮圖卡片（可點擊放大檢視） -->
           <div class="bg-white rounded-3xl p-3 border border-gray-100 shadow-sm">
             <div class="flex justify-between items-center mb-2 px-1">
               <span class="text-xs font-bold text-gray-700 flex items-center gap-1.5">
@@ -496,47 +498,24 @@
           </div>
         </div>
 
-        <!-- 標籤 C: 必買伴手禮與棉被清單 -->
-        <div v-if="wishlistSubTab === 'souvenirs'" class="space-y-3">
-          
-          <!-- iRis 棉被名片精華卡片 -->
-          <div class="bg-white rounded-3xl p-4 shadow-sm border border-emerald-100 bg-gradient-to-br from-emerald-50/40 to-white space-y-2.5">
-            <div class="flex justify-between items-start">
-              <span class="text-[10px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md">中央地下街 必買名店</span>
-              <span class="text-xs text-gray-400 font-mono">010-5804-3066</span>
-            </div>
-            <h3 class="font-bold text-gray-800 text-sm">iRis 韓國超細纖維棉被專賣店 (아이리스)</h3>
-            <p class="text-xs text-gray-600 leading-relaxed bg-white p-2.5 rounded-2xl border border-gray-100">
-              📍 <strong>地點：</strong>濟州中央地下街 60 (336號 / 344號鋪)<br>
-              🕒 <strong>營業：</strong>09:00 - 21:00<br>
-              💡 <strong>特色：</strong>親膚柔軟、可機洗速乾，店家可協助抽真空壓縮打包方便托運！
-            </p>
-            <div class="flex gap-2">
-              <a href="https://instagram.com/iris_bedding" target="_blank" class="flex-1 bg-emerald-600 text-white py-1.5 rounded-xl text-xs font-bold text-center">
-                <i class="fa-brands fa-instagram"></i> IG 官方參考
-              </a>
-              <a href="https://map.naver.com/v5/search/제주중앙지하상가" target="_blank" class="flex-1 bg-gray-100 text-gray-700 py-1.5 rounded-xl text-xs font-bold text-center">
-                Naver 地圖導航
-              </a>
-            </div>
-          </div>
-
-          <!-- 伴手禮列表 -->
+        <!-- 標籤 3: 必吃攻略 (含食物實拍圖、中英韓、跳轉攻略) -->
+        <div v-if="wishlistSubTab === 'food'" class="space-y-3">
           <div 
-            v-for="(shop, idx) in shoppingList" 
+            v-for="(food, idx) in foodList" 
             :key="idx" 
             class="bg-white rounded-3xl p-3.5 shadow-sm border border-gray-100 flex gap-3.5 items-center"
           >
-            <img :src="shop.image" :alt="shop.nameZh" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 bg-gray-100 shadow-inner" />
+            <img :src="food.image" :alt="food.nameZh" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0 bg-gray-100 shadow-inner" />
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-1.5 mb-0.5">
-                <span class="text-[10px] font-bold bg-purple-100 text-purple-700 px-2 py-0.5 rounded-md">必買名產</span>
+                <span class="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md">必吃名店</span>
+                <span class="text-[10px] font-bold text-fuji-blue">{{ food.dayTag }}</span>
               </div>
-              <h3 class="font-bold text-gray-800 text-sm truncate">{{ shop.nameZh }}</h3>
-              <p class="text-[11px] text-gray-400 truncate">{{ shop.nameKr }} / {{ shop.nameEn }}</p>
-              <p class="text-[11px] text-gray-500 mt-1 line-clamp-1">{{ shop.desc }}</p>
-              <a :href="shop.url" target="_blank" class="inline-flex items-center gap-1 text-[11px] text-fuji-blue font-bold mt-1.5 hover:underline">
-                查看購買攻略 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              <h3 class="font-bold text-gray-800 text-sm truncate">{{ food.nameZh }}</h3>
+              <p class="text-[11px] text-gray-400 truncate">{{ food.nameKr }} / {{ food.nameEn }}</p>
+              <p class="text-[11px] text-gray-500 mt-1 line-clamp-1">{{ food.desc }}</p>
+              <a :href="food.url" target="_blank" class="inline-flex items-center gap-1 text-[11px] text-fuji-blue font-bold mt-1.5 hover:underline">
+                查看推薦攻略 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
               </a>
             </div>
           </div>
@@ -601,7 +580,8 @@
             dayOfWeek: 'Fri',
             dayNumber: '23',
             region: '濟州西部・涯月海岸線',
-            title: 'Day 1 西部・涯月海岸線與迎賓營火',
+            title: 'Day 1 西部・涯月海岸線 ➔ 入住溫氣齋 ➔ 營火炸雞',
+            routeSummary: '機場出發 ➔ 紅白小馬 ➔ 海鮮拉麵 ➔ 孝利家民宿 ➔ 晨星岳芒草 ➔ 溫氣齋 ➔ 營火炸雞',
             charterTime: '⏱️ 包車時間：10:30 ～ 18:30（約 8 小時）',
             weather: {
               condition: '晴時多雲',
@@ -620,7 +600,7 @@
                 arrTime: '09:35',
                 duration: '1h 55m',
                 carrier: 'Airbus A320',
-                desc: '桃園第一航廈出發抵達濟州國際機場 (CJU)，入境、提領行李並與包車司機會合。'
+                desc: '09:35 - 10:25 抵達濟州國際機場 (CJU)，入境、提領行李並與包車司機會合。'
               },
               {
                 nameZh: '梨湖木筏海邊 (紅白小馬燈塔)',
@@ -630,8 +610,9 @@
                 timeline: '10:45 - 11:15',
                 hours: '全天開放 (24H)',
                 ticket: '免費參觀',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必拍地標', color: 'bg-rose-100 text-rose-700' }],
-                desc: '濟州超人氣代表地標，紅白兩座可愛小馬燈塔佇立在海堤邊，非常適合拍照打卡！',
+                desc: '車程約 15 分，停留 30 分。紅白兩座可愛小馬燈塔佇立在海堤邊，非常適合拍照打卡！',
                 guideUrl: 'https://judyer.com/r%EF%BD%97hligh/',
                 googleQuery: 'Iho Tewoo Beach',
                 naverQuery: '이호테우해변'
@@ -643,8 +624,9 @@
                 category: '美食',
                 timeline: '11:30 - 13:00',
                 hours: '10:00 - 17:30 (每週四公休)',
+                image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必吃海鮮拉麵', color: 'bg-amber-100 text-amber-700' }],
-                desc: '無敵海景搭配整隻鮮美螃蟹、鮑魚的海鮮拉麵，微辣濃郁湯頭超受歡迎。',
+                desc: '車程約 15 分，候位與享用海鮮拉麵 90 分。無敵海景搭配整隻鮮美螃蟹、鮑魚，微辣濃郁湯頭超受歡迎。',
                 guideUrl: 'https://www.google.com/search?q=NORABA',
                 googleQuery: 'NORABA Jeju',
                 naverQuery: '노라바 해물라면'
@@ -657,25 +639,27 @@
                 timeline: '13:30 - 14:40 (預約 13:30 場次)',
                 hours: '10:20 - 17:00 (預約制)',
                 ticket: '預約門票制 (含茶飲)',
+                image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必訪文青', color: 'bg-emerald-100 text-emerald-700' }],
-                desc: '韓綜《孝利家民宿》拍攝原址，現在改為溫馨悠閒的文創體驗空間與選物店。',
+                desc: '車程約 20 分，參觀選物 70 分。韓綜《孝利家民宿》拍攝原址，現在改為溫馨悠閒的文創空間。',
                 guideUrl: 'https://vivafifty.tw/jeju-hyoris-homestay-travel/',
                 googleQuery: 'Sogilbyeolha Jeju',
                 naverQuery: '소길별하'
               },
               {
-                nameZh: 'Saebil 咖啡廳 & 晨星岳芒草',
+                nameZh: 'Saebil 咖啡廳 & 晨星岳周邊',
                 nameKr: '새빌 카페 & 새별오름',
                 nameEn: 'Saebil Cafe & Saebyeol Oreum',
                 category: '景點',
                 timeline: '15:00 - 16:15',
                 hours: '09:00 - 19:00',
                 ticket: '晨星岳免費 / 咖啡自理',
+                image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=500&auto=format&fit=crop&q=60',
                 tags: [
                   { text: '必拍粉黛亂子草', color: 'bg-rose-100 text-rose-700' },
                   { text: '必吃可頌', color: 'bg-amber-100 text-amber-700' }
                 ],
-                desc: '10月秋季晨星岳盛開滿山銀白粉黛芒草！由舊渡假飯店改建的 Saebil 咖啡廳有大片落地窗能直眺美景。',
+                desc: '車程約 15 分，停留 75 分。10月秋季晨星岳盛開滿山銀白粉黛芒草！由舊渡假飯店改建的咖啡廳視野極佳。',
                 guideUrl: 'https://www.tourscombine.com/article/2023122072',
                 googleQuery: 'Saebil Cafe Jeju',
                 naverQuery: '새빌'
@@ -687,8 +671,9 @@
                 category: '住宿',
                 timeline: '16:45 - 17:30',
                 hours: '16:00 入住 / 11:00 退房',
+                image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '包棟營火', color: 'bg-blue-100 text-blue-700' }],
-                desc: '位於涯月抗蒙路的精緻包棟民宿，放行李稍作休息，準備迎接晚上的庭院營火時光。',
+                desc: '車程約 20 分，16:00 後入住放行李、休息。庭院配有專屬營火設備。',
                 guideUrl: 'https://www.tourscombine.com/article/2023122072',
                 googleQuery: '항몽로 29 제주',
                 naverQuery: '항몽로 29'
@@ -700,8 +685,9 @@
                 category: '美食',
                 timeline: '17:45 外帶 ➔ 19:00 營火之夜',
                 hours: '16:00 - 23:00',
+                image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必吃炸雞', color: 'bg-amber-100 text-amber-700' }],
-                desc: '前往外帶酥脆多汁的炸雞與鄰近超商採買飲料零食。晚上於溫氣齋戶外庭院享受「불멍 營火之夜」＋炸雞啤酒派對！',
+                desc: '前往外帶炸雞與鄰近超商採買飲料零食。18:30 包車結束回到民宿，晚上於戶外庭院享受「불멍 營火之夜」＋炸雞啤酒派對！',
                 guideUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/',
                 googleQuery: '치타치킨 제주',
                 naverQuery: '치타치킨'
@@ -713,6 +699,7 @@
             dayNumber: '24',
             region: '濟州東部・自然秋景與黑豬肉',
             title: 'Day 2 東部・自然秋景 ➔ 橘子提籃 ➔ 月汀里黑豬肉',
+            routeSummary: '民宿出發 ➔ 山君不離芒草 ➔ 松堂童話村 ➔ 橘子提籃咖啡 ➔ 月汀里月高家黑豬肉 ➔ 回民宿',
             charterTime: '⏱️ 包車時間：09:30 ～ 18:30（剛好 9 小時）',
             weather: {
               condition: '晴朗舒適',
@@ -730,8 +717,9 @@
                 timeline: '10:30 - 11:50',
                 hours: '09:00 - 18:00',
                 ticket: '成人約 ₩6,000',
+                image: 'https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必拍金色芒草海', color: 'bg-rose-100 text-rose-700' }],
-                desc: '秋天濟州最壯觀的銀芒草海平原！平緩好走，隨風搖曳的芒草是拍照的最佳取景地。',
+                desc: '車程約 50 分，賞 10 月金色芒草海，停留 80 分。秋天濟州最壯觀的銀芒草海平原！平緩好走。',
                 guideUrl: 'https://damei17.com/sangumburi/',
                 googleQuery: 'Sangumburi Crater',
                 naverQuery: '산굼부리'
@@ -744,8 +732,9 @@
                 timeline: '12:05 - 13:35',
                 hours: '09:00 - 20:00',
                 ticket: '免費參觀',
+                image: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必逛童話村', color: 'bg-emerald-100 text-emerald-700' }],
-                desc: '融合濟州巨石造景與唯美庭園的新興景點，吉卜力橡子共和國周邊與特色星巴克。',
+                desc: '車程約 15 分，吉卜力周邊與童話庭園散步 90 分。融合濟州巨石造景與唯美庭園的新興景點。',
                 guideUrl: 'https://vocus.cc/article/6a79e484fd897800010940b8',
                 googleQuery: 'Songdang Fairy Tale Village',
                 naverQuery: '동백마을 송당동화마을'
@@ -757,11 +746,12 @@
                 category: '美食',
                 timeline: '13:55 - 15:15',
                 hours: '10:30 - 17:00 (週三公休)',
+                image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&auto=format&fit=crop&q=60',
                 tags: [
                   { text: '必拍巨型橘子籃', color: 'bg-rose-100 text-rose-700' },
                   { text: '必喝橘子甜點', color: 'bg-amber-100 text-amber-700' }
                 ],
-                desc: '外觀是搶眼的巨大橘色採收籃！店內運用滑輪小提籃將橘子餐點送到底樓，好玩又好拍。',
+                desc: '車程約 20 分，橘子提籃特色送餐、喝咖啡吃點心 80 分。外觀是搶眼的巨大橘色採收籃！',
                 guideUrl: 'https://mamahuhu.blog/overseas/cafe-the-container/',
                 googleQuery: 'Cafe The Container Jeju',
                 naverQuery: '카페더콘테나'
@@ -773,8 +763,9 @@
                 category: '美食',
                 timeline: '15:45 - 17:15',
                 hours: '11:00 - 22:00',
+                image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必吃黑豬肉', color: 'bg-amber-100 text-amber-700' }],
-                desc: '濟州必吃厚切炭烤黑豬肉，專人代烤外酥內嫩，沾上特製滾燙滾魚醬是絕配！餐後返回民宿休息。',
+                desc: '車程約 25 分，享用專人代烤黑豬肉大餐 90 分。17:15 出發返回溫氣齋休息（車程約 55-65 分，包車結束）。',
                 guideUrl: 'https://www.google.com/search?q=월고집+월정리',
                 googleQuery: '월고집 월정리',
                 naverQuery: '월고집'
@@ -786,6 +777,7 @@
             dayNumber: '25',
             region: '濟州北部・市區採買大血拼',
             title: 'Day 3 北部・濟州市區集中採買 ➔ 排骨湯晚餐',
+            routeSummary: '民宿出發 ➔ 中央地下街買棉被 ➔ 東門市場 ➔ 橡果午餐 ➔ MOOD文創 ➔ 樂天超市 ➔ 蓮洞本家 ➔ 回民宿',
             charterTime: '⏱️ 包車時間：09:30 ～ 18:30（剛好 9 小時）',
             weather: {
               condition: '多雲',
@@ -802,8 +794,9 @@
                 category: '購物',
                 timeline: '10:00 - 11:30',
                 hours: '09:00 - 21:00',
+                image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必買親膚被', color: 'bg-purple-100 text-purple-700' }],
-                desc: '📍 中央地下街12號出口對面(344號/336號鋪)。挑選超細纖維四季被並抽真空打包，採買網紅爺爺伴手禮！',
+                desc: '車程約 30 分，挑選棉被抽真空打包 90 分。📍 中央地下街12號出口對面(344號/336號鋪)。',
                 guideUrl: 'https://instagram.com/iris_bedding',
                 googleQuery: '제주 중앙지하상가',
                 naverQuery: '제주중앙지하상가'
@@ -815,8 +808,9 @@
                 category: '購物',
                 timeline: '11:30 - 12:10',
                 hours: '08:00 - 23:00',
+                image: 'https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必買橘子乾伴手禮', color: 'bg-purple-100 text-purple-700' }],
-                desc: '採買橘子乾、在地名產伴手禮與品嚐特色小吃。',
+                desc: '步行/車程 5 分，採買橘子乾、在地伴手禮 40 分。濟州規模最大傳統市場！',
                 guideUrl: 'https://www.funliday.com/posts/jeju_dongmun_food/',
                 googleQuery: 'Dongmun Traditional Market',
                 naverQuery: '동문재래시장'
@@ -828,8 +822,9 @@
                 category: '美食',
                 timeline: '12:30 - 13:40',
                 hours: '11:00 - 17:00',
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必吃青橘蕎麥麵', color: 'bg-amber-100 text-amber-700' }],
-                desc: '文青感十足的日式食堂，招牌青橘蕎麥涼麵清爽可口，搭配自製蝦仁可樂餅是一絕。',
+                desc: '車程約 15 分，享用招牌柑橘冷蕎麥麵 70 分。文青日式食堂，搭配自製蝦仁可樂餅是一絕。',
                 guideUrl: 'https://lizzzstyle.tw/dotoree-kitchen/',
                 googleQuery: 'DOTOREE Kitchen Jeju',
                 naverQuery: '도토리키친 본점'
@@ -841,8 +836,9 @@
                 category: '景點',
                 timeline: '14:00 - 14:50',
                 hours: '10:00 - 19:00',
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必訪海景文創', color: 'bg-emerald-100 text-emerald-700' }],
-                desc: '坐擁無邊際海景的質感咖啡選物店，拍照極美，能一邊看海一邊享受下午茶。',
+                desc: '車程約 15 分，海景文創選物店 50 分。坐擁無邊際海景的質感選物店與咖啡館。',
                 guideUrl: 'https://popbee.com/lifestyle/jeju-travel-mood-findmeinagit-cafe-2026',
                 googleQuery: 'MOOD JEJU cafe',
                 naverQuery: '무드제주'
@@ -854,21 +850,23 @@
                 category: '購物',
                 timeline: '15:10 - 17:00',
                 hours: '10:00 - 23:00',
+                image: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必買零食泡麵', color: 'bg-purple-100 text-purple-700' }],
-                desc: '採買回台伴手禮的最佳超市，泡麵、零食、伴手禮箱裝採購一次購足。',
+                desc: '車程約 15 分，泡麵、零食、伴手禮箱裝採購 110 分。採買回台伴手禮的最佳超市！',
                 guideUrl: 'https://creatrip.com/zh-TW/blog/14777',
                 googleQuery: 'Lotte Mart Jeju',
                 naverQuery: '롯데마트 제주점'
               },
               {
-                nameZh: '蓮洞本家 (연동본가 鮑魚牛排骨湯)',
+                nameZh: '蓮洞本家 (연동본家 鮑魚牛排骨湯)',
                 nameKr: '연동본가',
                 nameEn: 'Yeondong Bonga Rib Soup',
                 category: '美食',
                 timeline: '17:20 - 18:30',
                 hours: '08:00 - 21:30',
+                image: 'https://images.unsplash.com/photo-1547496502-affa22d38842?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必吃大塊牛排骨', color: 'bg-amber-100 text-amber-700' }],
-                desc: '在地人超推的大塊鮑魚牛排骨湯，排骨燉得極其軟嫩入口即化，湯頭清甜濃醇，暖胃首選。',
+                desc: '車程約 10 分，大塊鮑魚牛排骨湯 70 分。在地人超推老店，排骨極其軟嫩入口即化。18:30 返回民宿整理行李。',
                 guideUrl: 'https://debjp.pixnet.net/blog/posts/7112431454',
                 googleQuery: '연동본가',
                 naverQuery: '연동본가'
@@ -880,6 +878,7 @@
             dayNumber: '26',
             region: '濟州機場・賦歸返台',
             title: 'Day 4 退房 ➔ 濟州機場 ➔ 返台',
+            routeSummary: '民宿退房 ➔ 專車送機 ➔ 濟州機場買限定花生餅 ➔ 搭機返台',
             charterTime: '⏱️ 專車送機：08:00 ～ 08:30',
             weather: {
               condition: '多雲時晴',
@@ -890,13 +889,14 @@
             },
             items: [
               {
-                nameZh: 'Paris Baguette 濟州機場限定花生餅',
+                nameZh: 'Paris Baguette 濟州機場限定心型花生餅',
                 nameKr: '제주마음샌드',
                 nameEn: 'Jeju Maeum Sand',
                 category: '購物',
                 timeline: '09:20 - 10:00',
+                image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&auto=format&fit=crop&q=60',
                 tags: [{ text: '必買限定花生夾心餅', color: 'bg-purple-100 text-purple-700' }],
-                desc: '濟州機場必買伴手禮「心型花生夾心餅 제주마음샌드」，濃郁牛島花生香氣！'
+                desc: '購買 Paris Baguette 濟州機場限定心型花生夾心餅伴手禮 (제주마음샌드)，濃郁花生焦糖香。'
               },
               {
                 category: '航班',
@@ -913,7 +913,7 @@
           }
         ]);
 
-        // 口袋名單 A: CU 必買零食排行榜
+        // 口袋名單 1: CU 必買零食排行榜
         const cuSnacks = ref([
           {
             rank: 'No.1',
@@ -949,7 +949,7 @@
           }
         ]);
 
-        // 口袋名單 B: CU / GS25 必買酒類推薦
+        // 口袋名單 2: CU / GS25 必買酒類推薦
         const drinkList = ref([
           { id: '1', name: '柚子 Highball', type: 'Highball', desc: '酸甜順口，帶有濃郁柚子香氣，女生超愛！', highlight: '酸甜柚香' },
           { id: '2', name: '青河 氣泡酒', type: 'Sparkling', desc: '清爽微甜，氣泡感十足，搭炸雞超解膩。', highlight: '微甜氣泡' },
@@ -961,31 +961,61 @@
           { id: '8', name: '罐裝葡萄酒 (紅/白)', type: 'Wine Ball', desc: '綠色白葡萄款更推薦，果香濃郁好喝。', highlight: '果香濃郁' }
         ]);
 
-        // 口袋名單 C: 伴手禮
-        const shoppingList = ref([
+        // 口袋名單 3: 必吃攻略
+        const foodList = ref([
           {
-            nameZh: '濟州機場 Paris Baguette 心型花生餅',
-            nameKr: '제주마음샌드',
-            nameEn: 'Jeju Maeum Sand',
-            desc: '濟州機場限定，香脆餅乾夾牛島花生奶油與焦糖。',
-            image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&auto=format&fit=crop&q=60',
-            url: 'https://creatrip.com/zh-TW/blog/14777'
-          },
-          {
-            nameZh: '東門市場 漢拏峰柑橘乾/巧克力',
-            nameKr: '한라봉 초콜릿 & 말랭이',
-            nameEn: 'Hallabong Tangerine Chocolate',
-            desc: '濟州島最具代表性甜點，包裝精美適合送禮。',
-            image: 'https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?w=300&auto=format&fit=crop&q=60',
-            url: 'https://www.funliday.com/posts/jeju_dongmun_food/'
-          },
-          {
-            nameZh: '樂天超市 濟州限定泡麵與餅乾',
-            nameKr: '롯데마트 제주 과자',
-            nameEn: 'Lotte Mart Snacks',
-            desc: '多款濟州特色黑豬肉泡麵與柑橘夾心酥。',
+            nameZh: '涯月 NORABA 海鮮拉麵',
+            nameKr: '노라바 해물라면',
+            nameEn: 'NORABA Seafood Ramen',
+            dayTag: 'Day 1 午餐',
+            desc: '整隻鮮美螃蟹、鮑魚與無敵海景拉麵。',
             image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=300&auto=format&fit=crop&q=60',
-            url: 'https://creatrip.com/zh-TW/blog/14777'
+            url: 'https://www.google.com/search?q=NORABA'
+          },
+          {
+            nameZh: 'Cheetah Chicken 獵豹炸雞',
+            nameKr: '치타치킨',
+            nameEn: 'Cheetah Chicken',
+            dayTag: 'Day 1 宵夜',
+            desc: '外帶香脆炸雞，搭配溫氣齋營火之夜享用。',
+            image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=300&auto=format&fit=crop&q=60',
+            url: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/'
+          },
+          {
+            nameZh: '月高家 月汀里黑豬肉',
+            nameKr: '월정리 월고집',
+            nameEn: 'Wolgojip Black Pork',
+            dayTag: 'Day 2 晚餐',
+            desc: '專人代烤厚切黑豬肉，沾特製滾燙滾魚醬。',
+            image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&auto=format&fit=crop&q=60',
+            url: 'https://www.google.com/search?q=월고집+월정리'
+          },
+          {
+            nameZh: 'Cafe The Container 橘子提籃點心',
+            nameKr: '카페 더 콘테이너',
+            nameEn: 'Cafe The Container',
+            dayTag: 'Day 2 下午茶',
+            desc: '特色滑輪橘子提籃送餐，酸甜橘子拿鐵與甜點。',
+            image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=300&auto=format&fit=crop&q=60',
+            url: 'https://mamahuhu.blog/overseas/cafe-the-container/'
+          },
+          {
+            nameZh: 'DOTOREE Kitchen 柑橘冷蕎麥麵',
+            nameKr: '도토리키친',
+            nameEn: 'DOTOREE Kitchen',
+            dayTag: 'Day 3 午餐',
+            desc: '招牌清爽青橘冷蕎麥沾麵與自製可樂餅。',
+            image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=300&auto=format&fit=crop&q=60',
+            url: 'https://lizzzstyle.tw/dotoree-kitchen/'
+          },
+          {
+            nameZh: '蓮洞本家 鮑魚牛排骨湯',
+            nameKr: '연동본가',
+            nameEn: 'Yeondong Bonga Rib Soup',
+            dayTag: 'Day 3 晚餐',
+            desc: '大塊牛排骨燉得極其軟嫩入口即化，湯頭清甜濃醇。',
+            image: 'https://images.unsplash.com/photo-1547496502-affa22d38842?w=300&auto=format&fit=crop&q=60',
+            url: 'https://debjp.pixnet.net/blog/posts/7112431454'
           }
         ]);
 
@@ -1004,7 +1034,7 @@
           itinerary,
           cuSnacks,
           drinkList,
-          shoppingList,
+          foodList,
           currentDayData,
           getGoogleMapUrl,
           getNaverMapUrl
