@@ -3,354 +3,456 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>2026 濟州島 4D3N 浪漫旅程</title>
-  <!-- Google Fonts: Zen Maru Gothic -->
+  <title>2026 濟州島 4D3N 浪漫漫遊 🍊</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Vue 3 CDN -->
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
 
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            fuji: {
-              50: '#F0F7FD',
-              100: '#E0EFFB',
-              300: '#8EBFE6',
-              500: '#4A90E2', // 富士藍
-              700: '#2C5E9E',
-              900: '#1D3B66'
-            },
-            snow: '#FDFDFD',
-            warmgray: '#F5F4F0',
-            warmborder: '#E8E5DF'
+            'fuji-blue': '#4A89DC',
+            'fuji-dark': '#3B6FB6',
+            'fuji-light': '#EBF2FA',
+            'snow-white': '#FAFCFF',
+            'warm-gray': '#F3F4F6',
+            'soft-card': '#FFFFFF',
+            'accent-orange': '#FF8A3D'
           },
           fontFamily: {
-            sans: ['"Zen Maru Gothic"', 'sans-serif']
+            sans: ['"Zen Maru Gothic"', '"Noto Sans KR"', 'sans-serif'],
+          },
+          borderRadius: {
+            '4xl': '2rem',
           }
         }
       }
     }
   </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+
   <style>
     body {
-      background-color: #F8F9FA;
-      font-family: 'Zen Maru Gothic', sans-serif;
+      font-family: 'Zen Maru Gothic', 'Noto Sans KR', sans-serif;
+      background-color: #F3F4F6;
       -webkit-tap-highlight-color: transparent;
     }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .glass-card {
-      background: rgba(253, 253, 253, 0.94);
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .glass-tab {
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
   </style>
 </head>
-<body class="text-slate-700 min-h-screen pb-24 selection:bg-fuji-100">
-  <div id="app" class="max-w-md mx-auto min-h-screen relative bg-warmgray/50 shadow-2xl flex flex-col">
+<body class="text-gray-800 antialiased selection:bg-fuji-blue selection:text-white">
 
-    <!-- 頁首視覺區 -->
-    <header class="relative h-44 bg-gradient-to-br from-fuji-500 to-fuji-700 overflow-hidden text-white flex flex-col justify-end p-5 rounded-b-[2rem] shadow-md">
-      <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-      <div class="relative z-10">
-        <span class="text-[11px] tracking-widest bg-white/20 backdrop-blur-md px-2.5 py-0.5 rounded-full font-bold uppercase">2026.10.23 - 10.26</span>
-        <h1 class="text-2xl font-black mt-1.5 tracking-tight">濟州島 4D3N 漫遊記 🍊</h1>
-        <p class="text-xs text-fuji-100 font-medium">8人包車浪漫行 ‧ 涯月海岸與秋季芒草</p>
+  <div id="app" class="max-w-md mx-auto min-h-screen pb-28 relative bg-snow-white shadow-2xl flex flex-col">
+
+    <header class="relative h-60 w-full overflow-hidden rounded-b-4xl shadow-md">
+      <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80" 
+           alt="Jeju Island" 
+           class="w-full h-full object-cover brightness-90 transform scale-105 transition duration-700 hover:scale-100" />
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end p-6">
+        <span class="text-xs font-bold text-white/90 uppercase tracking-widest bg-fuji-blue/80 backdrop-blur-md px-3 py-1 rounded-full w-max mb-1">
+          2026.10.23 - 10.26 · 8人包車遊
+        </span>
+        <h1 class="text-2xl font-black text-white tracking-wide">濟州秋日海風漫遊 🍊</h1>
+        <p class="text-xs text-white/80 mt-0.5 font-medium">4對情侶專屬度假提案・涯月/東部/市區全紀錄</p>
+      </div>
+
+      <div class="absolute top-4 inset-x-4 glass-tab rounded-2xl p-1.5 shadow-lg flex justify-around items-center z-20 border border-white/40">
+        <button 
+          @click="currentTab = 'itinerary'" 
+          :class="currentTab === 'itinerary' ? 'bg-fuji-blue text-white shadow-md' : 'text-gray-500 hover:text-fuji-blue'"
+          class="flex-1 py-2 rounded-xl flex flex-col items-center transition-all duration-300">
+          <i class="fa-solid fa-map-location-dot text-lg"></i>
+          <span class="text-[11px] font-bold mt-0.5">行程</span>
+        </button>
+
+        <button 
+          @click="currentTab = 'info'" 
+          :class="currentTab === 'info' ? 'bg-fuji-blue text-white shadow-md' : 'text-gray-500 hover:text-fuji-blue'"
+          class="flex-1 py-2 rounded-xl flex flex-col items-center transition-all duration-300">
+          <i class="fa-solid fa-circle-info text-lg"></i>
+          <span class="text-[11px] font-bold mt-0.5">資訊</span>
+        </button>
+
+        <button 
+          @click="currentTab = 'recommend'" 
+          :class="currentTab === 'recommend' ? 'bg-fuji-blue text-white shadow-md' : 'text-gray-500 hover:text-fuji-blue'"
+          class="flex-1 py-2 rounded-xl flex flex-col items-center transition-all duration-300">
+          <i class="fa-solid fa-basket-shopping text-lg"></i>
+          <span class="text-[11px] font-bold mt-0.5">必吃必買</span>
+        </button>
+
+        <button 
+          @click="currentTab = 'expense'" 
+          :class="currentTab === 'expense' ? 'bg-fuji-blue text-white shadow-md' : 'text-gray-500 hover:text-fuji-blue'"
+          class="flex-1 py-2 rounded-xl flex flex-col items-center transition-all duration-300">
+          <i class="fa-solid fa-wallet text-lg"></i>
+          <span class="text-[11px] font-bold mt-0.5">記帳分攤</span>
+        </button>
       </div>
     </header>
 
-    <!-- 浮動分頁切換 (ICON Tabs 浮於頁首正下方) -->
-    <div class="px-4 -mt-6 z-20">
-      <div class="glass-card rounded-2xl p-1.5 shadow-lg border border-warmborder flex justify-around">
-        <button v-for="tab in tabs" :key="tab.id" @click="currentTab = tab.id"
-          class="flex-1 flex flex-col items-center py-2 px-1 rounded-xl transition-all duration-300"
-          :class="currentTab === tab.id ? 'bg-fuji-500 text-white shadow-md scale-105' : 'text-slate-500 hover:text-fuji-500'">
-          <i :data-lucide="tab.icon" class="w-5 h-5"></i>
-          <span class="text-[11px] font-bold mt-1">{{ tab.name }}</span>
-        </button>
-      </div>
-    </div>
+    <main class="flex-1 px-4 mt-4">
 
-    <!-- 主內容區塊 -->
-    <main class="flex-1 p-4">
-
-      <!-- ================= 1. 每日行程表 ================= -->
       <section v-if="currentTab === 'itinerary'" class="space-y-4">
-        <!-- 日期選單：橫向滑動 + 星期在上(字體較大)、日期在下 -->
-        <div class="flex space-x-3 overflow-x-auto no-scrollbar py-1">
-          <button v-for="(day, idx) in days" :key="idx" @click="selectedDay = idx"
-            class="flex-shrink-0 w-20 py-2.5 rounded-2xl flex flex-col items-center transition-all duration-200 border"
-            :class="selectedDay === idx ? 'bg-fuji-500 text-white border-fuji-500 shadow-lg scale-105' : 'bg-snow border-warmborder text-slate-600'">
-            <span class="text-sm font-black leading-none">{{ day.weekday }}</span>
-            <span class="text-xs font-bold mt-1 leading-none opacity-90">{{ day.date }}</span>
+        
+        <div class="flex space-x-3 overflow-x-auto no-scrollbar py-2 px-1">
+          <button 
+            v-for="(day, idx) in days" 
+            :key="idx"
+            @click="selectedDayIndex = idx"
+            :class="selectedDayIndex === idx ? 'bg-fuji-blue text-white shadow-lg scale-105 border-transparent' : 'bg-white text-gray-600 border-gray-100 hover:bg-fuji-light'"
+            class="flex-shrink-0 w-20 py-2.5 rounded-2xl border flex flex-col items-center justify-center transition-all duration-300">
+            <span class="text-xs font-bold uppercase tracking-wider">{{ day.weekday }}</span>
+            <span class="text-lg font-black mt-0.5">{{ day.dateNumber }}</span>
           </button>
         </div>
 
-        <!-- 天氣資訊卡片 (首個行程上方，動態顯示氣溫與體感) -->
-        <div class="glass-card rounded-2xl p-3 border border-warmborder shadow-sm flex items-center justify-between">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-3xl p-4 flex items-center justify-between shadow-sm">
           <div class="flex items-center space-x-3">
-            <div class="p-2 rounded-xl bg-amber-100 text-amber-500">
-              <i :data-lucide="days[selectedDay].weather.icon" class="w-5 h-5"></i>
+            <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-inner text-amber-500 text-2xl">
+              <i :class="weather.icon"></i>
             </div>
             <div>
-              <div class="text-[11px] font-bold text-slate-400">濟州即時天氣</div>
-              <div class="text-sm font-black text-slate-800">{{ days[selectedDay].weather.status }} ‧ {{ days[selectedDay].weather.temp }}°C</div>
+              <div class="flex items-center space-x-1.5">
+                <span class="text-xs font-bold text-fuji-blue uppercase tracking-wider">Jeju City</span>
+                <span class="text-[10px] bg-blue-200/60 text-fuji-dark font-bold px-2 py-0.5 rounded-full">秋季微涼</span>
+              </div>
+              <p class="text-base font-bold text-gray-800">{{ weather.condition }}</p>
             </div>
           </div>
           <div class="text-right">
-            <span class="text-xs bg-fuji-50 text-fuji-700 px-2.5 py-1 rounded-lg font-bold">體感 {{ days[selectedDay].weather.feelsLike }}°C</span>
+            <span class="text-2xl font-black text-gray-800">{{ weather.temp }}°C</span>
+            <p class="text-[11px] text-gray-500 font-medium">體感 {{ weather.feelsLike }}°C</p>
           </div>
         </div>
 
-        <!-- 分類下拉選單 -->
-        <div class="flex items-center justify-between px-1">
-          <span class="text-xs font-bold text-slate-400">當日行程 ({{ filteredEvents.length }} 項)</span>
-          <select v-model="selectedCategory" class="text-xs font-bold bg-snow border border-warmborder rounded-xl px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-fuji-500">
-            <option value="全部">全部行程</option>
-            <option value="景點">景點</option>
-            <option value="住宿">住宿</option>
-            <option value="美食">美食</option>
-            <option value="購物">購物</option>
-            <option value="航班">航班</option>
-            <option value="其他">其他</option>
+        <div class="flex items-center justify-between bg-white px-4 py-2.5 rounded-2xl shadow-sm border border-gray-100">
+          <span class="text-xs font-bold text-gray-500"><i class="fa-solid fa-filter mr-1 text-fuji-blue"></i> 類別篩選</span>
+          <select v-model="selectedCategory" class="bg-warm-gray text-xs font-bold py-1.5 px-3 rounded-xl border-none outline-none text-gray-700 cursor-pointer">
+            <option value="全部">全部行程 ({{ currentDayItinerary.length }})</option>
+            <option value="航班">航班 (Flight)</option>
+            <option value="景點">景點 (Spots)</option>
+            <option value="美食">美食 (Food)</option>
+            <option value="購物">購物 (Shopping)</option>
+            <option value="住宿">住宿 (Stay)</option>
+            <option value="其他">其他 (Other)</option>
           </select>
         </div>
 
-        <!-- 行程清單 -->
-        <div class="space-y-3.5">
-          <div v-for="(item, i) in filteredEvents" :key="i">
-
-            <!-- 航班專用樣式卡片 (無訂位代號) -->
-            <div v-if="item.category === '航班'" class="bg-gradient-to-r from-fuji-700 to-fuji-500 rounded-2xl p-4 text-white shadow-md relative overflow-hidden">
-              <div class="flex justify-between items-center pb-2 border-b border-white/20">
-                <span class="text-xs font-bold bg-white/20 px-2 py-0.5 rounded-full">{{ item.flightCode }}</span>
-                <span class="text-xs text-fuji-100 font-bold">飛行時間 {{ item.duration }}</span>
+        <div class="space-y-4">
+          <div 
+            v-for="(item, idx) in filteredItinerary" 
+            :key="idx" 
+            class="transition-all duration-300">
+            
+            <div v-if="item.category === '航班'" class="bg-gradient-to-br from-fuji-blue to-fuji-dark text-white rounded-3xl p-5 shadow-lg relative overflow-hidden">
+              <div class="absolute -right-6 -bottom-6 text-white/10 text-9xl font-black pointer-events-none">
+                <i class="fa-solid fa-plane"></i>
               </div>
-              <div class="flex justify-between items-center my-3">
+              <div class="flex justify-between items-center mb-3">
+                <span class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[11px] font-bold">
+                  {{ item.flightNo }} · {{ item.airline }}
+                </span>
+                <span class="text-xs font-semibold text-white/80">{{ item.date }}</span>
+              </div>
+              <div class="flex items-center justify-between py-2 border-y border-white/20 my-2">
                 <div class="text-center">
-                  <div class="text-xl font-black tracking-tight">{{ item.depAirport }}</div>
-                  <div class="text-xs text-fuji-100 font-medium">{{ item.depTime }}</div>
+                  <p class="text-2xl font-black tracking-wider">{{ item.departureCode }}</p>
+                  <p class="text-xs text-white/80">{{ item.departureCity }}</p>
+                  <p class="text-sm font-bold mt-1">{{ item.departureTime }}</p>
                 </div>
-                <div class="flex-1 flex flex-col items-center px-3">
-                  <i data-lucide="plane" class="w-5 h-5 text-fuji-300 transform rotate-90"></i>
-                  <div class="w-full border-t border-dashed border-white/30 my-1"></div>
+                <div class="flex flex-col items-center px-4 flex-1">
+                  <span class="text-[10px] text-white/75 mb-1">{{ item.duration }}</span>
+                  <div class="w-full flex items-center justify-center relative">
+                    <div class="h-0.5 w-full bg-white/40 border-dashed"></div>
+                    <i class="fa-solid fa-plane text-xs absolute"></i>
+                  </div>
+                  <span class="text-[10px] text-white/75 mt-1">直飛</span>
                 </div>
                 <div class="text-center">
-                  <div class="text-xl font-black tracking-tight">{{ item.arrAirport }}</div>
-                  <div class="text-xs text-fuji-100 font-medium">{{ item.arrTime }}</div>
+                  <p class="text-2xl font-black tracking-wider">{{ item.arrivalCode }}</p>
+                  <p class="text-xs text-white/80">{{ item.arrivalCity }}</p>
+                  <p class="text-sm font-bold mt-1">{{ item.arrivalTime }}</p>
                 </div>
+              </div>
+              <div class="text-[11px] text-white/80 flex items-center justify-between mt-2 pt-1">
+                <span>行李：加購 20kg</span>
+                <span>機型：Airbus A320</span>
               </div>
             </div>
 
-            <!-- 一般行程卡片 -->
-            <div v-else class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm hover:shadow-md transition-all">
+            <div v-else class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition">
               <div class="flex items-start justify-between">
                 <div>
                   <div class="flex items-center space-x-2">
-                    <span class="text-xs font-bold px-2 py-0.5 rounded-lg"
-                      :class="{
-                        'bg-blue-100 text-blue-700': item.category === '景點',
-                        'bg-amber-100 text-amber-700': item.category === '美食',
-                        'bg-purple-100 text-purple-700': item.category === '購物',
-                        'bg-emerald-100 text-emerald-700': item.category === '住宿',
-                        'bg-slate-100 text-slate-700': item.category === '其他'
-                      }">
+                    <span :class="categoryBadgeColor(item.category)" class="text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                       {{ item.category }}
                     </span>
-                    <span class="text-xs font-bold text-slate-400">{{ item.time }}</span>
+                    <span v-if="item.time" class="text-xs font-bold text-gray-400">
+                      <i class="fa-regular fa-clock mr-1"></i>{{ item.time }}
+                    </span>
                   </div>
-                  <h3 class="text-base font-extrabold text-slate-800 mt-1.5">{{ item.name }}</h3>
-                  <p class="text-[11px] text-slate-400 font-medium">{{ item.nameKr }} ‧ {{ item.nameEn }}</p>
+                  <h3 class="text-base font-bold text-gray-900 mt-1">{{ item.titleZh }}</h3>
+                  <p class="text-xs text-gray-500 font-medium">{{ item.titleEn }} · <span class="font-normal text-gray-400">{{ item.titleKo }}</span></p>
                 </div>
               </div>
 
-              <!-- 標籤與敘述 -->
-              <div class="mt-2.5 space-y-1.5">
-                <div class="flex flex-wrap gap-1.5">
-                  <span v-for="tag in item.tags" :key="tag.text"
-                    class="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-                    :class="{
-                      'bg-rose-100 text-rose-600': tag.type === '必吃',
-                      'bg-purple-100 text-purple-600': tag.type === '必買',
-                      'bg-sky-100 text-sky-600': tag.type === '必拍'
-                    }">
-                    🏷️ {{ tag.type }}: {{ tag.text }}
-                  </span>
+              <div class="mt-3 grid grid-cols-2 gap-2 text-xs bg-warm-gray/60 p-2.5 rounded-2xl">
+                <div v-if="item.openTime" class="text-gray-600">
+                  <span class="font-bold text-gray-400 block text-[10px]">營業時間</span>
+                  <span>{{ item.openTime }}</span>
                 </div>
-                <p class="text-xs text-slate-600 leading-relaxed">{{ item.desc }}</p>
+                <div v-if="item.ticket" class="text-gray-600">
+                  <span class="font-bold text-gray-400 block text-[10px]">門票費用</span>
+                  <span>{{ item.ticket }}</span>
+                </div>
               </div>
 
-              <!-- 營業時間與門票 -->
-              <div class="mt-3 pt-2.5 border-t border-slate-100 flex flex-wrap gap-y-1 text-xs text-slate-500 justify-between items-center">
-                <span v-if="item.hours" class="flex items-center"><i data-lucide="clock" class="w-3.5 h-3.5 mr-1 text-slate-400"></i>{{ item.hours }}</span>
-                <span v-if="item.ticket" class="flex items-center"><i data-lucide="ticket" class="w-3.5 h-3.5 mr-1 text-slate-400"></i>{{ item.ticket }}</span>
+              <p class="text-xs text-gray-600 mt-2.5 leading-relaxed font-normal">{{ item.desc }}</p>
+
+              <div class="flex flex-wrap gap-1.5 mt-3">
+                <span v-if="item.mustEat" class="text-[10px] bg-rose-50 text-rose-600 font-bold px-2 py-0.5 rounded-lg border border-rose-100">
+                  <i class="fa-solid fa-utensils mr-1"></i>必吃: {{ item.mustEat }}
+                </span>
+                <span v-if="item.mustBuy" class="text-[10px] bg-amber-50 text-amber-600 font-bold px-2 py-0.5 rounded-lg border border-amber-100">
+                  <i class="fa-solid fa-bag-shopping mr-1"></i>必買: {{ item.mustBuy }}
+                </span>
+                <span v-if="item.mustPhoto" class="text-[10px] bg-sky-50 text-fuji-blue font-bold px-2 py-0.5 rounded-lg border border-sky-100">
+                  <i class="fa-solid fa-camera mr-1"></i>必拍: {{ item.mustPhoto }}
+                </span>
               </div>
 
-              <!-- 雙地圖導航連結按鈕 -->
-              <div class="mt-3 grid grid-cols-2 gap-2">
-                <a :href="item.googleMap" target="_blank" class="flex items-center justify-center py-2 bg-fuji-50 hover:bg-fuji-100 text-fuji-700 text-xs font-bold rounded-xl transition">
-                  <i data-lucide="map-pin" class="w-3.5 h-3.5 mr-1"></i> Google 導航
+              <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
+                <a :href="item.googleMapUrl" target="_blank" 
+                   class="flex items-center justify-center space-x-1.5 bg-blue-50 text-fuji-blue hover:bg-fuji-blue hover:text-white py-2 rounded-xl text-xs font-bold transition">
+                  <i class="fa-brands fa-google"></i>
+                  <span>Google 導航</span>
                 </a>
-                <a :href="item.naverMap" target="_blank" class="flex items-center justify-center py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl transition">
-                  <i data-lucide="navigation" class="w-3.5 h-3.5 mr-1"></i> Naver Map
+                <a :href="item.naverMapUrl" target="_blank" 
+                   class="flex items-center justify-center space-x-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white py-2 rounded-xl text-xs font-bold transition">
+                  <i class="fa-solid fa-location-arrow"></i>
+                  <span>Naver Map</span>
                 </a>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- ================= 2. 資訊 (Info) ================= -->
       <section v-if="currentTab === 'info'" class="space-y-4">
-        <!-- 匯率換算機 -->
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm">
-          <h3 class="text-sm font-black text-slate-800 mb-3 flex items-center">
-            <i data-lucide="calculator" class="w-4 h-4 mr-1.5 text-fuji-500"></i> 韓幣 ➔ 台幣即時換算
-          </h3>
+        
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-black text-gray-800 flex items-center">
+              <i class="fa-solid fa-coins text-amber-500 mr-2 text-base"></i>韓幣 ➔ 台幣 匯率換算
+            </h3>
+            <span class="text-[10px] text-gray-400 font-bold">匯率基準：約 0.024</span>
+          </div>
           <div class="space-y-3">
             <div>
-              <label class="text-xs font-bold text-slate-400">輸入韓元 (KRW ₩)</label>
-              <input v-model.number="krwInput" type="number" placeholder="例如：50000" class="w-full mt-1 bg-white border border-warmborder rounded-xl p-2.5 text-base font-extrabold text-slate-800 focus:ring-2 focus:ring-fuji-500 focus:outline-none" />
+              <label class="text-[11px] font-bold text-gray-400 block mb-1">韓幣金額 (KRW ₩)</label>
+              <div class="relative">
+                <input 
+                  type="number" 
+                  v-model="krwInput" 
+                  placeholder="輸入韓幣金額，如 50000"
+                  class="w-full bg-warm-gray border-none rounded-2xl py-2.5 px-4 font-bold text-gray-800 focus:ring-2 focus:ring-fuji-blue outline-none text-base" />
+                <span class="absolute right-3.5 top-2.5 text-gray-400 font-bold text-xs">₩</span>
+              </div>
             </div>
-            <div class="bg-fuji-50 p-3 rounded-xl flex justify-between items-center">
-              <span class="text-xs font-bold text-fuji-700">約折合新台幣</span>
-              <span class="text-xl font-black text-fuji-700">NT$ {{ Math.round(krwInput * exchangeRate).toLocaleString() }}</span>
+            <div class="bg-fuji-light rounded-2xl p-3 flex justify-between items-center">
+              <span class="text-xs font-bold text-fuji-dark">換算台幣 (約)</span>
+              <span class="text-xl font-black text-fuji-blue">NT$ {{ calculatedTwd }}</span>
             </div>
-            <div class="text-[10px] text-slate-400 text-right">以當前匯率基準估算 (1 TWD ≈ 42.5 KRW)</div>
           </div>
         </div>
 
-        <!-- 航班資訊 (去程/回程 機場縮寫、起訖時間、飛行時間、航班編號) -->
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm">
-          <h3 class="text-sm font-black text-slate-800 mb-3 flex items-center">
-            <i data-lucide="plane-takeoff" class="w-4 h-4 mr-1.5 text-fuji-500"></i> 航班資訊
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100 space-y-4">
+          <h3 class="text-sm font-black text-gray-800 flex items-center">
+            <i class="fa-solid fa-plane-departure text-fuji-blue mr-2"></i>往返航班詳細資訊
           </h3>
-          <div class="space-y-3">
-            <div class="p-3 bg-snow rounded-xl border border-warmborder">
-              <div class="flex justify-between text-xs font-black text-fuji-700 mb-1">
-                <span>去程航班：IT654</span>
-                <span>2026-10-23 (五)</span>
-              </div>
-              <div class="text-xs font-extrabold text-slate-800">TPE 06:40 ➔ CJU 09:35</div>
-              <div class="text-[11px] text-slate-500 mt-1">飛行時間：1小時 55分</div>
+          
+          <div class="border border-blue-100 rounded-2xl p-3.5 bg-blue-50/40">
+            <div class="flex justify-between items-center text-xs font-bold text-fuji-blue mb-2">
+              <span>【去程】台灣虎航 IT654</span>
+              <span>2026/10/23 (五)</span>
             </div>
-            <div class="p-3 bg-snow rounded-xl border border-warmborder">
-              <div class="flex justify-between text-xs font-black text-fuji-700 mb-1">
-                <span>回程航班：IT655</span>
-                <span>2026-10-26 (一)</span>
+            <div class="flex justify-between items-center text-xs text-gray-700">
+              <div>
+                <span class="text-base font-black text-gray-900 block">06:40</span>
+                <span>TPE 桃機 T1</span>
               </div>
-              <div class="text-xs font-extrabold text-slate-800">CJU 11:40 ➔ TPE 12:55</div>
-              <div class="text-[11px] text-slate-500 mt-1">飛行時間：2小時 15分</div>
+              <div class="text-center">
+                <span class="text-[10px] text-gray-400">1h 55m</span>
+                <i class="fa-solid fa-arrow-right text-gray-300 block"></i>
+              </div>
+              <div class="text-right">
+                <span class="text-base font-black text-gray-900 block">09:35</span>
+                <span>CJU 濟州機場</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-indigo-100 rounded-2xl p-3.5 bg-indigo-50/40">
+            <div class="flex justify-between items-center text-xs font-bold text-indigo-600 mb-2">
+              <span>【回程】台灣虎航 IT655</span>
+              <span>2026/10/26 (一)</span>
+            </div>
+            <div class="flex justify-between items-center text-xs text-gray-700">
+              <div>
+                <span class="text-base font-black text-gray-900 block">11:40</span>
+                <span>CJU 濟州機場</span>
+              </div>
+              <div class="text-center">
+                <span class="text-[10px] text-gray-400">2h 15m</span>
+                <i class="fa-solid fa-arrow-right text-gray-300 block"></i>
+              </div>
+              <div class="text-right">
+                <span class="text-base font-black text-gray-900 block">12:55</span>
+                <span>TPE 桃機 T1</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- 住宿資訊 (飯店名稱、電話、地址、導航) -->
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm">
-          <h3 class="text-sm font-black text-slate-800 mb-3 flex items-center">
-            <i data-lucide="home" class="w-4 h-4 mr-1.5 text-fuji-500"></i> 住宿資訊
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-100">
+          <h3 class="text-sm font-black text-gray-800 flex items-center mb-3">
+            <i class="fa-solid fa-house-chimney text-emerald-500 mr-2"></i>包棟住宿資訊
           </h3>
           <div class="space-y-2 text-xs">
-            <div class="font-extrabold text-sm text-slate-800">Stay 溫氣齋 (스테이 온기재 / Stay Ongijae)</div>
-            <div class="text-slate-600">📞 聯絡電話：+82 10-5820-6703 (房東/管理室)</div>
-            <div class="text-slate-600">📍 地址：제주시 애월읍 항몽로 29 (涯月邑)</div>
-            <div class="text-slate-600">🕒 時間：16:00 入住 / 11:00 退房 (首夜含營火)</div>
-            <div class="flex gap-2 mt-2">
-              <a href="https://www.google.com/maps/search/?api=1&query=제주시+애월읍+항몽로+29" target="_blank" class="flex-1 py-2 bg-fuji-50 text-center font-bold text-fuji-700 rounded-xl">Google 導航</a>
-              <a href="https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EC%8B%9C%20%EC%95%A0%EC%9B%94%EC%9D%8D%20%ED%95%AD%EB%AA%BD%EB%A1%9C%2029" target="_blank" class="flex-1 py-2 bg-emerald-50 text-center font-bold text-emerald-700 rounded-xl">Naver Map</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- 緊急醫療與救護 -->
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm">
-          <h3 class="text-sm font-black text-slate-800 mb-3 flex items-center">
-            <i data-lucide="shield-alert" class="w-4 h-4 mr-1.5 text-rose-500"></i> 緊急求助電話
-          </h3>
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <div class="p-2.5 bg-rose-50 rounded-xl border border-rose-100">
-              <div class="text-rose-400 font-bold">報警 / 救護車</div>
-              <div class="font-black text-rose-700 mt-0.5">112 / 119</div>
-            </div>
-            <div class="p-2.5 bg-fuji-50 rounded-xl border border-fuji-100">
-              <div class="text-fuji-400 font-bold">韓國旅遊熱線 (中英)</div>
-              <div class="font-black text-fuji-700 mt-0.5">1330</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 3. 建議選擇 (Shopping Basket Tab) ================= -->
-      <section v-if="currentTab === 'suggestions'" class="space-y-4">
-        <!-- 必吃推薦 -->
-        <div class="space-y-2.5">
-          <h3 class="text-sm font-black text-slate-800 flex items-center">
-            <span class="p-1.5 bg-rose-100 text-rose-600 rounded-lg mr-2"><i data-lucide="utensils" class="w-4 h-4"></i></span>
-            行程必吃美食推薦 (搭配中英韓對照)
-          </h3>
-          <div class="grid grid-cols-2 gap-3">
-            <div v-for="(food, idx) in foodList" :key="idx" class="glass-card rounded-2xl overflow-hidden border border-warmborder shadow-sm flex flex-col">
-              <img :src="food.image" class="w-full h-28 object-cover" />
-              <div class="p-2.5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span class="text-[10px] font-bold px-1.5 py-0.5 bg-rose-50 text-rose-600 rounded">{{ food.place }}</span>
-                  <div class="text-xs font-black text-slate-800 mt-1">{{ food.nameZh }}</div>
-                  <div class="text-[10px] text-slate-500 font-medium">{{ food.nameKr }}</div>
-                  <div class="text-[9px] text-slate-400">{{ food.nameEn }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 必買推薦 -->
-        <div class="space-y-2.5 pt-3">
-          <h3 class="text-sm font-black text-slate-800 flex items-center">
-            <span class="p-1.5 bg-purple-100 text-purple-600 rounded-lg mr-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i></span>
-            行程必買伴手禮推薦 (搭配中英韓對照)
-          </h3>
-          <div class="grid grid-cols-2 gap-3">
-            <div v-for="(buy, idx) in buyList" :key="idx" class="glass-card rounded-2xl overflow-hidden border border-warmborder shadow-sm flex flex-col">
-              <img :src="buy.image" class="w-full h-28 object-cover" />
-              <div class="p-2.5 flex-1 flex flex-col justify-between">
-                <div>
-                  <span class="text-[10px] font-bold px-1.5 py-0.5 bg-purple-50 text-purple-600 rounded">{{ buy.place }}</span>
-                  <div class="text-xs font-black text-slate-800 mt-1">{{ buy.nameZh }}</div>
-                  <div class="text-[10px] text-slate-500 font-medium">{{ buy.nameKr }}</div>
-                  <div class="text-[9px] text-slate-400">{{ buy.nameEn }}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 4. 花費 (Expenses) ================= -->
-      <section v-if="currentTab === 'expenses'" class="space-y-4">
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm text-center">
-          <div class="text-xs font-bold text-slate-400">8人累積總花費 (預估)</div>
-          <div class="text-3xl font-black text-slate-800 mt-1">₩ {{ totalKRW.toLocaleString() }}</div>
-          <div class="text-xs font-bold text-fuji-700 mt-1">約 NT$ {{ Math.round(totalKRW * exchangeRate).toLocaleString() }}</div>
-        </div>
-
-        <div class="glass-card rounded-2xl p-4 border border-warmborder shadow-sm space-y-3">
-          <h3 class="text-xs font-extrabold text-slate-400">公費開支項目明細</h3>
-          <div v-for="(ex, i) in expenseList" :key="i" class="flex justify-between items-center py-2 border-b border-slate-100 last:border-0">
             <div>
-              <div class="font-extrabold text-xs text-slate-800">{{ ex.item }}</div>
-              <div class="text-[10px] text-slate-400">{{ ex.payer }} 支付</div>
+              <span class="font-bold text-gray-400 block text-[10px]">住宿名稱</span>
+              <p class="text-sm font-bold text-gray-800">涯月 溫氣齋 (Stay 온기재)</p>
             </div>
-            <div class="text-right">
-              <div class="font-black text-xs text-slate-800">₩ {{ ex.amount.toLocaleString() }}</div>
-              <div class="text-[10px] text-slate-400">NT$ {{ Math.round(ex.amount * exchangeRate).toLocaleString() }}</div>
+            <div>
+              <span class="font-bold text-gray-400 block text-[10px]">入住 / 退房時間</span>
+              <p class="font-medium text-gray-700">16:00 入住 ➔ 11:00 退房 (首夜有營火與炸雞聚會 🔥)</p>
+            </div>
+            <div>
+              <span class="font-bold text-gray-400 block text-[10px]">住宿地址</span>
+              <p class="font-medium text-gray-700">항몽로 29, 濟州特別自治道 63051, 南韓</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-2">
+              <a href="https://maps.google.com/?q=항몽로+29+Jeju" target="_blank" class="text-center bg-blue-50 text-fuji-blue py-2 rounded-xl font-bold">
+                <i class="fa-brands fa-google mr-1"></i>Google 導航
+              </a>
+              <a href="https://map.naver.com/v5/search/항몽로 29" target="_blank" class="text-center bg-emerald-50 text-emerald-600 py-2 rounded-xl font-bold">
+                <i class="fa-solid fa-location-arrow mr-1"></i>Naver 導航
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-rose-50 border border-rose-100 rounded-3xl p-4">
+          <h3 class="text-xs font-black text-rose-600 uppercase tracking-wider mb-2 flex items-center">
+            <i class="fa-solid fa-kit-medical mr-1.5"></i>緊急聯絡電話 (韓國撥打)
+          </h3>
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <a href="tel:112" class="bg-white py-2 rounded-xl shadow-sm text-gray-800 font-bold border border-rose-100">
+              <span class="block text-[10px] text-gray-400">警察局</span>112
+            </a>
+            <a href="tel:119" class="bg-white py-2 rounded-xl shadow-sm text-gray-800 font-bold border border-rose-100">
+              <span class="block text-[10px] text-gray-400">救護車/火警</span>119
+            </a>
+            <a href="tel:1330" class="bg-white py-2 rounded-xl shadow-sm text-gray-800 font-bold border border-rose-100">
+              <span class="block text-[10px] text-gray-400">觀光中文翻譯</span>1330
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section v-if="currentTab === 'recommend'" class="space-y-4">
+        
+        <div>
+          <h3 class="text-sm font-black text-gray-800 mb-3 flex items-center">
+            <i class="fa-solid fa-utensils text-rose-500 mr-2"></i>濟州必吃精選指南 (Must-Eat)
+          </h3>
+          <div class="space-y-3">
+            <div v-for="(food, idx) in mustEatList" :key="idx" class="bg-white rounded-3xl p-3.5 shadow-sm border border-gray-100 flex space-x-3.5 items-center">
+              <img :src="food.image" :alt="food.nameZh" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" />
+              <div class="flex-1 min-w-0">
+                <span class="text-[10px] font-bold text-fuji-blue bg-blue-50 px-2 py-0.5 rounded-full">{{ food.location }}</span>
+                <h4 class="text-sm font-bold text-gray-900 mt-1 truncate">{{ food.nameZh }}</h4>
+                <p class="text-[11px] text-gray-500 font-medium truncate">{{ food.nameEn }} · <span class="text-gray-400">{{ food.nameKo }}</span></p>
+                <p class="text-xs text-rose-500 font-semibold mt-1">{{ food.highlight }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <h3 class="text-sm font-black text-gray-800 mb-3 flex items-center">
+            <i class="fa-solid fa-bag-shopping text-amber-500 mr-2"></i>濟州必買好物清單 (Must-Buy)
+          </h3>
+          <div class="space-y-3">
+            <div v-for="(buy, idx) in mustBuyList" :key="idx" class="bg-white rounded-3xl p-3.5 shadow-sm border border-gray-100 flex space-x-3.5 items-center">
+              <img :src="buy.image" :alt="buy.nameZh" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0" />
+              <div class="flex-1 min-w-0">
+                <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">{{ buy.location }}</span>
+                <h4 class="text-sm font-bold text-gray-900 mt-1 truncate">{{ buy.nameZh }}</h4>
+                <p class="text-[11px] text-gray-500 font-medium truncate">{{ buy.nameEn }} · <span class="text-gray-400">{{ buy.nameKo }}</span></p>
+                <p class="text-xs text-amber-600 font-semibold mt-1">{{ buy.highlight }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section v-if="currentTab === 'expense'" class="space-y-4">
+        <div class="bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-3xl p-5 shadow-lg">
+          <p class="text-xs text-gray-400 font-bold">總公費支出 (KRW ₩)</p>
+          <p class="text-3xl font-black mt-1 text-amber-400">₩ {{ totalExpense.toLocaleString() }}</p>
+          <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-gray-700 text-xs">
+            <div>
+              <span class="text-gray-400 block text-[10px]">折合台幣約</span>
+              <span class="text-sm font-bold">NT$ {{ Math.round(totalExpense * 0.024).toLocaleString() }}</span>
+            </div>
+            <div>
+              <span class="text-gray-400 block text-[10px]">8人每人均分 (約)</span>
+              <span class="text-sm font-bold text-emerald-400">NT$ {{ Math.round((totalExpense * 0.024) / 8).toLocaleString() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 space-y-2.5">
+          <h4 class="text-xs font-bold text-gray-700">新增公共消費</h4>
+          <input type="text" v-model="newExpenseTitle" placeholder="項目 (如: NORABA拉麵、包車司機餐費)" class="w-full bg-warm-gray text-xs rounded-xl p-2.5 outline-none font-medium" />
+          <div class="flex space-x-2">
+            <input type="number" v-model="newExpenseAmount" placeholder="金額 (KRW ₩)" class="flex-1 bg-warm-gray text-xs rounded-xl p-2.5 outline-none font-bold" />
+            <button @click="addExpense" class="bg-fuji-blue text-white px-5 rounded-xl text-xs font-bold shadow-sm hover:bg-fuji-dark transition">記錄</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100">
+          <h4 class="text-xs font-bold text-gray-500 mb-3">支出紀錄 ({{ expenseList.length }})</h4>
+          <div class="space-y-2">
+            <div v-for="(item, idx) in expenseList" :key="idx" class="flex justify-between items-center text-xs py-1.5 border-b border-gray-50 last:border-none">
+              <div>
+                <span class="font-bold text-gray-800 block">{{ item.title }}</span>
+                <span class="text-[10px] text-gray-400">每人 ₩{{ Math.round(item.amount / 8).toLocaleString() }}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="font-black text-gray-900">₩ {{ item.amount.toLocaleString() }}</span>
+                <button @click="removeExpense(idx)" class="text-gray-300 hover:text-rose-500"><i class="fa-solid fa-trash-can"></i></button>
+              </div>
             </div>
           </div>
         </div>
@@ -358,414 +460,465 @@
 
     </main>
 
-    <!-- 底部導覽條 (浮動樣式) -->
-    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-snow/90 backdrop-blur-md border-t border-warmborder px-6 py-2 flex justify-between items-center z-40">
-      <button v-for="tab in tabs" :key="tab.id" @click="currentTab = tab.id"
-        class="flex flex-col items-center py-1 transition-all"
-        :class="currentTab === tab.id ? 'text-fuji-500 font-black' : 'text-slate-400 font-medium'">
-        <i :data-lucide="tab.icon" class="w-5 h-5"></i>
-        <span class="text-[10px] mt-0.5">{{ tab.name }}</span>
+    <nav class="fixed bottom-4 inset-x-4 max-w-md mx-auto glass-tab rounded-full p-2 shadow-2xl border border-white/60 flex justify-around items-center z-50">
+      <button 
+        @click="currentTab = 'itinerary'" 
+        :class="currentTab === 'itinerary' ? 'text-fuji-blue scale-110' : 'text-gray-400'"
+        class="flex flex-col items-center p-1.5 transition-all">
+        <i class="fa-solid fa-location-dot text-lg"></i>
+        <span class="text-[9px] font-bold mt-0.5">行程</span>
+      </button>
+
+      <button 
+        @click="currentTab = 'info'" 
+        :class="currentTab === 'info' ? 'text-fuji-blue scale-110' : 'text-gray-400'"
+        class="flex flex-col items-center p-1.5 transition-all">
+        <i class="fa-solid fa-circle-info text-lg"></i>
+        <span class="text-[9px] font-bold mt-0.5">資訊</span>
+      </button>
+
+      <button 
+        @click="currentTab = 'recommend'" 
+        :class="currentTab === 'recommend' ? 'text-fuji-blue scale-110' : 'text-gray-400'"
+        class="flex flex-col items-center p-1.5 transition-all">
+        <i class="fa-solid fa-basket-shopping text-lg"></i>
+        <span class="text-[9px] font-bold mt-0.5">清單</span>
+      </button>
+
+      <button 
+        @click="currentTab = 'expense'" 
+        :class="currentTab === 'expense' ? 'text-fuji-blue scale-110' : 'text-gray-400'"
+        class="flex flex-col items-center p-1.5 transition-all">
+        <i class="fa-solid fa-wallet text-lg"></i>
+        <span class="text-[9px] font-bold mt-0.5">花費</span>
       </button>
     </nav>
 
   </div>
 
   <script>
-    const { createApp, ref, computed, onMounted, nextTick, watch } = Vue;
+    const { createApp, ref, computed } = Vue;
 
     createApp({
       setup() {
         const currentTab = ref('itinerary');
-        const selectedDay = ref(0);
+        const selectedDayIndex = ref(0);
         const selectedCategory = ref('全部');
         const krwInput = ref(50000);
-        const exchangeRate = ref(0.0235); // 匯率換算
 
-        const tabs = [
-          { id: 'itinerary', name: '每日行程', icon: 'map-pin' },
-          { id: 'info', name: '資訊', icon: 'info' },
-          { id: 'suggestions', name: '建議選擇', icon: 'shopping-basket' },
-          { id: 'expenses', name: '花費', icon: 'wallet' }
-        ];
-
-        // 4 天行程資料（精準對應優化後順序）
-        const days = [
-          {
-            weekday: 'FRI',
-            date: '10/23',
-            weather: { status: '晴時多雲', temp: 19, feelsLike: 18, icon: 'sun' },
-            events: [
-              {
-                category: '航班',
-                flightCode: '台灣虎航 IT654',
-                depAirport: 'TPE 桃園 (T1)',
-                depTime: '06:40',
-                arrAirport: 'CJU 濟州',
-                arrTime: '09:35',
-                duration: '1h 55m'
-              },
-              {
-                category: '景點',
-                name: '梨湖木筏海邊 (紅白小馬燈塔)',
-                nameKr: '이호테우해변 말등대',
-                nameEn: 'Iho Tewoo Beach Horse Lighthouse',
-                time: '10:45 - 11:15',
-                hours: '全天開放',
-                ticket: '免費參觀',
-                desc: '濟州市近郊超萌地標，紅白雙色小馬造型防波堤燈塔。',
-                tags: [{ text: '紅白小馬', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Iho+Tewoo+Beach',
-                naverMap: 'https://map.naver.com/p/search/%EC%9D%B4%ED%98%B8%ED%85%8C%EC%9A%B0%ED%95%B4%EB%B3%80'
-              },
-              {
-                category: '美食',
-                name: 'NORABA 海鮮拉麵',
-                nameKr: '노라바',
-                nameEn: 'Noraba Seafood Ramen',
-                time: '11:30 - 13:00',
-                hours: '10:00 - 18:30 (週四休)',
-                desc: '涯月海景第一排超人氣拉麵，放入整隻螃蟹、鮑魚與章魚。',
-                tags: [{ text: '螃蟹鮑魚海鮮拉麵', type: '必吃' }, { text: '涯月海景', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=NORABA+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EB%85%B8%EB%9D%BC%EB%B0%94'
-              },
-              {
-                category: '景點',
-                name: 'SOGILBYEOLHA (李孝利民宿)',
-                nameKr: '소길별하',
-                nameEn: 'Sogilbyeolha',
-                time: '13:30 - 14:40',
-                hours: '10:20 - 17:30 (全預約制)',
-                ticket: '門票約 6,000 KRW',
-                desc: '《孝利家民宿》實景拍攝地，改建為濟州文創工藝選物與咖啡館。',
-                tags: [{ text: '孝利家民宿', type: '必拍' }, { text: '在地文創選物', type: '必買' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Sogilbyeolha+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EC%86%8C%EA%B8%B8%EB%B2%84%ED%95%98'
-              },
-              {
-                category: '景點',
-                name: 'Saebil 咖啡廳 & 晨星岳周邊',
-                nameKr: '새빌 카페 / 새별오름',
-                nameEn: 'Saebil Cafe & Saebyeol Oreum',
-                time: '15:00 - 16:15',
-                hours: '09:00 - 19:00',
-                ticket: '晨星岳免費 / 咖啡自理',
-                desc: '昔日綠色度假飯店改建，秋天可飽覽晨星岳整片粉黛亂子草與芒草。',
-                tags: [{ text: '粉黛亂子草', type: '必拍' }, { text: '法式可頌麵包', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Saebil+Cafe+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EC%83%88%EB%B9%8C'
-              },
-              {
-                category: '住宿',
-                name: 'Stay 溫氣齋 Check-in',
-                nameKr: '스테이 온기재 (Stay 온기재)',
-                nameEn: 'Stay Ongijae',
-                time: '16:45 - 17:30',
-                hours: '16:00 入住 / 11:00 退房',
-                desc: '涯月獨棟韓屋庭園包棟民宿，享受靜謐草皮與營火。',
-                tags: [{ text: '韓屋包棟庭園', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=제주시+애월읍+항몽로+29',
-                naverMap: 'https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EC%8B%9C%20%EC%95%A0%EC%9B%94%EC%9D%8D%20%ED%95%AD%EB%AA%BD%EB%A1%9C%2029'
-              },
-              {
-                category: '美食',
-                name: 'Cheetah Chicken (치타치킨)',
-                nameKr: '치타치킨',
-                nameEn: 'Cheetah Chicken',
-                time: '17:45 - 18:30',
-                hours: '16:00 - 23:00',
-                desc: '外帶香脆多汁炸雞回民宿，開啟庭院營火狂歡啤酒之夜。',
-                tags: [{ text: '營火脆皮炸雞', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=치타치킨+제주',
-                naverMap: 'https://map.naver.com/p/search/%EC%B9%98%ED%83%80%EC%B9%98%ED%82%A8'
-              }
-            ]
-          },
-          {
-            weekday: 'SAT',
-            date: '10/24',
-            weather: { status: '晴朗', temp: 20, feelsLike: 19, icon: 'sun' },
-            events: [
-              {
-                category: '景點',
-                name: '山君不離 (芒草火山口)',
-                nameKr: '산굼부리',
-                nameEn: 'Sangumburi Crater',
-                time: '10:30 - 11:50',
-                hours: '09:00 - 18:00',
-                ticket: '成人 6,000 KRW',
-                desc: '濟州島最壯觀的平地火山口，10月金黃芒草隨風翻騰如金色波浪。',
-                tags: [{ text: '絕美金色芒草海', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Sangumburi+Crater',
-                naverMap: 'https://map.naver.com/p/search/%EC%82%B0%EA%B5%BC%EB%B6%80%EB%A6%AC'
-              },
-              {
-                category: '景點',
-                name: '松堂童話村 (橡子共和國 Corico)',
-                nameKr: '송당동화마을 / 도토리숲',
-                nameEn: 'Songdang Fairy Tale Village',
-                time: '12:05 - 13:35',
-                hours: '09:00 - 19:00',
-                ticket: '園區免費',
-                desc: '超大景觀童話庭園，吉卜力官方橡子共和國與魔女宅急便麵包坊。',
-                tags: [{ text: '吉卜力限定周邊', type: '必買' }, { text: '童話庭園', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Songdang+Donghwa+Maeul',
-                naverMap: 'https://map.naver.com/p/search/%EC%86%A1%EB%8B%B9%EB%8F%99%ED%99%94%EB%A7%88%EC%9D%84'
-              },
-              {
-                category: '美食',
-                name: 'Cafe The Container',
-                nameKr: '카페 더 콘테이너',
-                nameEn: 'Cafe The Container',
-                time: '13:55 - 15:15',
-                hours: '11:00 - 17:30 (週三休)',
-                desc: '巨大橘色採收籃外觀，招牌橘子美式與特調用滑輪籃子送餐！',
-                tags: [{ text: '巨型橘子籃建築', type: '必拍' }, { text: '鮮榨柑橘特調', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Cafe+The+Container+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EC%B9%B4%ED%8E%98%20%EB%8D%94%20%EC%BD%98%ED%85%8C%EC%9D%B4%EB%84%88'
-              },
-              {
-                category: '美食',
-                name: '月高家 月汀里本店 (월고집)',
-                nameKr: '월고집 월정리본점',
-                nameEn: 'Wolgojib Woljeong-ri Main Branch',
-                time: '15:45 - 17:15',
-                hours: '11:00 - 22:00',
-                desc: '月汀里海景黑豬肉名店，厚切生黑豬肉由店員專人代烤，肉汁爆棚。',
-                tags: [{ text: '厚切專人代烤黑豬肉', type: '必吃' }, { text: '飛魚卵辣醬炒飯', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=월고집+월정리본점',
-                naverMap: 'https://map.naver.com/p/search/%EC%9B%94%EA%B3%A0%EC%A7%91%20%EC%9B%94%EC%A0%95%EB%A6%AC%EB%B3%B8%EC%A0%90'
-              }
-            ]
-          },
-          {
-            weekday: 'SUN',
-            date: '10/25',
-            weather: { status: '多雲', temp: 18, feelsLike: 17, icon: 'cloud' },
-            events: [
-              {
-                category: '購物',
-                name: '中央地下街 (iRis 棉被 336/344號)',
-                nameKr: '제주중앙지하상가',
-                nameEn: 'Jeju Jungang Underground Mall',
-                time: '10:00 - 11:30',
-                hours: '09:00 - 21:00',
-                desc: '網紅爺爺伴手禮與 iRis 莫代爾親膚防蟎四季被（店家提供抽真空打包）。',
-                tags: [{ text: 'iRis 超柔四季被', type: '必買' }, { text: '網紅爺爺伴手禮', type: '必買' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Jeju+Jungang+Underground+Shopping+Center',
-                naverMap: 'https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EC%8B%A0%EC%8B%A0%EC%A4%91%EC%95%99%EC%A7%80%ED%95%98%EC%83%81%EA%B0%80'
-              },
-              {
-                category: '購物',
-                name: '東門傳統市場',
-                nameKr: '동문재래시장',
-                nameEn: 'Dongmun Traditional Market',
-                time: '11:30 - 12:10',
-                hours: '08:00 - 22:00',
-                desc: '濟州最大傳統市場，採買橘子乾、漢拏山橘子汁、石頭爺爺糕點。',
-                tags: [{ text: '柑橘乾伴手禮', type: '必買' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Dongmun+Traditional+Market',
-                naverMap: 'https://map.naver.com/p/search/%EB%8F%99%EB%AC%B8%EC%9E%AC%EB%9E%98%EC%8B%9C%EC%9E%A5'
-              },
-              {
-                category: '美食',
-                name: 'DOTOREE Kitchen (橡果廚房)',
-                nameKr: '도토리키친',
-                nameEn: 'Dotoree Kitchen',
-                time: '12:30 - 13:40',
-                hours: '11:00 - 17:00',
-                desc: '濟州必吃日式清新冷蕎麥麵，柑橘切片融入特製鰹魚醬汁。',
-                tags: [{ text: '招牌柑橘冷蕎麥麵', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Dotoree+Kitchen+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EB%8F%84%ED%86%A0%EB%A6%AC%ED%82%A4%EC%B9%9C'
-              },
-              {
-                category: '購物',
-                name: 'MOOD JEJU 選物店',
-                nameKr: '무드제주',
-                nameEn: 'MOOD JEJU',
-                time: '14:00 - 14:50',
-                hours: '11:00 - 18:00',
-                desc: '極具美感的文創設計小店，質感手繪杯、明信片與香氛。',
-                tags: [{ text: '文青海景選物', type: '必買' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=MOOD+JEJU',
-                naverMap: 'https://map.naver.com/p/search/%EB%AC%B4%EB%93%9C%EC%A0%9C%EC%A3%BC'
-              },
-              {
-                category: '購物',
-                name: 'LOTTE Mart 濟州店',
-                nameKr: '롯데마트 제주점',
-                nameEn: 'LOTTE Mart Jeju Branch',
-                time: '15:10 - 17:00',
-                hours: '10:00 - 23:00',
-                desc: '大型超市大採購！各式韓國零食、泡麵、海苔與伴手禮裝箱。',
-                tags: [{ text: '超市零食泡麵裝箱', type: '必買' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=LOTTE+Mart+Jeju',
-                naverMap: 'https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%EB%A7%88%ED%8A%B8%20%EC%A0%9C%EC%A3%BC%EC%A0%90'
-              },
-              {
-                category: '美食',
-                name: '蓮洞本家 (排骨湯)',
-                nameKr: '연동본가',
-                nameEn: 'Yeondong Bonga',
-                time: '17:20 - 18:30',
-                hours: '10:00 - 21:00',
-                desc: '鮮甜濃郁的牛骨高湯，搭配超大塊軟嫩牛排骨與新鮮鮑魚。',
-                tags: [{ text: '元氣鮑魚大牛排骨湯', type: '必吃' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=연동본가',
-                naverMap: 'https://map.naver.com/p/search/%EC%97%B0%EB%8F%99%EB%B3%B8%EA%B0%80'
-              }
-            ]
-          },
-          {
-            weekday: 'MON',
-            date: '10/26',
-            weather: { status: '晴天', temp: 19, feelsLike: 18, icon: 'sun' },
-            events: [
-              {
-                category: '住宿',
-                name: '退房出發前往機場',
-                nameKr: 'Stay 온기재 체크아웃',
-                nameEn: 'Check-out & Transfer to CJU',
-                time: '08:00 - 08:30',
-                hours: '11:00 前退房',
-                desc: '專車直達濟州國際機場，預備托運與採買限定伴手禮。',
-                tags: [{ text: '專車送機', type: '必拍' }],
-                googleMap: 'https://www.google.com/maps/search/?api=1&query=Jeju+International+Airport',
-                naverMap: 'https://map.naver.com/p/search/%EC%A0%9C%EC%A3%BC%EA%B5%AD%EC%A0%9C%EA%B3%B5%ED%95%AD'
-              },
-              {
-                category: '航班',
-                flightCode: '台灣虎航 IT655',
-                depAirport: 'CJU 濟州',
-                depTime: '11:40',
-                arrAirport: 'TPE 桃園 (T1)',
-                arrTime: '12:55',
-                duration: '2h 15m'
-              }
-            ]
-          }
-        ];
-
-        const filteredEvents = computed(() => {
-          const evts = days[selectedDay.value].events;
-          if (selectedCategory.value === '全部') return evts;
-          return evts.filter(e => e.category === selectedCategory.value);
+        // 濟州即時天氣模擬資訊
+        const weather = ref({
+          temp: 18,
+          feelsLike: 17,
+          condition: '秋高氣爽 · 晴時多雲',
+          icon: 'fa-solid fa-cloud-sun'
         });
 
-        // 建議選擇：必吃圖文清單
-        const foodList = ref([
+        // 匯率計算 KRW ➔ TWD (約 0.024)
+        const calculatedTwd = computed(() => {
+          if (!krwInput.value) return 0;
+          return Math.round(krwInput.value * 0.024).toLocaleString();
+        });
+
+        // 日期設定
+        const days = [
+          { weekday: 'Fri', dateNumber: '10/23', title: 'Day 1 西部・涯月海岸線' },
+          { weekday: 'Sat', dateNumber: '10/24', title: 'Day 2 東部・自然秋景與黑豬肉' },
+          { weekday: 'Sun', dateNumber: '10/25', title: 'Day 3 北部・濟州市區集中採買' },
+          { weekday: 'Mon', dateNumber: '10/26', title: 'Day 4 返程・溫暖的家' }
+        ];
+
+        // 每日行程資料庫 (含中英韓與雙地圖導航)
+        const itineraryData = [
+          // Day 1
+          [
+            {
+              category: '航班',
+              airline: '台灣虎航',
+              flightNo: 'IT654',
+              date: '2026/10/23 (五)',
+              departureCode: 'TPE',
+              departureCity: '台北桃園 T1',
+              departureTime: '06:40',
+              arrivalCode: 'CJU',
+              arrivalCity: '濟州國際機場',
+              arrivalTime: '09:35',
+              duration: '1小時 55分'
+            },
+            {
+              category: '景點',
+              time: '10:30',
+              titleZh: '梨湖木筏海邊（紅白小馬燈塔）',
+              titleEn: 'Iho Tewoo Beach',
+              titleKo: '이호테우해수욕장',
+              openTime: '全天開放',
+              ticket: '免費',
+              desc: '濟州極具代表性的打卡地標，堤防兩側佇立著象徵濟州小馬的紅白燈塔，海風徐徐非常適合情侶拍照！',
+              mustPhoto: '紅白雙馬燈塔合影',
+              googleMapUrl: 'https://maps.google.com/?q=Iho+Tewoo+Beach',
+              naverMapUrl: 'https://map.naver.com/v5/search/이호테우해수욕장'
+            },
+            {
+              category: '美食',
+              time: '12:00',
+              titleZh: '涯月 NORABA 海鮮拉麵',
+              titleEn: 'NORABA Seafood Ramen',
+              titleKo: '노라바',
+              openTime: '10:00 - 17:30 (週四休)',
+              ticket: '依點餐收費',
+              desc: '涯月海景第一排超人氣海鮮拉麵！整隻新鮮花蟹、章魚與滿滿鮑魚，在露天屋頂邊吹海風邊吃超療癒。',
+              mustEat: '整隻花蟹章魚海鮮拉麵、便當盒飯',
+              googleMapUrl: 'https://maps.google.com/?q=NORABA+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/노라바'
+            },
+            {
+              category: '景點',
+              time: '13:45',
+              titleZh: 'SOGILBYEOLHA (孝利家民宿原址)',
+              titleEn: 'Sogilbyeolha',
+              titleKo: '소길별하',
+              openTime: '10:20 - 17:00 (預約制)',
+              ticket: '含飲品點心體驗券',
+              desc: '《孝利家民宿》拍攝原址改建的生活風格選品店，環境靜謐優雅，可在庭院享用茶點感受島嶼慢生活。',
+              mustBuy: '濟州在地工藝家選品、柑橘果乾',
+              mustPhoto: '李孝利同款綠意大庭院',
+              googleMapUrl: 'https://maps.google.com/?q=Sogilbyeolha+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/소길별하'
+            },
+            {
+              category: '美食',
+              time: '15:15',
+              titleZh: 'Saebil 晨星岳咖啡廳',
+              titleEn: 'Cafe Saebil (Saebyul Oreum)',
+              titleKo: '새빌 / 새별오름',
+              openTime: '09:00 - 19:00',
+              ticket: '咖啡低消 / 晨星岳免費',
+              desc: '由舊渡假飯店改建的景觀咖啡廳，秋天落地窗外是一整片壯觀的粉黛亂子草與晨星岳銀芒草。',
+              mustEat: '羊角可頌麵包、柑橘氣泡飲',
+              mustPhoto: '晨星岳滿山芒草海',
+              googleMapUrl: 'https://maps.google.com/?q=Cafe+Saebil+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/새빌'
+            },
+            {
+              category: '住宿',
+              time: '16:30',
+              titleZh: '入住涯月 溫氣齋',
+              titleEn: 'Stay Ongijae',
+              titleKo: '온기재',
+              openTime: 'Check-in 16:00 / Check-out 11:00',
+              ticket: '包棟住宿',
+              desc: '專為包棟打造的高質感韓屋庭園民宿，環境清幽溫暖。第一天晚間安排專屬戶外營火與外帶韓式炸雞！',
+              mustEat: 'Cheetah Chicken (치타치킨) 韓式脆皮炸雞配啤酒',
+              mustPhoto: '夜間專屬庭院營火時光 🔥',
+              googleMapUrl: 'https://maps.google.com/?q=항몽로+29+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/항몽로 29'
+            }
+          ],
+
+          // Day 2
+          [
+            {
+              category: '景點',
+              time: '09:30',
+              titleZh: '山君不離 (秋季芒草絕景)',
+              titleEn: 'Sangumburi Crater',
+              titleKo: '산굼부리',
+              openTime: '09:00 - 18:40',
+              ticket: '成人約 ₩6,000',
+              desc: '濟州秋季最具代表性的火山口平原，10月底滿山遍野盛開的銀白色芒草隨風搖曳，如夢似幻！',
+              mustPhoto: '銀白芒草步道雙人背影照',
+              googleMapUrl: 'https://maps.google.com/?q=Sangumburi+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/산굼부리'
+            },
+            {
+              category: '景點',
+              time: '11:45',
+              titleZh: '松堂童話村 (東部複合文化空間)',
+              titleEn: 'Songdang Fairy Tale Village',
+              titleKo: '동백마을 송당동화마을',
+              openTime: '09:00 - 20:00',
+              ticket: '免費園區',
+              desc: '結合自然庭園、Starbucks 特色店與在地選品店的新興景點，火山岩奇石造景非常具有濟州特色。',
+              mustBuy: '濟州限定星巴克玄武岩馬克杯',
+              googleMapUrl: 'https://maps.google.com/?q=Songdang-ri+Gujwa-eup+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/송당동화마을'
+            },
+            {
+              category: '美食',
+              time: '13:30',
+              titleZh: 'Cafe The Container 橘子提籃咖啡',
+              titleEn: 'Cafe The Container',
+              titleKo: '카페 더 콘테나',
+              openTime: '11:00 - 18:00 (週三四休)',
+              ticket: '低消一人一杯飲品',
+              desc: '超吸睛的巨型黃色橘子採收籃建築！店家會用趣味小纜車將餐點吊掛送下來，周邊圍繞可愛橘子園。',
+              mustEat: '鮮榨濟州橘子汁、橘子奶油吐司',
+              mustPhoto: '黃色大提籃建築合影',
+              googleMapUrl: 'https://maps.google.com/?q=Cafe+The+Container+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/카페더콘테나'
+            },
+            {
+              category: '美食',
+              time: '17:30',
+              titleZh: '月汀里 月高家黑豬肉',
+              titleEn: 'Woljeong Wolgoga Black Pork',
+              titleKo: '월정리고기집 월고가',
+              openTime: '12:00 - 22:00',
+              ticket: '依點餐收費',
+              desc: '造訪濟州必吃的厚切頂級黑豬肉，專人代烤外脆內嫩，肉汁滿溢搭配特製帶魚醬與泡菜包肉一絕。',
+              mustEat: '炭火厚切熟成黑豬肉五花、大醬湯',
+              googleMapUrl: 'https://maps.google.com/?q=Woljeong-ri+Jeju+Black+Pork',
+              naverMapUrl: 'https://map.naver.com/v5/search/월정리 흑돼지'
+            }
+          ],
+
+          // Day 3
+          [
+            {
+              category: '購物',
+              time: '09:30',
+              titleZh: '濟州中央地下街（網紅爺爺伴手禮 & iRis 棉被）',
+              titleEn: 'Jeju Jungang Underground Shopping Mall',
+              titleKo: '제주중앙지하상가',
+              openTime: '09:00 - 21:00',
+              ticket: '自由參觀選購',
+              desc: '市區必買聚集地！包含12號出口對面的網紅爺爺伴手禮店(344號)，以及 60號(336號)的 iRis 高級四季防蟎棉被專賣店。',
+              mustBuy: 'iRis 親膚四季被、爺爺柑橘巧克力伴手禮',
+              googleMapUrl: 'https://maps.google.com/?q=Jeju+Jungang+Underground+Shopping+Center',
+              naverMapUrl: 'https://map.naver.com/v5/search/제주중앙지하상가'
+            },
+            {
+              category: '美食',
+              time: '11:15',
+              titleZh: '東門傳統市場',
+              titleEn: 'Dongmun Traditional Market',
+              titleKo: '동문재래시장',
+              openTime: '08:00 - 21:00',
+              ticket: '免費參觀',
+              desc: '濟州規模最大歷史最久的市場，聚集生鮮生魚片、辣炒年糕、橘子麻糬與豐富街頭美食！',
+              mustEat: '現切橘子、黑豬肉炸肉餅、白帶魚生魚片',
+              mustBuy: '濟州漢拏峰柑橘乾、花生米果',
+              googleMapUrl: 'https://maps.google.com/?q=Dongmun+Market+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/동문재래시장'
+            },
+            {
+              category: '美食',
+              time: '13:00',
+              titleZh: 'DOTOREE Kitchen 橡果午餐',
+              titleEn: 'Dotoree Kitchen',
+              titleKo: '도토리키친',
+              openTime: '11:00 - 17:00',
+              ticket: '依點餐收費',
+              desc: '文青感十足的濟州蕎麥麵專門店，招牌為清爽淡雅的青橘蕎麥涼麵與手作豆腐卷，視覺味覺雙重享受。',
+              mustEat: '招牌青橘冷蕎麥麵套餐、手工蝦捲',
+              googleMapUrl: 'https://maps.google.com/?q=Dotoree+Kitchen+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/도토리키친'
+            },
+            {
+              category: '美食',
+              time: '14:30',
+              titleZh: 'MOOD JEJU 景觀咖啡館',
+              titleEn: 'MOOD JEJU Cafe',
+              titleKo: '무드제주',
+              openTime: '10:00 - 19:00',
+              ticket: '低消一人一杯飲品',
+              desc: 'IG 熱門設計風海景咖啡廳，簡約純白的空間搭配大片無敵落地窗，享受午後愜意的下午茶時光。',
+              mustEat: '手沖精品咖啡、可麗露甜點',
+              mustPhoto: '全景面海落地窗景',
+              googleMapUrl: 'https://maps.google.com/?q=MOOD+JEJU',
+              naverMapUrl: 'https://map.naver.com/v5/search/무드제주'
+            },
+            {
+              category: '購物',
+              time: '16:00',
+              titleZh: 'LOTTE Mart 樂天超市 濟州店',
+              titleEn: 'LOTTE Mart Jeju Branch',
+              titleKo: '롯데마트 제주점',
+              openTime: '10:00 - 23:00',
+              ticket: '免費入場採購',
+              desc: '回國前一站式採買零食伴手禮的最佳選擇，現場提供即時退稅服務與紙箱打包區。',
+              mustBuy: 'Market O 濟州抹茶布朗尼、牛島花生脆餅、零食泡麵',
+              googleMapUrl: 'https://maps.google.com/?q=LOTTE+Mart+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/롯데마트 제주점'
+            },
+            {
+              category: '美食',
+              time: '18:30',
+              titleZh: '蓮洞本家排骨湯',
+              titleEn: 'Yeondong Bon-ga Galbitang',
+              titleKo: '연동본가',
+              openTime: '09:00 - 21:00',
+              ticket: '依點餐收費',
+              desc: '市區老饕必訪的排骨湯名店，熬製濃醇的大骨湯頭搭配軟嫩入味的特大塊牛排骨，暖胃又滿足。',
+              mustEat: '特大牛排骨湯 (갈비탕)、燉牛排骨',
+              googleMapUrl: 'https://maps.google.com/?q=연동본가+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/연동본가'
+            }
+          ],
+
+          // Day 4
+          [
+            {
+              category: '住宿',
+              time: '08:30',
+              titleZh: '溫氣齋 退房整理',
+              titleEn: 'Stay Ongijae Check-out',
+              titleKo: '온기재 체크아웃',
+              openTime: '11:00 前完成退房',
+              ticket: '包車前往機場',
+              desc: '收拾行李，檢查所有戰利品與隨身護照證件，包車準備前往濟州國際機場。',
+              googleMapUrl: 'https://maps.google.com/?q=항몽로+29+Jeju',
+              naverMapUrl: 'https://map.naver.com/v5/search/항몽로 29'
+            },
+            {
+              category: '航班',
+              airline: '台灣虎航',
+              flightNo: 'IT655',
+              date: '2026/10/26 (一)',
+              departureCode: 'CJU',
+              departureCity: '濟州國際機場',
+              departureTime: '11:40',
+              arrivalCode: 'TPE',
+              arrivalCity: '台北桃園 T1',
+              arrivalTime: '12:55',
+              duration: '2小時 15分'
+            }
+          ]
+        ];
+
+        // 必吃精選清單
+        const mustEatList = [
           {
-            nameZh: 'NORABA 螃蟹鮑魚海鮮拉麵',
-            nameKr: '노라바 해물라면',
-            nameEn: 'Noraba Seafood Ramen',
-            place: 'Day 1 涯月',
+            nameZh: '涯月 NORABA 海鮮拉麵',
+            nameEn: 'NORABA Crab Seafood Ramen',
+            nameKo: '노라바 해물라면',
+            location: '涯月海岸',
+            highlight: '整隻鮮活花蟹與鮑魚海味拉麵',
             image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80'
           },
           {
-            nameZh: 'Cheetah 酥脆多汁炸雞',
-            nameKr: '치타치킨',
-            nameEn: 'Cheetah Crispy Chicken',
-            place: 'Day 1 營火派對',
-            image: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=400&q=80'
-          },
-          {
-            nameZh: '月高家 厚切專人代烤黑豬肉',
-            nameKr: '월고집 흑돼지 근고기',
-            nameEn: 'Wolgojib Jeju Black Pork',
-            place: 'Day 2 月汀里',
+            nameZh: '月高家 炭火厚切黑豬肉',
+            nameEn: 'Jeju Black Pork BBQ',
+            nameKo: '월고가 흑돼지구이',
+            location: '月汀里',
+            highlight: '專人代烤肉汁滿溢的黑豬五花肉',
             image: 'https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80'
           },
           {
-            nameZh: 'DOTOREE 柑橘清爽冷蕎麥麵',
-            nameKr: '도토리키친 톳 흑돼지 롤카츠 / 소바',
-            nameEn: 'Dotoree Citrus Cold Soba',
-            place: 'Day 3 市區',
-            image: 'https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?auto=format&fit=crop&w=400&q=80'
+            nameZh: '青橘冷蕎麥涼麵',
+            nameEn: 'Green Tangerine Soba',
+            nameKo: '도토리키친 청귤소바',
+            location: 'DOTOREE Kitchen',
+            highlight: '清爽酸甜的濟州青橘切片涼麵',
+            image: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?auto=format&fit=crop&w=400&q=80'
           },
           {
-            nameZh: '蓮洞本家 鮑魚大牛排骨湯',
-            nameKr: '연동본가 전복 갈비탕',
-            nameEn: 'Yeondong Bonga Short Rib Soup',
-            place: 'Day 3 市區',
-            image: 'https://images.unsplash.com/photo-1547928576-a4a33237eceb?auto=format&fit=crop&w=400&q=80'
+            nameZh: '蓮洞本家 特大牛排骨湯',
+            nameEn: 'Yeondong Beef Rib Soup',
+            nameKo: '연동본가 왕갈비탕',
+            location: '濟州市區蓮洞',
+            highlight: '大骨長時間慢熬的軟嫩特大牛排骨湯',
+            image: 'https://images.unsplash.com/photo-1547496502-affa22d38842?auto=format&fit=crop&w=400&q=80'
           }
-        ]);
+        ];
 
-        // 建議選擇：必買圖文清單
-        const buyList = ref([
+        // 必買伴手禮清單
+        const mustBuyList = [
           {
-            nameZh: 'iRis 莫代爾親膚防蟎四季被',
-            nameKr: '아이리스 침구 모달 이불',
-            nameEn: 'iRis Modal Bedding',
-            place: '中央地下街 336/344號',
+            nameZh: 'iRis 韓國頂級四季防蟎棉被',
+            nameEn: 'iRis Bedding Comforter',
+            nameKo: '아이리스 이불전문점',
+            location: '中央地下街 60 (336號)',
+            highlight: '觸感極致柔軟，可直接水洗烘乾的四季被',
             image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=400&q=80'
           },
           {
-            nameZh: '濟州限定柑橘乾 ＆ 石頭爺爺周邊',
-            nameKr: '제주 감귤칩 / 돌하르방 기념품',
-            nameEn: 'Jeju Dried Tangerine & Harubang',
-            place: '東門傳統市場 / 網紅爺爺店',
-            image: 'https://images.unsplash.com/photo-1618897996318-5a901fa6ca71?auto=format&fit=crop&w=400&q=80'
+            nameZh: '網紅爺爺柑橘伴手禮',
+            nameEn: 'Jeju Grandfather Tangerine Chocolates',
+            nameKo: '중앙지하상가 344호 기념품',
+            location: '中央地下街 12號出口對面',
+            highlight: '漢拏峰柑橘軟糖、柑橘餅乾與石頭爺爺周邊',
+            image: 'https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=400&q=80'
           },
           {
-            nameZh: 'MOOD JEJU 質感海景文創選物',
-            nameKr: '무드제주 감성 소품',
-            nameEn: 'MOOD JEJU Design Goods',
-            place: 'MOOD JEJU',
-            image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=400&q=80'
-          },
-          {
-            nameZh: 'Paris Baguette 機場限定花生夾心餅',
-            nameKr: '파리바게뜨 제주 마음샌드',
-            nameEn: 'PB Maeum Sand Peanut Cookie',
-            place: '濟州機場出境前',
-            image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=400&q=80'
+            nameZh: '濟州星巴克限定玄武岩隨行杯',
+            nameEn: 'Jeju Starbucks Limited MD',
+            nameKo: '스타벅스 제주 한정 MD',
+            location: '松堂童話村 Starbucks',
+            highlight: '以濟州火山熔岩與油菜花為靈感的限定商品',
+            image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80'
           }
-        ]);
+        ];
 
-        // 花費清單
+        // 記帳系統
         const expenseList = ref([
-          { item: '8人包車服務定金與尾款', payer: '公費分攤', amount: 900000 },
-          { item: 'Stay 溫氣齋 3晚包棟費用', payer: '公費分攤', amount: 1200000 },
-          { item: 'Day 1 Cheetah 炸雞與超商酒水', payer: '公費分攤', amount: 150000 },
-          { item: 'Day 2 月高家黑豬肉晚餐 (8人份)', payer: '公費分攤', amount: 320000 },
-          { item: 'Day 3 樂天超市伴手禮與零食公費', payer: '公費分攤', amount: 200000 }
+          { title: '包車第一天訂金', amount: 150000 },
+          { title: 'Cheetah 炸雞與營火零食', amount: 98000 }
         ]);
+        const newExpenseTitle = ref('');
+        const newExpenseAmount = ref('');
 
-        const totalKRW = computed(() => {
-          return expenseList.value.reduce((sum, item) => sum + item.amount, 0);
+        const totalExpense = computed(() => {
+          return expenseList.value.reduce((sum, item) => sum + Number(item.amount), 0);
         });
 
-        const refreshIcons = () => {
-          nextTick(() => {
-            if (window.lucide) {
-              window.lucide.createIcons();
-            }
+        const addExpense = () => {
+          if (!newExpenseTitle.value || !newExpenseAmount.value) return;
+          expenseList.value.unshift({
+            title: newExpenseTitle.value,
+            amount: Number(newExpenseAmount.value)
           });
+          newExpenseTitle.value = '';
+          newExpenseAmount.value = '';
         };
 
-        onMounted(() => {
-          refreshIcons();
+        const removeExpense = (index) => {
+          expenseList.value.splice(index, 1);
+        };
+
+        // 目前日期的行程資料
+        const currentDayItinerary = computed(() => {
+          return itineraryData[selectedDayIndex.value] || [];
         });
 
-        watch([currentTab, selectedDay, selectedCategory], () => {
-          refreshIcons();
+        // 類別過濾
+        const filteredItinerary = computed(() => {
+          if (selectedCategory.value === '全部') {
+            return currentDayItinerary.value;
+          }
+          return currentDayItinerary.value.filter(item => item.category === selectedCategory.value);
         });
+
+        // 標籤顏色樣式輔助函式
+        const categoryBadgeColor = (category) => {
+          switch (category) {
+            case '景點': return 'bg-sky-100 text-sky-700';
+            case '美食': return 'bg-rose-100 text-rose-700';
+            case '購物': return 'bg-amber-100 text-amber-700';
+            case '住宿': return 'bg-emerald-100 text-emerald-700';
+            default: return 'bg-gray-100 text-gray-700';
+          }
+        };
 
         return {
           currentTab,
-          selectedDay,
+          selectedDayIndex,
           selectedCategory,
-          tabs,
           days,
-          filteredEvents,
+          weather,
           krwInput,
-          exchangeRate,
-          foodList,
-          buyList,
+          calculatedTwd,
+          currentDayItinerary,
+          filteredItinerary,
+          categoryBadgeColor,
+          mustEatList,
+          mustBuyList,
           expenseList,
-          totalKRW
+          newExpenseTitle,
+          newExpenseAmount,
+          totalExpense,
+          addExpense,
+          removeExpense
         };
       }
     }).mount('#app');
