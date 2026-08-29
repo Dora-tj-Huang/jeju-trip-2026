@@ -36,8 +36,8 @@
               dark: '#333D4B'
             },
             timeline: {
-              brown: '#A48374',
-              pink: '#FF6B8B'
+              brown: '#A48374', // 極細暖棕色垂直時間軸線
+              pink: '#FF6B8B'    // 實心粉紅時間節點圓點
             }
           },
           fontFamily: {
@@ -101,10 +101,10 @@
     </header>
 
     <!-- TAB 1: 須知 (行前注意事項) -->
-    <main v-if="activeTab === 'checklist'" class="px-4 -mt-4 relative z-10 space-y-3.5">
-      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
-        <h2 class="text-base font-bold text-warmgray-dark border-b border-gray-100 pb-2.5 pl-2">
-          <i class="fa-solid fa-list-check text-fuji mr-2"></i>行前必備準備清單
+    <main v-if="activeTab === 'checklist'" class="px-3 -mt-4 relative z-10 space-y-3.5">
+      <section class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border space-y-3">
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark border-b border-gray-100 pb-2.5 pl-2 flex items-center">
+          <i class="fa-solid fa-list-check text-fuji mr-2 flex-shrink-0"></i>行前必備準備清單
         </h2>
         
         <ul class="text-[13px] text-gray-700 space-y-3 leading-relaxed pl-2">
@@ -124,7 +124,7 @@
             <span class="text-fuji font-bold mt-0.5">•</span>
             <div>
               <strong>10/19前完成 e-Arrival Card 電子入境申報：</strong>
-              <a href="https://www.klook.com/zh-TW/blog/korea-entry/?aid=api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667&aff_pid=886667&aff_sid=&aff_adid=948770&utm_medium=affiliate-alwayson&utm_source=non-network&utm_campaign=67008&utm_term=886667&utm_content=&aff_klick_id=137180797205-api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667-948770-15dcc7f&gad_source=1&dd_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="text-fuji font-bold underline block mt-0.5">
+              <a href="https://www.klook.com/zh-TW/blog/korea-entry/?aid=api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667&aff_pid=886667&aff_sid=&aff_adid=948770&utm_medium=affiliate-alwayson&utm_source=non-network&utm_campaign=67008&utm_term=886667&utm_content=&aff_klick_id=137180797205-api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667-948770-15dcc7f&gad_source=1&dd_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="text-fuji font-bold underline block mt-0.5 text-[12px]">
                 點此查看入境申報教學攻略 ➔
               </a>
             </div>
@@ -265,7 +265,7 @@
                 </div>
 
                 <div class="mt-0.5">
-                  <h3 class="text-sm font-bold text-warmgray-dark leading-snug break-words">{{ item.nameZh }}</h3>
+                  <h3 class="text-[13.5px] font-bold text-warmgray-dark leading-snug break-words">{{ item.nameZh }}</h3>
                   <p v-if="item.nameKo || item.nameEn" class="text-[11px] text-gray-400 mt-0.5 font-medium">
                     <span v-if="item.nameKo">{{ item.nameKo }}</span>
                     <span v-if="item.nameKo && item.nameEn"> • </span>
@@ -337,7 +337,7 @@
     </main>
 
     <!-- TAB 3: 口袋 (以購物籃 ICON 顯示) -->
-    <main v-if="activeTab === 'pocket'" class="px-4 -mt-4 relative z-10 space-y-3.5">
+    <main v-if="activeTab === 'pocket'" class="px-3 -mt-4 relative z-10 space-y-3.5">
       <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-warmgray-border flex gap-1">
         <button 
           v-for="sub in pocketTabs" 
@@ -367,7 +367,7 @@
             <span class="text-[11px] font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">🏆 No.1 剛剛好又好吃的卡通圖款</span>
             <span class="text-[11px] font-bold text-gray-500">首選推薦</span>
           </div>
-          <h3 class="text-sm font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 (두바이 쫀득쿠키)</h3>
+          <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 (두바이 쫀득쿠키)</h3>
           <p class="text-[11px] text-gray-400">Dubai Style Chewy Cookie</p>
           <ul class="mt-2.5 text-[13px] space-y-1.5 text-gray-600 bg-warmgray p-3 rounded-2xl leading-relaxed">
             <li><span class="text-emerald-600 font-bold">1. 淺綠色款（開心果口味）：</span> 內餡最濃郁，推薦必買！</li>
@@ -382,7 +382,7 @@
             <span class="text-[11px] font-black text-gray-700 bg-gray-100 px-2.5 py-0.5 rounded-full">🥈 No.2 濃郁首選</span>
             <span class="text-[11px] font-bold text-pink-500">兩款口味都好吃！</span>
           </div>
-          <h3 class="text-sm font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득딸기 / 쫀득초코)</h3>
+          <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득딸기 / 쫀득초코)</h3>
           <div class="grid grid-cols-2 gap-2 mt-2.5 text-xs">
             <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-100">
               <p class="font-bold text-rose-700 text-xs">🍓 草莓口味 (紅袋)</p>
@@ -443,7 +443,7 @@
     </main>
 
     <!-- TAB 4: 退稅 (Tax 退稅專區) -->
-    <main v-if="activeTab === 'tax'" class="px-4 -mt-4 relative z-10 space-y-3.5">
+    <main v-if="activeTab === 'tax'" class="px-3 -mt-4 relative z-10 space-y-3.5">
       
       <section class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
         <h3 class="text-xs font-bold text-gray-700 flex items-center gap-1.5 pl-2">
@@ -466,7 +466,7 @@
       </section>
 
       <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-3 text-[13px] text-gray-700 leading-relaxed overflow-hidden">
-        <h4 class="font-bold text-warmgray-dark text-sm flex items-center gap-1.5 text-red-600 pl-2">
+        <h4 class="font-bold text-warmgray-dark text-[13.5px] flex items-center gap-1.5 text-red-600 pl-2">
           <i class="fa-solid fa-stamp flex-shrink-0"></i> 海關蓋章處與 75,000 韓元查驗規則
         </h4>
         <p class="pl-2">海關蓋章處，若是在電子退稅機刷單據出現 <strong>X</strong> 者，要給「海關蓋章」；過安檢後，Gate 16對面退稅窗口領錢。</p>
@@ -477,7 +477,7 @@
           <p class="text-amber-800 font-medium">⚠️ 有辦理過【市區退稅】沒超過7萬5韓元只要在電子退稅機掃瞄即可，不必繳回單據！務必要在自助退稅機掃條碼取消記錄。</p>
         </div>
 
-        <h4 class="font-bold text-warmgray-dark text-sm pt-1 pl-2">✈️ 機場退稅完整步驟</h4>
+        <h4 class="font-bold text-warmgray-dark text-[13.5px] pt-1 pl-2">✈️ 機場退稅完整步驟</h4>
         <ol class="list-decimal list-inside space-y-1.5 text-xs text-gray-700 bg-blue-50/40 p-3 rounded-2xl border border-blue-100 leading-relaxed">
           <li><strong>退稅機操作：</strong>退稅機在機場3樓5號門旁，先刷護照再刷退稅單，如沒有出現至海關查驗，就可托運行李，如需海關查驗，海關櫃檯就在機台的右手邊。</li>
           <li><strong>領取現金：</strong>查驗完畢，過海關（檢查行李）後就可前往16號登機口對面的退稅櫃檯領取現金，出示護照及所有可退稅的單子，可選擇領韓元或是美金。</li>
@@ -487,14 +487,14 @@
 
     </main>
 
-    <!-- TAB 5: 資訊 (旅程資訊中心 - 完全修正 ICON 貼邊問題) -->
-    <main v-if="activeTab === 'info'" class="px-4 -mt-4 relative z-10 space-y-3.5">
+    <!-- TAB 5: 資訊 (旅程資訊中心 - 完全修正 ICON 貼邊問題與字體標準化) -->
+    <main v-if="activeTab === 'info'" class="px-3 -mt-4 relative z-10 space-y-3.5">
       
       <!-- 1. 匯率換算 -->
       <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border overflow-hidden">
         <div class="flex items-center justify-between mb-2.5 pl-2">
-          <h2 class="text-sm font-bold text-warmgray-dark flex items-center gap-1.5">
-            <i class="fa-solid fa-calculator text-fuji flex-shrink-0 mr-1"></i>韓幣 ➔ 台幣匯率換算
+          <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
+            <i class="fa-solid fa-calculator text-fuji mr-2 flex-shrink-0"></i>韓幣 ➔ 台幣匯率換算
           </h2>
           <span class="text-[11px] bg-blue-50 text-fuji px-2 py-0.5 rounded-full font-bold flex-shrink-0">1 TWD ≈ {{ exchangeRate }} KRW</span>
         </div>
@@ -517,8 +517,8 @@
 
       <!-- 2. 航班完整資訊 -->
       <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
-        <h2 class="text-sm font-bold text-warmgray-dark flex items-center gap-1.5 pl-2">
-          <i class="fa-solid fa-plane-departure text-fuji flex-shrink-0 mr-1"></i>航班資訊 (台灣虎航)
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center pl-2">
+          <i class="fa-solid fa-plane-departure text-fuji mr-2 flex-shrink-0"></i>航班資訊 (台灣虎航)
         </h2>
         
         <!-- 去程 -->
@@ -576,8 +576,8 @@
 
       <!-- 3. 住宿資訊 -->
       <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-2.5 overflow-hidden">
-        <h2 class="text-sm font-bold text-warmgray-dark flex items-center gap-1.5 pl-2">
-          <i class="fa-solid fa-house text-fuji flex-shrink-0 mr-1"></i>住宿資訊 (4天連住)
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center pl-2">
+          <i class="fa-solid fa-house text-fuji mr-2 flex-shrink-0"></i>住宿資訊 (4天連住)
         </h2>
         <div class="bg-warmgray p-3.5 rounded-2xl space-y-2 text-xs">
           <div class="flex justify-between items-start gap-2">
@@ -597,8 +597,8 @@
 
       <!-- 4. 緊急醫療求助 -->
       <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border overflow-hidden">
-        <h2 class="text-sm font-bold text-warmgray-dark mb-2.5 flex items-center gap-1.5 pl-2">
-          <i class="fa-solid fa-truck-medical text-red-500 flex-shrink-0 mr-1"></i>緊急醫療求助 (點擊直撥)
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark mb-2.5 flex items-center pl-2">
+          <i class="fa-solid fa-truck-medical text-red-500 mr-2 flex-shrink-0"></i>緊急醫療求助 (點擊直撥)
         </h2>
         <div class="grid grid-cols-2 gap-2">
           <a href="tel:112" class="bg-red-50 border border-red-100 p-2.5 rounded-2xl flex items-center gap-2 min-w-0">
