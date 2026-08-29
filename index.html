@@ -175,7 +175,7 @@
             <!-- 行程卡片 -->
             <div class="flex-1 pl-1">
               
-              <!-- (A) 航班資訊專屬卡片樣式：Day 1 第一個行程 (去程) & Day 4 最後一個行程 (回程) -->
+              <!-- (A) 航班資訊專屬卡片樣式：Day 1 去程 (09:35–10:25) & Day 4 回程 (11:40–12:55) -->
               <div v-if="item.isFlight" class="bg-gradient-to-br from-white to-blue-50/60 rounded-3xl p-4 border border-blue-100 shadow-sm relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
                   <span class="text-xs font-bold text-white bg-blue-500 px-2.5 py-0.5 rounded-full">
@@ -738,7 +738,7 @@
           }
         };
 
-        // 4天行程資料庫 (文字逐字依據用戶最新修正微調版本)
+        // 4天行程資料庫 (嚴格依照使用者最新微調版本)
         const itineraryData = ref([
           {
             weekday: 'FRI',
@@ -774,11 +774,11 @@
                 nameKo: '이호테우해수욕장',
                 nameEn: 'Iho Tewoo Beach',
                 category: '景點',
-                highlightTag: '📸 拍照30分鐘即可',
+                highlightTag: '📸 拍照約30分鐘',
                 hours: '全天開放',
                 ticket: '免費參觀',
-                desc: '拍照30分鐘即可。',
-                transitFromPrev: '機場 ➔ 梨湖木筏海邊 (10:30–10:45)',
+                desc: '拍照約30分鐘。',
+                transitFromPrev: '前往梨湖木筏海邊（車程約15分鐘，10:30–10:45）',
                 blogUrl: 'https://judyer.com/r%EF%BD%97hligh/',
                 image: './images/spots/d1_iho_teewoo.jpg',
                 fallbackImage: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800&auto=format&fit=crop&q=80'
@@ -791,10 +791,10 @@
                 nameKo: '노라바',
                 nameEn: 'NORABA',
                 category: '美食',
-                highlightTag: '🍜 抓80分鐘',
+                highlightTag: '🍜 預留80分鐘',
                 hours: '10:00 - 17:30 (週五午餐至14:00)',
-                desc: '抓80分鐘，包含8人候位＋用餐。NORABA目前週五午餐營業到14:00，所以這個時間安全。',
-                transitFromPrev: '前往 NORABA 海鮮拉麵｜노라바 (11:15–11:35)',
+                desc: '預留80分鐘，包含8人候位＋用餐。',
+                transitFromPrev: '前往 NORABA 海鮮拉麵｜노라바（車程約20分鐘，11:15–11:35）',
                 blogUrl: 'https://www.google.com/search?q=NORABA',
                 image: './images/spots/d1_noraba.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format&fit=crop&q=80'
@@ -803,15 +803,15 @@
                 startTime: '13:30',
                 endTime: '14:40',
                 timeRange: '13:30–14:40',
-                nameZh: 'SOGILBYEOLHA孝利家民宿',
+                nameZh: 'SOGILBYEOLHA 孝利家民宿',
                 nameKo: '소길별하',
                 nameEn: 'SOGILBYEOLHA',
                 category: '購物',
-                highlightTag: '🏷️ 預約13:30場次',
+                highlightTag: '🏷️ 13:30預約場次',
                 hours: '官方目前營業 12:00–17:00',
                 ticket: '預約制',
-                desc: '依你預計的13:30場次安排70分鐘。官方目前營業12:00–17:00。',
-                transitFromPrev: '前往 SOGILBYEOLHA｜소길별하 (12:55–13:25)',
+                desc: '13:30預約場次，參觀＋選物約70分鐘。',
+                transitFromPrev: '前往 SOGILBYEOLHA 孝利家民宿｜소길별하（車程約30分鐘，12:55–13:25）',
                 blogUrl: 'https://vivafifty.tw/jeju-hyoris-homestay-travel/',
                 image: './images/spots/d1_sogilbyeolha.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=800&auto=format&fit=crop&q=80'
@@ -824,10 +824,10 @@
                 nameKo: '새빌',
                 nameEn: 'Saebil',
                 category: '咖啡',
-                highlightTag: '☕ 拍照75分鐘',
+                highlightTag: '☕ 拍照約75分鐘',
                 hours: '09:00 - 19:00',
-                desc: '咖啡＋秋季草景／拍照75分鐘。',
-                transitFromPrev: '前往 Saebil｜새빌 (14:40–15:00)',
+                desc: '咖啡＋秋季草景／拍照約75分鐘。',
+                transitFromPrev: '前往 Saebil｜새빌（車程約20分鐘，14:40–15:00）',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072',
                 image: './images/spots/d1_saebil.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80'
@@ -840,25 +840,25 @@
                 nameKo: '숙소 체크인',
                 nameEn: 'Accommodation Check-in',
                 category: '住宿',
-                highlightTag: '🏡 休息40分鐘',
+                highlightTag: '🏡 休息約40分鐘',
                 hours: '16:00 入住',
                 address: '항몽로 29, 濟州特別自治道 63051',
-                desc: '放行李、分房、稍微休息40分鐘。',
-                transitFromPrev: '前往 民宿 (16:15–16:40)',
+                desc: '放行李、分房、稍作休息約40分鐘。',
+                transitFromPrev: '前往民宿（車程約25分鐘，16:15–16:40）',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072'
               },
               {
                 startTime: '17:45',
                 endTime: '18:10',
                 timeRange: '17:45–18:10',
-                nameZh: '外帶炸雞 Cheetah Chicken ＋ 附近超商採買',
+                nameZh: '外帶 Cheetah Chicken ＋ 附近超商採買',
                 nameKo: '치타치킨',
                 nameEn: 'Cheetah Chicken',
                 category: '美食',
-                highlightTag: '🍗 招牌奶油炸雞',
+                highlightTag: '🍗 建議事先預訂',
                 hours: '16:00 - 23:00',
-                desc: '招牌奶油炸雞建議事先電話／Naver確認是否能預訂外帶。',
-                transitFromPrev: '前往 炸雞 Cheetah Chicken｜치타치킨 (17:20–17:45)',
+                desc: '招牌奶油炸雞建議事先預訂外帶。',
+                transitFromPrev: '前往 Cheetah Chicken｜치타치킨（車程約25分鐘，17:20–17:45）',
                 blogUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/',
                 image: './images/spots/d1_cheetah_chicken.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=800&auto=format&fit=crop&q=80'
@@ -872,8 +872,8 @@
                 nameEn: 'Bonfire Party',
                 category: '住宿',
                 highlightTag: '🔥 19:00以後營火',
-                desc: '18:10–18:30 返回民宿，18:30 包車結束。19:00以後 戶外庭院「營火之夜」＋炸雞啤酒派對。',
-                transitFromPrev: '返回 民宿 (18:10–18:30)'
+                desc: '前往民宿（車程約20分鐘，18:10–18:30），18:30 包車結束。19:00以後 戶外庭院「營火之夜」＋炸雞啤酒派對。',
+                transitFromPrev: '前往民宿（車程約20分鐘，18:10–18:30）'
               }
             ]
           },
@@ -891,27 +891,28 @@
             spots: [
               {
                 startTime: '09:30',
-                endTime: '09:40',
-                timeRange: '09:30 出門出發',
-                nameZh: '民宿出發',
-                nameKo: '숙소 출발',
-                nameEn: 'Depart from Accommodation',
+                endTime: '10:30',
+                timeRange: '09:30–10:30',
+                nameZh: '前往山君不離',
+                nameKo: '산굼부리 이동',
+                nameEn: 'Transfer to Sangumburi',
                 category: '住宿',
-                desc: '09:30 民宿出發。'
+                noNav: true,
+                desc: '前往山君不離｜산굼부리（車程約60分鐘，09:30–10:30）。'
               },
               {
                 startTime: '10:30',
                 endTime: '11:50',
-                timeRange: '10:30 - 11:50',
+                timeRange: '10:30–11:50',
                 nameZh: '山君不離',
                 nameKo: '산굼부리',
                 nameEn: 'Sangumburi',
                 category: '景點',
-                highlightTag: '🌾 金色芒草海',
+                highlightTag: '🌾 芒草海停留約80分',
                 hours: '09:00 - 18:00',
                 ticket: '成人約 6,000 韓元',
-                desc: '賞 10 月金色芒草海，停留 80 分。',
-                transitFromPrev: '車程約 50 分',
+                desc: '賞10月金色芒草海，停留約80分鐘。',
+                transitFromPrev: '前往山君不離｜산굼부리（車程約60分鐘）',
                 blogUrl: 'https://damei17.com/sangumburi/',
                 image: './images/spots/d2_sangumburi.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1508873696983-2df5293cb32b?w=800&auto=format&fit=crop&q=80'
@@ -919,16 +920,16 @@
               {
                 startTime: '12:05',
                 endTime: '13:35',
-                timeRange: '12:05 - 13:35',
+                timeRange: '12:05–13:35',
                 nameZh: '松堂童話村（橡子共和國 Corico）',
                 nameKo: '송당동화마을',
                 nameEn: 'Songdang Fairy Tale Village',
                 category: '景點',
-                highlightTag: '🌳 吉卜力庭園散步',
+                highlightTag: '🌳 散步約90分鐘',
                 hours: '10:00 - 19:00',
                 ticket: '園區免門票',
-                desc: '吉卜力周邊與童話庭園散步 90 分。',
-                transitFromPrev: '車程約 15 分',
+                desc: '吉卜力周邊＋童話庭園散步約90分鐘。',
+                transitFromPrev: '前往松堂童話村（車程約15分鐘，11:50–12:05）',
                 blogUrl: 'https://vocus.cc/article/6a79e484fd897800010940b8',
                 image: './images/spots/d2_songdang.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=800&auto=format&fit=crop&q=80'
@@ -936,15 +937,15 @@
               {
                 startTime: '13:55',
                 endTime: '15:15',
-                timeRange: '13:55 - 15:15',
+                timeRange: '13:55–15:15',
                 nameZh: '【下午茶】Cafe The Container',
                 nameKo: '카페 더 콘테이너',
                 nameEn: 'Cafe The Container',
                 category: '咖啡',
-                highlightTag: '🍊 橘子提籃送餐',
+                highlightTag: '🍊 預留約80分鐘',
                 hours: '10:30 - 17:00 (週三休)',
-                desc: '橘子提籃特色送餐、喝咖啡吃點心 80 分。',
-                transitFromPrev: '車程約 20 分',
+                desc: '橘子咖啡廳，預留約80分鐘。',
+                transitFromPrev: '前往 Cafe The Container｜카페 더 콘테이너（車程約20分鐘，13:35–13:55）',
                 blogUrl: 'https://mamahuhu.blog/overseas/cafe-the-container/',
                 image: './images/spots/d2_container.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=800&auto=format&fit=crop&q=80'
@@ -952,15 +953,15 @@
               {
                 startTime: '15:45',
                 endTime: '17:15',
-                timeRange: '15:45 - 17:15',
+                timeRange: '15:45–17:15',
                 nameZh: '【晚餐】月高家 月汀里本店',
                 nameKo: '월고집',
                 nameEn: 'Wolgojip',
                 category: '美食',
-                highlightTag: '🥩 專人代烤黑豬肉',
+                highlightTag: '🥩 預留約90分鐘',
                 hours: '11:00 - 22:00',
-                desc: '享用專人代烤黑豬肉大餐 90 分。',
-                transitFromPrev: '車程約 25 分',
+                desc: '專人代烤黑豬肉大餐，預留約90分鐘。',
+                transitFromPrev: '前往月高家 月汀里本店｜월고집（車程約30分鐘，15:15–15:45）',
                 blogUrl: 'https://debjp.pixnet.net/blog',
                 image: './images/spots/d2_wolgojip.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80'
@@ -968,13 +969,13 @@
               {
                 startTime: '17:15',
                 endTime: '18:30',
-                timeRange: '17:15 - 18:30 回住宿',
-                nameZh: '月汀里出發 ➔ 返回 民宿休息',
-                nameKo: '월정리 출발 ➔ 숙소 복귀',
+                timeRange: '17:15–18:30 回住宿',
+                nameZh: '前往民宿（車程預留約75分鐘）',
+                nameKo: '숙소 복귀',
                 nameEn: 'Return to Accommodation',
                 category: '住宿',
-                desc: '月汀里出發 ➔ 返回 民宿休息 (車程約 55-65 分，包車結束)。',
-                transitFromPrev: '車程約 55-65 分'
+                desc: '17:15–18:30 前往民宿（車程預留約75分鐘），18:30 包車結束。',
+                transitFromPrev: '前往民宿（車程預留約75分鐘，17:15–18:30）'
               }
             ]
           },
@@ -992,13 +993,14 @@
             spots: [
               {
                 startTime: '09:30',
-                endTime: '09:40',
-                timeRange: '09:30 出門出發',
-                nameZh: '民宿 出發',
-                nameKo: '숙소 출발',
-                nameEn: 'Depart from Accommodation',
+                endTime: '10:00',
+                timeRange: '09:30–10:00',
+                nameZh: '前往中央地下街',
+                nameKo: '제주중앙지하상가 이동',
+                nameEn: 'Transfer to Underground Mall',
                 category: '住宿',
-                desc: '09:30 民宿 出發。'
+                noNav: true,
+                desc: '09:30–10:00 前往中央地下街｜제주중앙지하상가（車程約30分鐘）。'
               },
               {
                 startTime: '10:00',
@@ -1008,11 +1010,11 @@
                 nameKo: '제주중앙지하상가',
                 nameEn: 'Jeju Jungang Underground Mall',
                 category: '購物',
-                highlightTag: '🛍️ iRis棉被＋網紅爺爺',
+                highlightTag: '🛍️ 採買約80分鐘',
                 hours: '09:00 - 21:00',
                 address: '제주시 일도일동 1425-3 중앙지하상가 344호',
-                desc: '車程約30分鐘；iRis 棉被336號＋網紅爺爺伴手禮344號。棉被挑選、確認尺寸、真空壓縮＋伴手禮採買，共抓80分鐘。',
-                transitFromPrev: '車程約 30 分',
+                desc: 'iRis棉被336號＋網紅爺爺伴手禮344號；伴手禮採買約80分鐘。',
+                transitFromPrev: '前往中央地下街｜제주중앙지하상가（車程約30分鐘，09:30–10:00）',
                 image: './images/spots/d3_iris_bedding.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&auto=format&fit=crop&q=80'
               },
@@ -1024,10 +1026,10 @@
                 nameKo: '동문재래시장',
                 nameEn: 'Dongmun Traditional Market',
                 category: '購物',
-                highlightTag: '🍊 當地小吃＋簡單逛',
+                highlightTag: '🍊 簡單逛約40分鐘',
                 hours: '08:00 - 21:00',
-                desc: '享受當地小吃＋簡單逛市場40分鐘。',
-                transitFromPrev: '中央地下街 ➔ 東門傳統市場 直接步行約5～10分鐘 (11:20–11:30)',
+                desc: '享受當地小吃＋簡單逛市場約40分鐘。',
+                transitFromPrev: '前往東門傳統市場（步行約5～10分鐘，11:20–11:30）',
                 blogUrl: 'https://www.funliday.com/posts/jeju_dongmun_food/',
                 image: './images/spots/d3_dongmun_market.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=800&auto=format&fit=crop&q=80'
@@ -1040,10 +1042,10 @@
                 nameKo: '도토리키친',
                 nameEn: 'DOTOREE Kitchen',
                 category: '美食',
-                highlightTag: '🍜 招牌青橘冷蕎麥麵',
+                highlightTag: '🍜 預留約70分鐘',
                 hours: '11:00 - 17:00',
-                desc: '享用招牌青橘冷蕎麥麵＋鹿尾菜豆皮壽司；8人抓70分鐘。',
-                transitFromPrev: '前往 橡子廚房 DOTOREE Kitchen｜도토리키친 (12:10–12:25)',
+                desc: '招牌青橘冷蕎麥麵＋鹿尾菜豆皮壽司，預留約70分鐘。',
+                transitFromPrev: '前往橡子廚房 DOTOREE Kitchen｜도토리키친（車程約15分鐘，12:10–12:25）',
                 blogUrl: 'https://lizzzstyle.tw/dotoree-kitchen/',
                 image: './images/spots/d3_dotoree.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'
@@ -1056,10 +1058,10 @@
                 nameKo: '무드제주',
                 nameEn: 'MOOD JEJU',
                 category: '購物',
-                highlightTag: '🕯️ 文創選物/香氛',
+                highlightTag: '🕯️ 選物約50分鐘',
                 hours: '10:00 - 19:00',
-                desc: '文創選物、香氛、蠟燭、生活小物，預留50分鐘。',
-                transitFromPrev: '前往 MOOD JEJU｜무드제주 (13:40–14:00)',
+                desc: '文創選物、香氛、蠟燭、生活小物約50分鐘。',
+                transitFromPrev: '前往 MOOD JEJU｜무드제주（車程約20分鐘，13:40–14:00）',
                 blogUrl: 'https://popbee.com/lifestyle/jeju-travel-mood-findmeinagit-cafe-2026',
                 image: './images/spots/d3_mood_jeju.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop&q=80'
@@ -1072,10 +1074,10 @@
                 nameKo: '롯데마트 제주점',
                 nameEn: 'LOTTE Mart Jeju',
                 category: '購物',
-                highlightTag: '🛒 伴手禮集中採購',
+                highlightTag: '🛒 預留100分鐘含退稅',
                 hours: '10:00 - 23:00',
-                desc: '泡麵、ZERO系列、零食、咖啡、酒類、伴手禮集中採購；8人預留100分鐘，包含找商品＋結帳／退稅。',
-                transitFromPrev: '前往 LOTTE Mart 濟州店｜롯데마트 제주점 (14:50–15:10)',
+                desc: '泡麵、ZERO系列、零食、咖啡、酒類、伴手禮集中採購；預留100分鐘，包含結帳／退稅。',
+                transitFromPrev: '前往 LOTTE Mart 濟州店｜롯데마트 제주점（車程約20分鐘，14:50–15:10）',
                 blogUrl: 'https://creatrip.com/zh-TW/blog/14777',
                 image: './images/spots/d3_lotte_mart.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80'
@@ -1088,10 +1090,10 @@
                 nameKo: '연동본가',
                 nameEn: 'Yeondong Bonga',
                 category: '美食',
-                highlightTag: '🍲 大塊鮑魚牛排骨湯',
+                highlightTag: '🍲 晚餐約60分鐘',
                 hours: '09:00 - 21:00',
-                desc: '主吃大塊鮑魚牛排骨湯；想吃清淡一點可選蔘雞湯。晚餐抓60分鐘。',
-                transitFromPrev: '前往 蓮洞本家｜연동본가 (16:50–17:10)',
+                desc: '大塊鮑魚牛排骨湯；想吃清淡一點可選蔘雞湯，晚餐約60分鐘。',
+                transitFromPrev: '前往蓮洞本家｜연동본가（車程約20分鐘，16:50–17:10）',
                 blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454',
                 image: './images/spots/d3_yeondong_bonga.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1547496502-affa22d38842?w=800&auto=format&fit=crop&q=80'
@@ -1099,13 +1101,13 @@
               {
                 startTime: '18:10',
                 endTime: '18:30',
-                timeRange: '18:30 包車計時結束',
-                nameZh: '蓮洞本家 ➔ 回民宿方向',
+                timeRange: '18:30 包車結束',
+                nameZh: '前往民宿（包車回程預留20分鐘）',
                 nameKo: '숙소 복귀',
                 nameEn: 'Return to Accommodation',
                 category: '住宿',
-                desc: '18:10–18:30 蓮洞本家 ➔ 回民宿方向，18:30 9小時包車計時結束。',
-                transitFromPrev: '車程約 20 分 (18:10–18:30)'
+                desc: '18:10–18:30 前往民宿（包車回程預留20分鐘），18:30 9小時包車計時結束。',
+                transitFromPrev: '前往民宿（包車回程預留20分鐘，18:10–18:30）'
               }
             ]
           },
@@ -1136,12 +1138,12 @@
                 startTime: '08:00',
                 endTime: '08:30',
                 timeRange: '08:00–08:30',
-                nameZh: 'Stay 溫氣齋 ➔ 濟州國際機場 CJU',
+                nameZh: '前往濟州國際機場 CJU',
                 nameKo: '제주국제공항 이동',
-                nameEn: 'Stay Ongijae to Jeju Airport',
+                nameEn: 'Transfer to Jeju Airport',
                 category: '景點',
                 desc: '專車送機，預估車程25～30分鐘；8人＋大型行李需事先確認車型。',
-                transitFromPrev: '專車接送約 25–30 分 (08:00–08:30)'
+                transitFromPrev: '車程約25～30分鐘（08:00–08:30）'
               },
               {
                 startTime: '08:30',
@@ -1153,7 +1155,7 @@
                 category: '購物',
                 highlightTag: '✈️🛍️ 報到＋採買',
                 noNav: true,
-                desc: 'IT655 報到、托運行李 ➔ 出境前退稅／最後採買 ➔ 安檢出境 ➔ 機場限定伴手禮＋免稅店採買。',
+                desc: 'IT655報到、托運行李 ➔ 出境前退稅／採買 ➔ 安檢出境 ➔ 機場伴手禮＋免稅店採買。',
                 image: './images/spots/d4_maeum_sand.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&auto=format&fit=crop&q=80'
               },
@@ -1181,7 +1183,7 @@
                 flightArrvAirport: 'TPE',
                 flightArrvTerminal: '桃園 T1',
                 flightRouteText: '直飛返台',
-                desc: '搭乘台灣虎航 IT655 班機，由濟州國際機場 (CJU) 直飛返回台灣桃園國際機場 (TPE T1)。'
+                desc: '台灣虎航 IT655｜濟州 CJU ➔ 桃園 TPE T1，結束美好濟州島 4 天 3 夜之旅！'
               }
             ]
           }
