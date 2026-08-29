@@ -36,8 +36,8 @@
               dark: '#333D4B'
             },
             timeline: {
-              brown: '#A48374',
-              pink: '#FF6B8B'
+              brown: '#A48374', // 極細暖棕色垂直時間軸線
+              pink: '#FF6B8B'    // 實心粉紅時間節點圓點
             }
           },
           fontFamily: {
@@ -89,10 +89,10 @@
       </p>
     </header>
 
-    <!-- TAB 1: 每日行程 -->
+    <!-- TAB 1: 每日行程 (以地標 ICON 為主) -->
     <main v-if="activeTab === 'itinerary'" class="px-3 -mt-8 relative z-10 space-y-4">
       
-      <!-- 橫向滑動日期選單 (星期大、日期數字小) -->
+      <!-- 橫向滑動日期選單 (星期大、日期數字小，上下排列) -->
       <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1 px-1">
         <button 
           v-for="(day, idx) in itineraryData" 
@@ -110,7 +110,7 @@
         </button>
       </div>
 
-      <!-- 當日簡介 & 天氣資訊 -->
+      <!-- 當日簡介 & 天氣資訊 (顯示於第一個行程上方) -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-warmgray-border space-y-3">
         <div class="flex items-center justify-between border-b border-warmgray-border pb-3">
           <div>
@@ -123,7 +123,7 @@
           </div>
         </div>
 
-        <!-- 天氣卡片 -->
+        <!-- 氣溫資訊 (自動呈現當地氣溫與體感溫度) -->
         <div class="bg-fuji-light/70 rounded-xl p-3 flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-amber-500 text-xl shadow-xs">
@@ -144,7 +144,7 @@
         </div>
       </div>
 
-      <!-- 行程時間軸清單 (極細暖棕垂直線 + 上下對齊四位數區間 + 實心粉紅圓點) -->
+      <!-- 行程時間軸清單 (極細暖棕色垂直線 + 四位數數字上下對齊 + 實心粉紅節點圓點) -->
       <div class="relative pl-1 space-y-4 pt-1">
         
         <div v-for="(item, itemIdx) in currentDay.spots" :key="itemIdx" class="relative">
@@ -175,27 +175,29 @@
             <!-- 行程卡片 -->
             <div class="flex-1 pl-1">
               
-              <!-- (A) 第一天第一個行程：航班資訊專屬卡片樣式 -->
+              <!-- (A) 航班資訊專屬卡片樣式：Day 1 第一個行程 (去程) & Day 4 最後一個行程 (回程) -->
               <div v-if="item.isFlight" class="bg-gradient-to-br from-white to-blue-50/60 rounded-3xl p-4 border border-blue-100 shadow-sm relative overflow-hidden">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold text-white bg-blue-500 px-2.5 py-0.5 rounded-full">航班抵達</span>
+                  <span class="text-xs font-bold text-white bg-blue-500 px-2.5 py-0.5 rounded-full">
+                    {{ item.isReturnFlight ? '返台航班' : '抵達航班' }}
+                  </span>
                   <span class="text-xs font-semibold text-gray-500">{{ item.timeRange }}</span>
                 </div>
                 <div class="flex items-center justify-between text-center my-3 px-2">
                   <div>
-                    <p class="text-xl font-black text-warmgray-dark">TPE</p>
-                    <p class="text-xs text-gray-500">桃園 T1</p>
+                    <p class="text-xl font-black text-warmgray-dark">{{ item.flightDeptAirport }}</p>
+                    <p class="text-xs text-gray-500">{{ item.flightDeptTerminal }}</p>
                   </div>
                   <div class="flex-1 px-3 flex flex-col items-center">
-                    <span class="text-[10px] text-fuji font-semibold">IT654 • 1hr 55m</span>
+                    <span class="text-[10px] text-fuji font-semibold">{{ item.flightNumber }} • {{ item.flightDuration }}</span>
                     <div class="w-full h-0.5 bg-blue-300 relative my-1">
                       <i class="fa-solid fa-plane text-fuji absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs"></i>
                     </div>
-                    <span class="text-[10px] text-gray-400">直飛濟州</span>
+                    <span class="text-[10px] text-gray-400">{{ item.flightRouteText }}</span>
                   </div>
                   <div>
-                    <p class="text-xl font-black text-warmgray-dark">CJU</p>
-                    <p class="text-xs text-gray-500">濟州國際機場</p>
+                    <p class="text-xl font-black text-warmgray-dark">{{ item.flightArrvAirport }}</p>
+                    <p class="text-xs text-gray-500">{{ item.flightArrvTerminal }}</p>
                   </div>
                 </div>
                 <p class="text-xs text-gray-600 mt-2 bg-white/80 p-2.5 rounded-xl border border-blue-50 leading-relaxed">
@@ -212,6 +214,7 @@
                       {{ item.category }}
                     </span>
                   </div>
+                  <!-- 彩色標籤：必吃 / 必買 / 必拍 / 備註標籤 -->
                   <span v-if="item.highlightTag" class="text-[11px] font-bold text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
                     {{ item.highlightTag }}
                   </span>
@@ -260,7 +263,7 @@
                 </div>
 
                 <!-- 按鈕列：Google / Naver Map 雙導航 ＋ 查看推薦/必吃攻略跳轉 -->
-                <div class="mt-3.5 pt-2.5 border-t border-gray-100 flex flex-wrap gap-2">
+                <div v-if="!item.noNav || item.blogUrl" class="mt-3.5 pt-2.5 border-t border-gray-100 flex flex-wrap gap-2">
                   <a 
                     v-if="!item.noNav"
                     :href="getGoogleMapUrl(item.nameZh, item.address)" 
@@ -300,9 +303,10 @@
       </div>
     </main>
 
-    <!-- TAB 2: 口袋名單 -->
+    <!-- TAB 2: 口袋名單 (購物籃 ICON) -->
     <main v-if="activeTab === 'pocket'" class="px-4 -mt-8 relative z-10 space-y-4">
       
+      <!-- 快速切換標籤 -->
       <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-warmgray-border flex gap-1">
         <button 
           v-for="sub in pocketTabs" 
@@ -319,8 +323,10 @@
         </button>
       </div>
 
-      <!-- 1. CU 必買零食榜 -->
+      <!-- 1. CU 必買零食榜 (原圖卡片 + 結構化清單 + 軟Q麻糬提示) -->
       <div v-if="activePocketTab === 'cu_snack'" class="space-y-3.5">
+        
+        <!-- 最上方高畫質原圖 (路徑 ./images/cu_snacks.png，支援全螢幕彈窗) -->
         <div class="bg-white rounded-3xl p-3 shadow-sm border border-warmgray-border">
           <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100" @click="openLightbox('./images/cu_snacks.png')">
             <img 
@@ -335,6 +341,7 @@
           </div>
         </div>
 
+        <!-- 結構化排行榜：No.1 杜拜風味麻糬夾心餅乾 -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-amber-200">
           <div class="flex items-center justify-between pb-2 border-b border-gray-100">
             <span class="text-xs font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">🏆 No.1 剛剛好又好吃的卡通圖款</span>
@@ -359,6 +366,7 @@
           </ul>
         </div>
 
+        <!-- 結構化排行榜：No.2 Twizel 軟Q棉花糖 -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
           <div class="flex items-center justify-between pb-2 border-b border-gray-100">
             <span class="text-xs font-black text-gray-700 bg-gray-100 px-2.5 py-0.5 rounded-full">🥈 No.2 濃郁首選</span>
@@ -378,6 +386,7 @@
           </div>
         </div>
 
+        <!-- 結構化排行榜：No.3 普通款 -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200">
           <div class="flex items-center justify-between pb-2 border-b border-gray-100">
             <span class="text-xs font-black text-gray-600 bg-gray-100 px-2.5 py-0.5 rounded-full">🥉 No.3 普遍款</span>
@@ -387,6 +396,7 @@
           <p class="text-xs text-gray-600 mt-1.5 bg-gray-50 p-2.5 rounded-xl">外皮像麻糬但內餡不夠濃郁，部分口味偏甜奶味重，可依個人喜好嘗試。</p>
         </div>
 
+        <!-- 結構化排行榜：避雷黑榜專區 -->
         <div class="bg-white rounded-3xl p-4 shadow-sm border border-red-200">
           <h3 class="text-xs font-bold text-red-500 flex items-center gap-1.5 mb-2.5">
             <i class="fa-solid fa-circle-xmark"></i> 避雷不推薦專區
@@ -403,14 +413,18 @@
           </div>
         </div>
 
+        <!-- 底部保留「쫀득(軟Q)」麻糬口感提示卡片 -->
         <div class="bg-blue-50/80 p-3.5 rounded-2xl text-xs text-blue-900 flex items-center gap-2.5 border border-blue-100">
           <i class="fa-solid fa-lightbulb text-amber-500 text-base flex-shrink-0"></i>
           <span class="leading-relaxed">小提醒：包裝上有「<strong>쫀득(軟Q)</strong>」字樣的，多半是麻糬口感，可以先買小包試試看！</span>
         </div>
+
       </div>
 
-      <!-- 2. 超商必買酒類榜 -->
+      <!-- 2. 超商必買酒類榜 (原圖卡片 + 雙欄中韓對照卡片) -->
       <div v-if="activePocketTab === 'alcohol'" class="space-y-3.5">
+        
+        <!-- 最上方高畫質原圖 (路徑 ./images/convenience_drinks.png，支援全螢幕彈窗) -->
         <div class="bg-white rounded-3xl p-3 shadow-sm border border-warmgray-border">
           <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100" @click="openLightbox('./images/convenience_drinks.png')">
             <img 
@@ -425,8 +439,9 @@
           </div>
         </div>
 
-        <p class="text-xs text-gray-500 px-1 font-medium">CU / GS25 超商看到必買（營火炸雞派對 🍻）[cite: 8]</p>
+        <p class="text-xs text-gray-500 px-1 font-medium">CU / GS25 超商看到必買（營火炸雞派對 🍻）</p>
 
+        <!-- 結構化雙欄卡片 (提取商品編號、中韓對照、風味評比) -->
         <div class="grid grid-cols-2 gap-2.5">
           <div v-for="alc in alcoholList" :key="alc.id" class="bg-white p-3.5 rounded-3xl border border-warmgray-border shadow-xs flex flex-col justify-between">
             <div>
@@ -444,7 +459,7 @@
     <!-- TAB 3: 旅程資訊中心 (i ICON) -->
     <main v-if="activeTab === 'info'" class="px-4 -mt-8 relative z-10 space-y-4">
       
-      <!-- 匯率換算工具 -->
+      <!-- 匯率換算工具 (韓幣算回台幣) -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
@@ -485,12 +500,13 @@
         </div>
       </section>
 
-      <!-- 航班完整資訊 -->
+      <!-- 航班完整資訊 (去程 / 回程) -->
       <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-4">
         <h2 class="text-base font-bold text-warmgray-dark flex items-center gap-2">
           <i class="fa-solid fa-plane-departure text-fuji"></i> 航班資訊 (台灣虎航)
         </h2>
 
+        <!-- 去程 -->
         <div class="border border-blue-100 rounded-2xl p-3.5 bg-blue-50/30">
           <div class="flex justify-between items-center mb-1.5">
             <span class="text-xs font-bold text-fuji bg-white px-2 py-0.5 rounded-md border border-blue-200">去程 • IT654</span>
@@ -517,6 +533,7 @@
           </div>
         </div>
 
+        <!-- 回程 -->
         <div class="border border-amber-100 rounded-2xl p-3.5 bg-amber-50/30">
           <div class="flex justify-between items-center mb-1.5">
             <span class="text-xs font-bold text-amber-700 bg-white px-2 py-0.5 rounded-md border border-amber-200">回程 • IT655</span>
@@ -633,7 +650,7 @@
       <p class="text-white/80 text-xs mt-3">點擊任意處關閉預覽</p>
     </div>
 
-    <!-- 底部浮動導覽條 -->
+    <!-- 底部浮動導覽條 (浮動樣式) -->
     <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[92%] max-w-md frosted-glass rounded-3xl border border-white/60 shadow-lg px-6 py-2.5 z-40 flex justify-around items-center">
       
       <!-- Tab 1: 行程 (地標 ICON) -->
@@ -721,12 +738,12 @@
           }
         };
 
-        // 4天行程資料庫 (嚴格依照原始文字逐字核對)
+        // 4天行程資料庫 (文字逐字依據用戶最新修正微調版本)
         const itineraryData = ref([
           {
             weekday: 'FRI',
             dateNumber: '10/23',
-            title: '西部・涯月海岸線 ➔ 入住溫氣齋 ➔ 營火搭配炸雞',
+            title: '西部・涯月海岸線 ➔ 入住民宿 ➔ 營火搭配炸雞',
             charterTime: '10:30～18:30（8小時）',
             weather: {
               condition: '秋高氣爽 • 晴時多雲',
@@ -740,6 +757,13 @@
                 startTime: '09:35',
                 endTime: '10:25',
                 timeRange: '09:35–10:25',
+                flightNumber: 'IT654',
+                flightDuration: '1hr 55m',
+                flightDeptAirport: 'TPE',
+                flightDeptTerminal: '桃園 T1',
+                flightArrvAirport: 'CJU',
+                flightArrvTerminal: '濟州國際機場',
+                flightRouteText: '直飛濟州',
                 desc: '抵達濟州國際機場（CJU），入境、提領行李並與包車司機會合。'
               },
               {
@@ -770,7 +794,7 @@
                 highlightTag: '🍜 抓80分鐘',
                 hours: '10:00 - 17:30 (週五午餐至14:00)',
                 desc: '抓80分鐘，包含8人候位＋用餐。NORABA目前週五午餐營業到14:00，所以這個時間安全。',
-                transitFromPrev: '前往 NORABA 海鮮拉麵 (11:15–11:35)',
+                transitFromPrev: '前往 NORABA 海鮮拉麵｜노라바 (11:15–11:35)',
                 blogUrl: 'https://www.google.com/search?q=NORABA',
                 image: './images/spots/d1_noraba.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format&fit=crop&q=80'
@@ -787,7 +811,7 @@
                 hours: '官方目前營業 12:00–17:00',
                 ticket: '預約制',
                 desc: '依你預計的13:30場次安排70分鐘。官方目前營業12:00–17:00。',
-                transitFromPrev: '前往 SOGILBYEOLHA (12:55–13:25)',
+                transitFromPrev: '前往 SOGILBYEOLHA｜소길별하 (12:55–13:25)',
                 blogUrl: 'https://vivafifty.tw/jeju-hyoris-homestay-travel/',
                 image: './images/spots/d1_sogilbyeolha.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=800&auto=format&fit=crop&q=80'
@@ -803,7 +827,7 @@
                 highlightTag: '☕ 拍照75分鐘',
                 hours: '09:00 - 19:00',
                 desc: '咖啡＋秋季草景／拍照75分鐘。',
-                transitFromPrev: '前往 Saebil (14:40–15:00)',
+                transitFromPrev: '前往 Saebil｜새빌 (14:40–15:00)',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072',
                 image: './images/spots/d1_saebil.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80'
@@ -812,15 +836,15 @@
                 startTime: '16:40',
                 endTime: '17:20',
                 timeRange: '16:40–17:20',
-                nameZh: 'Stay 溫氣齋 Check-in',
-                nameKo: '온기재',
-                nameEn: 'Stay 온기재',
+                nameZh: '民宿 Check-in',
+                nameKo: '숙소 체크인',
+                nameEn: 'Accommodation Check-in',
                 category: '住宿',
                 highlightTag: '🏡 休息40分鐘',
                 hours: '16:00 入住',
                 address: '항몽로 29, 濟州特別自治道 63051',
                 desc: '放行李、分房、稍微休息40分鐘。',
-                transitFromPrev: '前往 Stay 溫氣齋 (16:15–16:40)',
+                transitFromPrev: '前往 民宿 (16:15–16:40)',
                 blogUrl: 'https://www.tourscombine.com/article/2023122072'
               },
               {
@@ -834,7 +858,7 @@
                 highlightTag: '🍗 招牌奶油炸雞',
                 hours: '16:00 - 23:00',
                 desc: '招牌奶油炸雞建議事先電話／Naver確認是否能預訂外帶。',
-                transitFromPrev: '前往 炸雞 Cheetah Chicken (17:20–17:45)',
+                transitFromPrev: '前往 炸雞 Cheetah Chicken｜치타치킨 (17:20–17:45)',
                 blogUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/',
                 image: './images/spots/d1_cheetah_chicken.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?w=800&auto=format&fit=crop&q=80'
@@ -843,13 +867,13 @@
                 startTime: '18:30',
                 endTime: '21:30',
                 timeRange: '18:30 包車結束',
-                nameZh: '戶外庭院「불멍 營火之夜」＋炸雞啤酒派對',
+                nameZh: '戶外庭院「營火之夜」＋炸雞啤酒派對',
                 nameKo: '불멍 & 치맥 파티',
                 nameEn: 'Bonfire Party',
                 category: '住宿',
                 highlightTag: '🔥 19:00以後營火',
-                desc: '18:10–18:30 返回 Stay 溫氣齋，18:30 包車結束。19:00以後 戶外庭院「불멍 營火之夜」＋炸雞啤酒派對。',
-                transitFromPrev: '返回 Stay 溫氣齋 (18:10–18:30)'
+                desc: '18:10–18:30 返回民宿，18:30 包車結束。19:00以後 戶外庭院「營火之夜」＋炸雞啤酒派對。',
+                transitFromPrev: '返回 民宿 (18:10–18:30)'
               }
             ]
           },
@@ -871,7 +895,7 @@
                 timeRange: '09:30 出門出發',
                 nameZh: '民宿出發',
                 nameKo: '숙소 출발',
-                nameEn: 'Depart from Stay Ongijae',
+                nameEn: 'Depart from Accommodation',
                 category: '住宿',
                 desc: '09:30 民宿出發。'
               },
@@ -945,11 +969,11 @@
                 startTime: '17:15',
                 endTime: '18:30',
                 timeRange: '17:15 - 18:30 回住宿',
-                nameZh: '月汀里出發 ➔ 返回 Stay 溫氣齋休息',
+                nameZh: '月汀里出發 ➔ 返回 民宿休息',
                 nameKo: '월정리 출발 ➔ 숙소 복귀',
-                nameEn: 'Return to Stay Ongijae',
+                nameEn: 'Return to Accommodation',
                 category: '住宿',
-                desc: '月汀里出發 ➔ 返回 Stay 溫氣齋休息 (車程約 55-65 分，包車結束)。',
+                desc: '月汀里出發 ➔ 返回 民宿休息 (車程約 55-65 分，包車結束)。',
                 transitFromPrev: '車程約 55-65 分'
               }
             ]
@@ -970,11 +994,11 @@
                 startTime: '09:30',
                 endTime: '09:40',
                 timeRange: '09:30 出門出發',
-                nameZh: '民宿 Stay 溫氣齋出發',
+                nameZh: '民宿 出發',
                 nameKo: '숙소 출발',
-                nameEn: 'Depart from Stay Ongijae',
+                nameEn: 'Depart from Accommodation',
                 category: '住宿',
-                desc: '09:30 民宿 Stay 溫氣齋出發。'
+                desc: '09:30 民宿 出發。'
               },
               {
                 startTime: '10:00',
@@ -1019,7 +1043,7 @@
                 highlightTag: '🍜 招牌青橘冷蕎麥麵',
                 hours: '11:00 - 17:00',
                 desc: '享用招牌青橘冷蕎麥麵＋鹿尾菜豆皮壽司；8人抓70分鐘。',
-                transitFromPrev: '前往 橡子廚房 DOTOREE Kitchen (12:10–12:25)',
+                transitFromPrev: '前往 橡子廚房 DOTOREE Kitchen｜도토리키친 (12:10–12:25)',
                 blogUrl: 'https://lizzzstyle.tw/dotoree-kitchen/',
                 image: './images/spots/d3_dotoree.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=80'
@@ -1035,7 +1059,7 @@
                 highlightTag: '🕯️ 文創選物/香氛',
                 hours: '10:00 - 19:00',
                 desc: '文創選物、香氛、蠟燭、生活小物，預留50分鐘。',
-                transitFromPrev: '前往 MOOD JEJU (13:40–14:00)',
+                transitFromPrev: '前往 MOOD JEJU｜무드제주 (13:40–14:00)',
                 blogUrl: 'https://popbee.com/lifestyle/jeju-travel-mood-findmeinagit-cafe-2026',
                 image: './images/spots/d3_mood_jeju.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop&q=80'
@@ -1051,7 +1075,7 @@
                 highlightTag: '🛒 伴手禮集中採購',
                 hours: '10:00 - 23:00',
                 desc: '泡麵、ZERO系列、零食、咖啡、酒類、伴手禮集中採購；8人預留100分鐘，包含找商品＋結帳／退稅。',
-                transitFromPrev: '前往 LOTTE Mart 濟州店 (14:50–15:10)',
+                transitFromPrev: '前往 LOTTE Mart 濟州店｜롯데마트 제주점 (14:50–15:10)',
                 blogUrl: 'https://creatrip.com/zh-TW/blog/14777',
                 image: './images/spots/d3_lotte_mart.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80'
@@ -1067,7 +1091,7 @@
                 highlightTag: '🍲 大塊鮑魚牛排骨湯',
                 hours: '09:00 - 21:00',
                 desc: '主吃大塊鮑魚牛排骨湯；想吃清淡一點可選蔘雞湯。晚餐抓60分鐘。',
-                transitFromPrev: '前往 蓮洞本家 (16:50–17:10)',
+                transitFromPrev: '前往 蓮洞本家｜연동본가 (16:50–17:10)',
                 blogUrl: 'https://debjp.pixnet.net/blog/posts/7112431454',
                 image: './images/spots/d3_yeondong_bonga.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1547496502-affa22d38842?w=800&auto=format&fit=crop&q=80'
@@ -1076,11 +1100,11 @@
                 startTime: '18:10',
                 endTime: '18:30',
                 timeRange: '18:30 包車計時結束',
-                nameZh: '蓮洞本家 ➔ Stay 溫氣齋方向',
+                nameZh: '蓮洞本家 ➔ 回民宿方向',
                 nameKo: '숙소 복귀',
-                nameEn: 'Return to Stay Ongijae',
+                nameEn: 'Return to Accommodation',
                 category: '住宿',
-                desc: '18:10–18:30 蓮洞本家 ➔ Stay 溫氣齋方向，18:30 9小時包車計時結束。',
+                desc: '18:10–18:30 蓮洞本家 ➔ 回民宿方向，18:30 9小時包車計時結束。',
                 transitFromPrev: '車程約 20 分 (18:10–18:30)'
               }
             ]
@@ -1089,7 +1113,7 @@
             weekday: 'MON',
             dateNumber: '10/26',
             title: '退房 ➔ 濟州機場 ➔ 返台',
-            charterTime: '08:00～08:30 (專車送機)',
+            charterTime: '08:00～08:30（專車送機）',
             weather: {
               condition: '晨間微涼',
               icon: 'fa-solid fa-plane',
@@ -1116,89 +1140,48 @@
                 nameKo: '제주국제공항 이동',
                 nameEn: 'Stay Ongijae to Jeju Airport',
                 category: '景點',
-                desc: '專車送機，預估25～30分鐘；8人＋大型行李需事先確認車型。',
+                desc: '專車送機，預估車程25～30分鐘；8人＋大型行李需事先確認車型。',
                 transitFromPrev: '專車接送約 25–30 分 (08:00–08:30)'
               },
               {
                 startTime: '08:30',
-                endTime: '09:20',
-                timeRange: '08:30–09:20',
-                nameZh: '台灣虎航 IT655 報到＋托運行李',
-                nameKo: '타이거항공 체크인',
-                nameEn: 'Tigerair Check-in',
-                category: '景點',
-                noNav: true,
-                desc: '確認每人加購25kg托運額度。'
-              },
-              {
-                startTime: '09:20',
-                endTime: '09:50',
-                timeRange: '09:20–09:50',
-                nameZh: '機場出境前最後採買／退稅處理',
-                nameKo: '',
-                nameEn: 'Tax Refund & Pre-departure shopping',
-                category: '購物',
-                noNav: true,
-                desc: '如果有必須托運的商品，要在這時處理完。'
-              },
-              {
-                startTime: '09:50',
-                endTime: '10:10',
-                timeRange: '09:50–10:10',
-                nameZh: '安檢＋證照查驗／進入國際線管制區',
-                nameKo: '',
-                nameEn: 'Security & Immigration',
-                category: '景點',
-                noNav: true,
-                desc: '安檢＋證照查驗／進入國際線管制區。'
-              },
-              {
-                startTime: '10:10',
                 endTime: '10:50',
-                timeRange: '10:10–10:50',
-                nameZh: '機場最後伴手禮採買',
-                nameKo: '공항 면세점 / 기념품',
-                nameEn: 'Airport Gift Shopping',
+                timeRange: '08:30–10:50',
+                nameZh: '機場報到＋最後伴手禮採買',
+                nameKo: '공항 수속 & 쇼핑',
+                nameEn: 'Check-in & Airport Shopping',
                 category: '購物',
-                highlightTag: '🎁 伴手禮採買',
+                highlightTag: '✈️🛍️ 報到＋採買',
                 noNav: true,
-                desc: 'PARIS BAGUETTE 濟州限定餅乾／心意沙、濟州特產、免稅店最後補貨。',
-                blogUrl: 'https://www.funliday.com/posts/jeju_airport_gift/#aioseo-',
+                desc: 'IT655 報到、托運行李 ➔ 出境前退稅／最後採買 ➔ 安檢出境 ➔ 機場限定伴手禮＋免稅店採買。',
                 image: './images/spots/d4_maeum_sand.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=800&auto=format&fit=crop&q=80'
               },
               {
                 startTime: '10:50',
-                endTime: '11:10',
-                timeRange: '10:50–11:10',
-                nameZh: '免稅店最後採買＋前往登機門',
-                nameKo: '',
-                nameEn: 'Duty Free & Gate',
-                category: '購物',
-                noNav: true,
-                desc: '免稅店最後採買＋前往登機門。'
-              },
-              {
-                startTime: '11:10',
                 endTime: '11:30',
-                timeRange: '11:10–11:30',
-                nameZh: '抵達 Gate 附近等候登機',
-                nameKo: '',
-                nameEn: 'Waiting at Gate',
+                timeRange: '10:50–11:30',
+                nameZh: '前往登機門＋候機',
+                nameKo: '탑승구 이동 및 대기',
+                nameEn: 'Proceed to Gate & Waiting',
                 category: '景點',
                 noNav: true,
-                desc: '抵達 Gate 附近等候登機。'
+                desc: '建議最晚11:10左右抵達 Gate。'
               },
               {
+                isFlight: true,
+                isReturnFlight: true,
                 startTime: '11:40',
                 endTime: '12:55',
                 timeRange: '11:40–12:55',
-                nameZh: 'IT655 濟州 CJU ➔ 桃園 TPE T1',
-                nameKo: '',
-                nameEn: 'Flight IT655 CJU to TPE',
-                category: '景點',
-                noNav: true,
-                desc: '搭乘 IT655 濟州 CJU ➔ 桃園 TPE T1，結束美好濟州行。'
+                flightNumber: 'IT655',
+                flightDuration: '2hr 15m',
+                flightDeptAirport: 'CJU',
+                flightDeptTerminal: '濟州國際機場',
+                flightArrvAirport: 'TPE',
+                flightArrvTerminal: '桃園 T1',
+                flightRouteText: '直飛返台',
+                desc: '搭乘台灣虎航 IT655 班機，由濟州國際機場 (CJU) 直飛返回台灣桃園國際機場 (TPE T1)。'
               }
             ]
           }
