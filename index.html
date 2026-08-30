@@ -36,8 +36,8 @@
               dark: '#333D4B'
             },
             timeline: {
-              brown: '#A48374', // 極細暖棕色垂直時間軸線
-              pink: '#FF6B8B'    // 實心粉紅時間節點圓點
+              brown: '#A48374',
+              pink: '#FF6B8B'
             }
           },
           fontFamily: {
@@ -75,15 +75,68 @@
 
   <div id="app" class="max-w-md mx-auto min-h-screen relative">
 
-    <!-- 頁首區塊 -->
-    <header class="relative bg-gradient-to-b from-blue-500 via-fuji to-blue-400 text-white pt-7 pb-10 px-5 rounded-b-[2.5rem] shadow-sm">
-      <div class="flex justify-between items-center mb-1">
-        <div>
-          <span class="text-[11px] bg-white/20 text-white font-medium px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">Jeju Island 2026</span>
-          <h1 class="text-xl font-bold mt-1 tracking-tight">濟州秋日假期 🍂</h1>
+    <!-- 僅在「行程」頁籤時，將頁首與日期選單包在 sticky 容器中進行凍結 -->
+    <div v-if="activeTab === 'itinerary'" class="sticky top-0 z-30 bg-[#F7F8FA] pb-2 shadow-xs">
+      <!-- 頁首區塊 -->
+      <header class="relative bg-gradient-to-b from-blue-500 via-fuji to-blue-400 text-white pt-7 pb-8 px-5 rounded-b-[2.5rem] shadow-sm">
+        <div class="flex justify-between items-center mb-1 gap-2">
+          <div class="min-w-0">
+            <span class="text-[11px] bg-white/20 text-white font-medium px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">Jeju Island 2026</span>
+            <h1 class="text-xl font-bold mt-1 tracking-tight truncate">濟州秋日假期 🍂</h1>
+          </div>
+          <div class="text-right flex-shrink-0 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 shadow-2xs">
+            <p class="text-[11px] font-bold tracking-wide text-blue-100 flex items-center gap-1 justify-end">
+              <i class="fa-solid fa-shirt text-amber-200"></i> 當日穿搭建議
+            </p>
+            <p class="text-xs font-bold text-white mt-0.5">{{ currentOutfitTip }}</p>
+          </div>
         </div>
-        <div class="text-right">
-          <p class="text-sm font-bold tracking-wide">10/23 - 10/26</p>
+        
+        <div class="flex justify-between items-center mt-1.5">
+          <p class="text-xs text-blue-100 leading-relaxed font-medium">
+            2026一起收藏濟州島的美好時光
+          </p>
+          
+          <div class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1 shadow-2xs flex-shrink-0">
+            <i class="fa-regular fa-clock text-[11px]"></i>
+            <span>{{ countdownText }}</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 橫向滑動日期選單 (跟著頁首一起凍結置頂) -->
+      <div class="px-3 pt-3">
+        <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1 px-1">
+          <button 
+            v-for="(day, idx) in itineraryData" 
+            :key="idx"
+            @click="selectedDayIdx = idx"
+            :class="[
+              'flex-shrink-0 w-[4.4rem] py-1.5 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 shadow-xs',
+              selectedDayIdx === idx 
+                ? 'bg-fuji text-white font-bold shadow-fuji/30 shadow-md scale-105' 
+                : 'bg-white text-warmgray-dark hover:bg-blue-50/50 border border-warmgray-border'
+            ]"
+          >
+            <span class="text-[11px] font-semibold uppercase tracking-wider opacity-90">{{ day.weekday }}</span>
+            <span class="text-lg font-bold mt-0.5">{{ day.dateNumber }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 非行程頁籤時顯示的一般頁首 -->
+    <header v-else class="relative bg-gradient-to-b from-blue-500 via-fuji to-blue-400 text-white pt-7 pb-10 px-5 rounded-b-[2.5rem] shadow-sm">
+      <div class="flex justify-between items-center mb-1 gap-2">
+        <div class="min-w-0">
+          <span class="text-[11px] bg-white/20 text-white font-medium px-2.5 py-0.5 rounded-full uppercase tracking-wider backdrop-blur-sm">Jeju Island 2026</span>
+          <h1 class="text-xl font-bold mt-1 tracking-tight truncate">濟州秋日假期 🍂</h1>
+        </div>
+        <div class="text-right flex-shrink-0 bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-2xl border border-white/20 shadow-2xs">
+          <p class="text-[11px] font-bold tracking-wide text-blue-100 flex items-center gap-1 justify-end">
+            <i class="fa-solid fa-shirt text-amber-200"></i> 當日穿搭建議
+          </p>
+          <p class="text-xs font-bold text-white mt-0.5">{{ currentOutfitTip }}</p>
         </div>
       </div>
       
@@ -92,7 +145,6 @@
           2026一起收藏濟州島的美好時光
         </p>
         
-        <!-- 出發倒數計時卡片 -->
         <div class="bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-full text-xs font-bold text-white flex items-center gap-1 shadow-2xs flex-shrink-0">
           <i class="fa-regular fa-clock text-[11px]"></i>
           <span>{{ countdownText }}</span>
@@ -101,72 +153,62 @@
     </header>
 
     <!-- TAB 1: 須知 (行前注意事項) -->
-    <main v-if="activeTab === 'checklist'" class="px-3 -mt-4 relative z-10 space-y-3.5">
-      <section class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border space-y-3">
-        <h2 class="text-[13.5px] font-bold text-warmgray-dark border-b border-gray-100 pb-2.5 pl-2 flex items-center">
-          <i class="fa-solid fa-list-check text-fuji mr-2 flex-shrink-0"></i>行前必備準備清單
+    <main v-if="activeTab === 'checklist'" class="px-3 pt-4 relative z-10 space-y-3.5">
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3.5 overflow-hidden">
+        <h2 class="text-base font-bold text-warmgray-dark flex items-center border-b border-gray-100 pb-3">
+          <i class="fa-solid fa-list-check text-fuji mr-2.5 flex-shrink-0"></i>行前必備準備清單
         </h2>
         
-        <ul class="text-[13px] text-gray-700 space-y-3 leading-relaxed pl-2">
-          <li class="flex items-start gap-2">
+        <div class="bg-warmgray/60 p-3.5 rounded-2xl space-y-3 text-[13px] text-gray-700 leading-relaxed">
+          <div class="flex items-start gap-2">
             <span class="text-fuji font-bold mt-0.5">•</span>
             <div><strong>下載 Naver Map：</strong>導航使用。</div>
-          </li>
-          <li class="flex items-start gap-2">
+          </div>
+          <div class="flex items-start gap-2">
             <span class="text-fuji font-bold mt-0.5">•</span>
             <div><strong>下載 Papago：</strong>翻譯韓文能對圖片翻譯，購物的好幫手。</div>
-          </li>
-          <li class="flex items-start gap-2">
+          </div>
+          <div class="flex items-start gap-2">
             <span class="text-fuji font-bold mt-0.5">•</span>
             <div><strong>下載 Catchtable：</strong>線上訂位。</div>
-          </li>
-          <li class="flex items-start gap-2">
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-fuji font-bold mt-0.5">•</span>
+            <div><strong>下載 Kakao 叫車：</strong>當地叫車必備。</div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-fuji font-bold mt-0.5">•</span>
+            <div><strong>下載 Baemin 外送：</strong>美食外送好幫手。</div>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="text-fuji font-bold mt-0.5">•</span>
+            <div><strong>插頭轉接頭：</strong>韓國為雙圓孔插座（4.8mm），電壓為 220V。</div>
+          </div>
+          <div class="flex items-start gap-2">
             <span class="text-fuji font-bold mt-0.5">•</span>
             <div>
               <strong>10/19前完成 e-Arrival Card 電子入境申報：</strong>
-              <a href="https://www.klook.com/zh-TW/blog/korea-entry/?aid=api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667&aff_pid=886667&aff_sid=&aff_adid=948770&utm_medium=affiliate-alwayson&utm_source=non-network&utm_campaign=67008&utm_term=886667&utm_content=&aff_klick_id=137180797205-api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667-948770-15dcc7f&gad_source=1&dd_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="text-fuji font-bold underline block mt-0.5 text-[12px]">
+              <a href="https://www.klook.com/zh-TW/blog/korea-entry/?aid=api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667&aff_pid=886667&aff_sid=&aff_adid=948770&utm_medium=affiliate-alwayson&utm_source=non-network&utm_campaign=67008&utm_term=886667&utm_content=&aff_klick_id=137180797205-api%7C67008%7C6a73067c5a4d690001333eda%7Cpid%7C886667-948770-15dcc7f&gad_source=1&dd_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="text-fuji font-bold underline block mt-1 text-[12px]">
                 點此查看入境申報教學攻略 ➔
               </a>
             </div>
-          </li>
-          <li class="flex items-start gap-2">
+          </div>
+          <div class="flex items-start gap-2">
             <span class="text-fuji font-bold mt-0.5">•</span>
-            <div><strong>插頭轉接頭：</strong>韓國為雙圓孔插座（4.8mm），電壓 220V。</div>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-fuji font-bold mt-0.5">•</span>
-            <div class="space-y-1 w-full">
+            <div class="space-y-1.5 w-full">
               <strong>到濟洲島機場時申請 SeS 自動通關：</strong>
-              <div class="bg-fuji-light p-3 rounded-2xl text-[12px] text-warmgray-dark space-y-1 mt-1 leading-relaxed">
+              <div class="bg-white p-3.5 rounded-2xl text-[12px] text-warmgray-dark space-y-1.5 mt-1 leading-relaxed border border-gray-100 shadow-2xs">
                 <p><strong>PS: </strong>「入境後」到3樓往出境的國際線方向找到A26號櫃檯（旁邊通道寫著VIP SUITES）走到通道入口，就會看到「濟州出入境/外國人廳」進入後，走到底右轉，辦公室在左側最後一間給人員護照，按照機器指示壓指紋、拍照一分鐘左右就辦完囉。</p>
                 <p class="font-bold text-fuji-dark">SES辦理時間：平日09:00-18:00（午休1小時）</p>
               </div>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
       </section>
     </main>
 
     <!-- TAB 2: 行程 (每日行程表) -->
-    <main v-if="activeTab === 'itinerary'" class="px-3 -mt-4 relative z-10 space-y-3.5">
-      
-      <!-- 橫向滑動日期選單 -->
-      <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1 px-1">
-        <button 
-          v-for="(day, idx) in itineraryData" 
-          :key="idx"
-          @click="selectedDayIdx = idx"
-          :class="[
-            'flex-shrink-0 w-[4.4rem] py-1.5 rounded-2xl flex flex-col items-center justify-center transition-all duration-200 shadow-xs',
-            selectedDayIdx === idx 
-              ? 'bg-fuji text-white font-bold shadow-fuji/30 shadow-md scale-105' 
-              : 'bg-white text-warmgray-dark hover:bg-blue-50/50'
-          ]"
-        >
-          <span class="text-[11px] font-semibold uppercase tracking-wider opacity-90">{{ day.weekday }}</span>
-          <span class="text-lg font-bold mt-0.5">{{ day.dateNumber }}</span>
-        </button>
-      </div>
+    <main v-if="activeTab === 'itinerary'" class="px-3 pt-3 relative z-10 space-y-3.5">
 
       <!-- 當日簡介 & 天氣資訊 -->
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-warmgray-border space-y-3">
@@ -337,7 +379,7 @@
     </main>
 
     <!-- TAB 3: 口袋 (以購物籃 ICON 顯示) -->
-    <main v-if="activeTab === 'pocket'" class="px-3 -mt-4 relative z-10 space-y-3.5">
+    <main v-if="activeTab === 'pocket'" class="px-3 pt-4 relative z-10 space-y-3.5">
       <div class="bg-white p-1.5 rounded-2xl shadow-sm border border-warmgray-border flex gap-1">
         <button 
           v-for="sub in pocketTabs" 
@@ -362,14 +404,16 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-amber-200 overflow-hidden">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-amber-200 overflow-hidden space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-gray-100">
             <span class="text-[11px] font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full">🏆 No.1 剛剛好又好吃的卡通圖款</span>
             <span class="text-[11px] font-bold text-gray-500">首選推薦</span>
           </div>
-          <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 (두바이 쫀득쿠키)</h3>
-          <p class="text-[11px] text-gray-400">Dubai Style Chewy Cookie</p>
-          <ul class="mt-2.5 text-[13px] space-y-1.5 text-gray-600 bg-warmgray p-3 rounded-2xl leading-relaxed">
+          <div>
+            <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">杜拜風味麻糬夾心餅乾 (두바이 쫀득쿠키)</h3>
+            <p class="text-[11px] text-gray-400">Dubai Style Chewy Cookie</p>
+          </div>
+          <ul class="text-[13px] space-y-1.5 text-gray-600 bg-warmgray/60 p-3.5 rounded-2xl leading-relaxed">
             <li><span class="text-emerald-600 font-bold">1. 淺綠色款（開心果口味）：</span> 內餡最濃郁，推薦必買！</li>
             <li><span class="text-blue-600 font-bold">2. 淺綠盒款：</span> 內餡和冠軍款差不多，外皮巧克力粉微苦剛好。</li>
             <li><span class="text-gray-500 font-medium">3. 綠盒款：</span> 內餡不夠濃郁，中規中矩。</li>
@@ -377,41 +421,43 @@
           </ul>
         </div>
 
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-gray-200 overflow-hidden">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-gray-200 overflow-hidden space-y-3">
           <div class="flex items-center justify-between pb-2 border-b border-gray-100">
             <span class="text-[11px] font-black text-gray-700 bg-gray-100 px-2.5 py-0.5 rounded-full">🥈 No.2 濃郁首選</span>
             <span class="text-[11px] font-bold text-pink-500">兩款口味都好吃！</span>
           </div>
-          <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득딸기 / 쫀득초코)</h3>
-          <div class="grid grid-cols-2 gap-2 mt-2.5 text-xs">
-            <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-100">
+          <div>
+            <h3 class="text-[13.5px] font-bold text-warmgray-dark mt-2">Twizel 軟Q棉花糖 (쫀득딸기 / 쫀득초코)</h3>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs bg-warmgray/60 p-3.5 rounded-2xl">
+            <div class="bg-white p-3 rounded-xl border border-rose-100 shadow-2xs">
               <p class="font-bold text-rose-700 text-xs">🍓 草莓口味 (紅袋)</p>
               <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">酸甜草莓凍乾，香氣濃郁。</p>
             </div>
-            <div class="bg-amber-50 p-2.5 rounded-2xl border border-amber-100">
+            <div class="bg-white p-3 rounded-xl border border-amber-100 shadow-2xs">
               <p class="font-bold text-amber-800 text-xs">🍫 巧克力口味 (米色袋)</p>
               <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">餅乾碎口感，奶香巧克力極推！</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-white rounded-3xl p-4 shadow-sm border border-red-200 overflow-hidden">
-          <h3 class="text-xs font-bold text-red-500 flex items-center gap-1.5 mb-2">
+        <div class="bg-white rounded-3xl p-5 shadow-sm border border-red-200 overflow-hidden space-y-3">
+          <h3 class="text-xs font-bold text-red-500 flex items-center gap-1.5">
             <i class="fa-solid fa-circle-xmark"></i> 避雷不推薦專區
           </h3>
-          <div class="space-y-1.5 text-[13px]">
-            <div class="bg-red-50/60 p-2 rounded-2xl border border-red-100">
+          <div class="space-y-2 text-[13px] bg-warmgray/60 p-3.5 rounded-2xl">
+            <div class="bg-white p-2.5 rounded-xl border border-red-100 shadow-2xs">
               <p class="font-bold text-gray-800 text-xs">❌ 獨立小包裝麻糬巧克力</p>
               <p class="text-[11px] text-gray-600 mt-0.5">外皮太厚偏硬，口感普通。</p>
             </div>
-            <div class="bg-red-50/60 p-2 rounded-2xl border border-red-100">
+            <div class="bg-white p-2.5 rounded-xl border border-red-100 shadow-2xs">
               <p class="font-bold text-gray-800 text-xs">❌ 1.0 巧克力</p>
               <p class="text-[11px] text-gray-600 mt-0.5">微苦可可，但整體表現中規中矩。</p>
             </div>
           </div>
         </div>
 
-        <div class="bg-blue-50/80 p-3 rounded-2xl text-[12px] text-blue-900 flex items-center gap-2 border border-blue-100">
+        <div class="bg-blue-50/80 p-3.5 rounded-2xl text-[12px] text-blue-900 flex items-center gap-2 border border-blue-100">
           <i class="fa-solid fa-lightbulb text-amber-500 text-base flex-shrink-0"></i>
           <span class="leading-relaxed">小提醒：包裝上有「<strong>쫀득(軟Q)</strong>」字樣的，多半是麻糬口感，可以先買小包試試看！</span>
         </div>
@@ -443,20 +489,20 @@
     </main>
 
     <!-- TAB 4: 退稅 (Tax 退稅專區) -->
-    <main v-if="activeTab === 'tax'" class="px-3 -mt-4 relative z-10 space-y-3.5">
+    <main v-if="activeTab === 'tax'" class="px-3 pt-4 relative z-10 space-y-3.5">
       
-      <section class="bg-white rounded-3xl p-4 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
-        <h3 class="text-xs font-bold text-gray-700 flex items-center gap-1.5 pl-2">
-          <i class="fa-regular fa-image text-fuji flex-shrink-0"></i> 退稅圖解教學（點擊全螢幕放大預覽）
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3.5 overflow-hidden">
+        <h3 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
+          <i class="fa-regular fa-image text-fuji mr-2.5 flex-shrink-0"></i>退稅圖解教學（點擊全螢幕放大預覽）
         </h3>
-        <div class="grid grid-cols-2 gap-2.5">
-          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100 border border-gray-100" @click="openLightbox('./images/tax/tax_refund_guide.png')">
+        <div class="grid grid-cols-2 gap-2.5 bg-warmgray/60 p-3.5 rounded-2xl">
+          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-white border border-gray-100 shadow-2xs" @click="openLightbox('./images/tax/tax_refund_guide.png')">
             <img src="./images/tax/tax_refund_guide.png" alt="退稅懶人包" class="w-full h-28 object-cover group-hover:scale-105 transition-transform" @error="handleImgError" />
             <div class="absolute bottom-1.5 left-1.5 right-1.5 bg-black/60 text-white text-[10px] py-0.5 text-center rounded-lg backdrop-blur-xs font-medium">
               📄 退稅懶人包
             </div>
           </div>
-          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-gray-100 border border-gray-100" @click="openLightbox('./images/tax/tax_receipt_sample.png')">
+          <div class="relative rounded-2xl overflow-hidden cursor-pointer group bg-white border border-gray-100 shadow-2xs" @click="openLightbox('./images/tax/tax_receipt_sample.png')">
             <img src="./images/tax/tax_receipt_sample.png" alt="退稅收據填寫教學" class="w-full h-28 object-cover group-hover:scale-105 transition-transform" @error="handleImgError" />
             <div class="absolute bottom-1.5 left-1.5 right-1.5 bg-black/60 text-white text-[10px] py-0.5 text-center rounded-lg backdrop-blur-xs font-medium">
               ✍️ 退稅收據填寫
@@ -465,50 +511,57 @@
         </div>
       </section>
 
-      <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-3 text-[13px] text-gray-700 leading-relaxed overflow-hidden">
-        <h4 class="font-bold text-warmgray-dark text-[13.5px] flex items-center gap-1.5 text-red-600 pl-2">
-          <i class="fa-solid fa-stamp flex-shrink-0"></i> 海關蓋章處與 75,000 韓元查驗規則
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3.5 text-[13px] text-gray-700 leading-relaxed overflow-hidden">
+        <h4 class="font-bold text-warmgray-dark text-[13.5px] flex items-center text-red-600">
+          <i class="fa-solid fa-stamp mr-2.5 flex-shrink-0"></i>海關蓋章處與 75,000 韓元查驗規則
         </h4>
-        <p class="pl-2">海關蓋章處，若是在電子退稅機刷單據出現 <strong>X</strong> 者，要給「海關蓋章」；過安檢後，Gate 16對面退稅窗口領錢。</p>
-        
-        <div class="bg-warmgray p-3 rounded-2xl space-y-1.5 text-xs leading-relaxed">
-          <p><strong>• 單筆退稅金額沒超過 7萬5韓元或曾在市區退稅過且沒超過7萬5者：</strong>不用蓋章、不用檢驗退稅商品，”退稅機”刷完 ➔ 過安檢 ➔ Gate 16領錢。</p>
-          <p><strong>• 單筆退稅金額超過 7萬5韓元或曾在市區退稅過且超過7萬5者：</strong>要給海關蓋章(隨機檢驗商品) ➔ (退稅商品)行李託運 ➔ 過安檢 ➔ Gate 16領錢。</p>
-          <p class="text-amber-800 font-medium">⚠️ 有辦理過【市區退稅】沒超過7萬5韓元只要在電子退稅機掃瞄即可，不必繳回單據！務必要在自助退稅機掃條碼取消記錄。</p>
+        <div class="bg-warmgray/60 p-3.5 rounded-2xl space-y-2.5">
+          <p>海關蓋章處，若是在電子退稅機刷單據出現 <strong>X</strong> 者，要給「海關蓋章」；過安檢後，Gate 16對面退稅窗口領錢。</p>
+          <div class="bg-white p-3 rounded-xl space-y-1.5 text-xs leading-relaxed border border-gray-100 shadow-2xs">
+            <p><strong>• 單筆退稅金額沒超過 7萬5韓元或曾在市區退稅過且沒超過7萬5者：</strong>不用蓋章、不用檢驗退稅商品，”退稅機”刷完 ➔ 過安檢 ➔ Gate 16領錢。</p>
+            <p><strong>• 單筆退稅金額超過 7萬5韓元或曾在市區退稅過且超過7萬5者：</strong>要給海關蓋章(隨機檢驗商品) ➔ (退稅商品)行李託運 ➔ 過安檢 ➔ Gate 16領錢。</p>
+            <p class="text-amber-800 font-medium pt-1">⚠️ 有辦理過【市區退稅】沒超過7萬5韓元只要在電子退稅機掃瞄即可，不必繳回單據！務必要在自助退稅機掃條碼取消記錄。</p>
+          </div>
         </div>
+      </section>
 
-        <h4 class="font-bold text-warmgray-dark text-[13.5px] pt-1 pl-2">✈️ 機場退稅完整步驟</h4>
-        <ol class="list-decimal list-inside space-y-1.5 text-xs text-gray-700 bg-blue-50/40 p-3 rounded-2xl border border-blue-100 leading-relaxed">
-          <li><strong>退稅機操作：</strong>退稅機在機場3樓5號門旁，先刷護照再刷退稅單，如沒有出現至海關查驗，就可托運行李，如需海關查驗，海關櫃檯就在機台的右手邊。</li>
-          <li><strong>領取現金：</strong>查驗完畢，過海關（檢查行李）後就可前往16號登機口對面的退稅櫃檯領取現金，出示護照及所有可退稅的單子，可選擇領韓元或是美金。</li>
-          <li><strong>櫃檯服務時間：</strong>領取退稅金櫃檯服務時間：6:00～22:00。</li>
-        </ol>
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3.5 text-[13px] text-gray-700 leading-relaxed overflow-hidden">
+        <h4 class="font-bold text-warmgray-dark text-[13.5px] flex items-center">
+          <i class="fa-solid fa-plane mr-2.5 text-fuji flex-shrink-0"></i>機場退稅完整步驟
+        </h4>
+        <div class="bg-warmgray/60 p-3.5 rounded-2xl">
+          <ol class="list-decimal list-inside space-y-2 text-xs text-gray-700 bg-white p-3.5 rounded-xl border border-gray-100 leading-relaxed shadow-2xs">
+            <li><strong>退稅機操作：</strong>退稅機在機場3樓5號門旁，先刷護照再刷退稅單，如沒有出現至海關查驗，就可托運行李，如需海關查驗，海關櫃檯就在機台的右手邊。</li>
+            <li><strong>領取現金：</strong>查驗完畢，過海關（檢查行李）後就可前往16號登機口對面的退稅櫃檯領取現金，出示護照及所有可退稅的單子，可選擇領韓元或是美金。</li>
+            <li><strong>櫃檯服務時間：</strong>領取退稅金櫃檯服務時間：6:00～22:00。</li>
+          </ol>
+        </div>
       </section>
 
     </main>
 
-    <!-- TAB 5: 資訊 (旅程資訊中心 - 完全修正 ICON 貼邊問題與字體標準化) -->
-    <main v-if="activeTab === 'info'" class="px-3 -mt-4 relative z-10 space-y-3.5">
+    <!-- TAB 5: 資訊 (旅程資訊中心) -->
+    <main v-if="activeTab === 'info'" class="px-3 pt-4 relative z-10 space-y-3.5">
       
       <!-- 1. 匯率換算 -->
-      <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border overflow-hidden">
-        <div class="flex items-center justify-between mb-2.5 pl-2">
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border overflow-hidden space-y-3">
+        <div class="flex items-center justify-between">
           <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
-            <i class="fa-solid fa-calculator text-fuji mr-2 flex-shrink-0"></i>韓幣 ➔ 台幣匯率換算
+            <i class="fa-solid fa-calculator text-fuji mr-2.5 flex-shrink-0"></i>韓幣 ➔ 台幣匯率換算
           </h2>
           <span class="text-[11px] bg-blue-50 text-fuji px-2 py-0.5 rounded-full font-bold flex-shrink-0">1 TWD ≈ {{ exchangeRate }} KRW</span>
         </div>
-        <div class="space-y-2">
+        <div class="bg-warmgray/70 p-3.5 rounded-2xl space-y-2.5">
           <div class="relative">
             <input 
               type="number" 
               v-model.number="krwInput" 
               placeholder="例如：50000" 
-              class="w-full bg-gray-50 border border-gray-200 rounded-2xl px-3.5 py-2 text-sm font-bold text-warmgray-dark focus:outline-none focus:ring-1 focus:ring-fuji" 
+              class="w-full bg-white border border-gray-200 rounded-2xl px-3.5 py-2 text-sm font-bold text-warmgray-dark focus:outline-none focus:ring-1 focus:ring-fuji shadow-2xs" 
             />
             <span class="absolute right-3.5 top-2 text-gray-400 font-bold text-xs">₩</span>
           </div>
-          <div class="bg-fuji-light rounded-2xl p-2.5 px-3.5 flex items-center justify-between">
+          <div class="bg-white rounded-2xl p-2.5 px-3.5 flex items-center justify-between border border-gray-100 shadow-2xs">
             <span class="text-xs font-medium text-gray-600">折合約新台幣：</span>
             <span class="text-base font-bold text-fuji-dark">NT$ {{ convertedTwd }}</span>
           </div>
@@ -516,70 +569,72 @@
       </section>
 
       <!-- 2. 航班完整資訊 -->
-      <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
-        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center pl-2">
-          <i class="fa-solid fa-plane-departure text-fuji mr-2 flex-shrink-0"></i>航班資訊 (台灣虎航)
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
+          <i class="fa-solid fa-plane-departure text-fuji mr-2.5 flex-shrink-0"></i>航班資訊 (台灣虎航)
         </h2>
         
-        <!-- 去程 -->
-        <div class="border border-blue-100 rounded-2xl p-3 bg-blue-50/30 text-xs space-y-2 overflow-hidden">
-          <div class="flex justify-between items-center font-bold text-fuji">
-            <span>去程 • IT654</span>
-            <span class="text-gray-500 font-medium">2026/10/23 (五)</span>
-          </div>
-          <div class="flex items-center justify-between text-center my-1 gap-1">
-            <div class="w-16 min-w-0 flex-shrink-0 text-left">
-              <p class="text-sm font-bold text-warmgray-dark">06:40</p>
-              <p class="text-[11px] text-gray-500 truncate">TPE 桃機 T1</p>
+        <div class="bg-warmgray/70 p-3.5 rounded-2xl space-y-3">
+          <!-- 去程 -->
+          <div class="border border-blue-100 rounded-2xl p-3 bg-white text-xs space-y-2 overflow-hidden shadow-2xs">
+            <div class="flex justify-between items-center font-bold text-fuji">
+              <span>去程 • IT654</span>
+              <span class="text-gray-500 font-medium">2026/10/23 (五)</span>
             </div>
-            <div class="flex-1 px-1 flex flex-col items-center min-w-0">
-              <span class="text-[10px] text-gray-400 font-medium truncate">1hr 55m</span>
-              <div class="w-full h-0.5 bg-blue-300 relative my-1">
-                <i class="fa-solid fa-plane text-fuji absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px]"></i>
+            <div class="flex items-center justify-between text-center my-1 gap-1">
+              <div class="w-16 min-w-0 flex-shrink-0 text-left">
+                <p class="text-sm font-bold text-warmgray-dark">06:40</p>
+                <p class="text-[11px] text-gray-500 truncate">TPE 桃機 T1</p>
               </div>
-              <span class="text-[10px] text-gray-400 truncate">直飛濟州</span>
+              <div class="flex-1 px-1 flex flex-col items-center min-w-0">
+                <span class="text-[10px] text-gray-400 font-medium truncate">1hr 55m</span>
+                <div class="w-full h-0.5 bg-blue-300 relative my-1">
+                  <i class="fa-solid fa-plane text-fuji absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px]"></i>
+                </div>
+                <span class="text-[10px] text-gray-400 truncate">直飛濟州</span>
+              </div>
+              <div class="w-16 min-w-0 flex-shrink-0 text-right">
+                <p class="text-sm font-bold text-warmgray-dark">09:35</p>
+                <p class="text-[11px] text-gray-500 truncate">CJU 濟州國際機場</p>
+              </div>
             </div>
-            <div class="w-16 min-w-0 flex-shrink-0 text-right">
-              <p class="text-sm font-bold text-warmgray-dark">09:35</p>
-              <p class="text-[11px] text-gray-500 truncate">CJU 濟州機場</p>
-            </div>
+            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李：1 件共 20kg</p>
           </div>
-          <p class="text-[11px] text-gray-600 bg-white/80 p-2 rounded-xl truncate">加購託運行李：1 件共 20kg</p>
-        </div>
 
-        <!-- 回程 -->
-        <div class="border border-amber-100 rounded-2xl p-3 bg-amber-50/30 text-xs space-y-2 overflow-hidden">
-          <div class="flex justify-between items-center font-bold text-amber-700">
-            <span>回程 • IT655</span>
-            <span class="text-gray-500 font-medium">2026/10/26 (一)</span>
-          </div>
-          <div class="flex items-center justify-between text-center my-1 gap-1">
-            <div class="w-16 min-w-0 flex-shrink-0 text-left">
-              <p class="text-sm font-bold text-warmgray-dark">11:40</p>
-              <p class="text-[11px] text-gray-500 truncate">CJU 濟州機場</p>
+          <!-- 回程 -->
+          <div class="border border-amber-100 rounded-2xl p-3 bg-white text-xs space-y-2 overflow-hidden shadow-2xs">
+            <div class="flex justify-between items-center font-bold text-amber-700">
+              <span>回程 • IT655</span>
+              <span class="text-gray-500 font-medium">2026/10/26 (一)</span>
             </div>
-            <div class="flex-1 px-1 flex flex-col items-center min-w-0">
-              <span class="text-[10px] text-gray-400 font-medium truncate">2hr 15m</span>
-              <div class="w-full h-0.5 bg-amber-300 relative my-1">
-                <i class="fa-solid fa-plane text-amber-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px]"></i>
+            <div class="flex items-center justify-between text-center my-1 gap-1">
+              <div class="w-16 min-w-0 flex-shrink-0 text-left">
+                <p class="text-sm font-bold text-warmgray-dark">11:40</p>
+                <p class="text-[11px] text-gray-500 truncate">CJU 濟州國際機場</p>
               </div>
-              <span class="text-[10px] text-gray-400 truncate">直飛返台</span>
+              <div class="flex-1 px-1 flex flex-col items-center min-w-0">
+                <span class="text-[10px] text-gray-400 font-medium truncate">2hr 15m</span>
+                <div class="w-full h-0.5 bg-amber-300 relative my-1">
+                  <i class="fa-solid fa-plane text-amber-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[9px]"></i>
+                </div>
+                <span class="text-[10px] text-gray-400 truncate">直飛返台</span>
+              </div>
+              <div class="w-16 min-w-0 flex-shrink-0 text-right">
+                <p class="text-sm font-bold text-warmgray-dark">12:55</p>
+                <p class="text-[11px] text-gray-500 truncate">TPE 桃機 T1</p>
+              </div>
             </div>
-            <div class="w-16 min-w-0 flex-shrink-0 text-right">
-              <p class="text-sm font-bold text-warmgray-dark">12:55</p>
-              <p class="text-[11px] text-gray-500 truncate">TPE 桃機 T1</p>
-            </div>
+            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李：1 件共 25kg (單件不超30kg)</p>
           </div>
-          <p class="text-[11px] text-gray-600 bg-white/80 p-2 rounded-xl truncate">加購託運行李：1 件共 25kg (單件不超30kg)</p>
         </div>
       </section>
 
       <!-- 3. 住宿資訊 -->
-      <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border space-y-2.5 overflow-hidden">
-        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center pl-2">
-          <i class="fa-solid fa-house text-fuji mr-2 flex-shrink-0"></i>住宿資訊 (4天連住)
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border space-y-3 overflow-hidden">
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
+          <i class="fa-solid fa-house text-fuji mr-2.5 flex-shrink-0"></i>住宿資訊 (4天連住)
         </h2>
-        <div class="bg-warmgray p-3.5 rounded-2xl space-y-2 text-xs">
+        <div class="bg-warmgray/70 p-3.5 rounded-2xl space-y-2.5 text-xs">
           <div class="flex justify-between items-start gap-2">
             <div class="min-w-0 flex-1">
               <h3 class="font-bold text-sm text-warmgray-dark truncate">Stay 溫氣齋 (온기재)</h3>
@@ -589,33 +644,33 @@
           </div>
           <p class="text-[11px] leading-relaxed break-words"><strong>韓文地址：</strong>항몽로 29, 濟州特別自治道 63051, 南韓</p>
           <div class="flex gap-2 pt-1">
-            <a href="https://www.google.com/maps/search/?api=1&query=항몽로+29+제주" target="_blank" class="flex-1 py-1.5 bg-white text-center rounded-xl font-bold border border-gray-200 text-gray-700 text-xs">Google 導航</a>
-            <a href="https://map.naver.com/v5/search/항몽로%2029" target="_blank" class="flex-1 py-1.5 bg-emerald-500 text-center rounded-xl font-bold text-white text-xs">Naver 導航</a>
+            <a href="https://www.google.com/maps/search/?api=1&query=항몽로+29+제주" target="_blank" class="flex-1 py-1.5 bg-white text-center rounded-xl font-bold border border-gray-200 text-gray-700 text-xs shadow-2xs">Google 導航</a>
+            <a href="https://map.naver.com/v5/search/항몽로%2029" target="_blank" class="flex-1 py-1.5 bg-emerald-500 text-center rounded-xl font-bold text-white text-xs shadow-2xs">Naver 導航</a>
           </div>
         </div>
       </section>
 
       <!-- 4. 緊急醫療求助 -->
-      <section class="bg-white rounded-3xl p-4.5 shadow-sm border border-warmgray-border overflow-hidden">
-        <h2 class="text-[13.5px] font-bold text-warmgray-dark mb-2.5 flex items-center pl-2">
-          <i class="fa-solid fa-truck-medical text-red-500 mr-2 flex-shrink-0"></i>緊急醫療求助 (點擊直撥)
+      <section class="bg-white rounded-3xl p-5 shadow-sm border border-warmgray-border overflow-hidden space-y-3">
+        <h2 class="text-[13.5px] font-bold text-warmgray-dark flex items-center">
+          <i class="fa-solid fa-truck-medical text-red-500 mr-2.5 flex-shrink-0"></i>緊急醫療求助 (點擊直撥)
         </h2>
-        <div class="grid grid-cols-2 gap-2">
-          <a href="tel:112" class="bg-red-50 border border-red-100 p-2.5 rounded-2xl flex items-center gap-2 min-w-0">
+        <div class="bg-warmgray/70 p-3.5 rounded-2xl grid grid-cols-2 gap-2">
+          <a href="tel:112" class="bg-white border border-red-100 p-2.5 rounded-2xl flex items-center gap-2 min-w-0 shadow-2xs">
             <div class="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">112</div>
             <div class="min-w-0">
               <p class="text-xs font-bold text-gray-800 truncate">韓國警察局</p>
               <p class="text-[10px] text-gray-500 truncate">犯罪報案</p>
             </div>
           </a>
-          <a href="tel:119" class="bg-orange-50 border border-orange-100 p-2.5 rounded-2xl flex items-center gap-2 min-w-0">
+          <a href="tel:119" class="bg-orange-50 border border-orange-100 p-2.5 rounded-2xl flex items-center gap-2 min-w-0 shadow-2xs">
             <div class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">119</div>
             <div class="min-w-0">
               <p class="text-xs font-bold text-gray-800 truncate">消防 / 救護車</p>
               <p class="text-[10px] text-gray-500 truncate">急診火警</p>
             </div>
           </a>
-          <a href="tel:1330" class="col-span-2 bg-blue-50 border border-blue-100 p-2.5 rounded-2xl flex items-center justify-between min-w-0">
+          <a href="tel:1330" class="col-span-2 bg-white border border-blue-100 p-2.5 rounded-2xl flex items-center justify-between min-w-0 shadow-2xs">
             <div class="flex items-center gap-2 min-w-0">
               <div class="w-7 h-7 rounded-full bg-fuji text-white flex items-center justify-center font-bold text-[11px] flex-shrink-0">1330</div>
               <div class="min-w-0">
@@ -717,6 +772,17 @@
           } else {
             return '旅程進行中 / 已出發';
           }
+        });
+
+        // 根據目前選擇的每日行程日，動態對應當日穿搭建議
+        const currentOutfitTip = computed(() => {
+          const tips = [
+            '薄長袖 / 防風外套 (早晚涼)', // Day 1 (10/23)
+            '針織衫 / 輕便風衣 (秋景好拍)', // Day 2 (10/24)
+            '舒適層次穿搭 / 好走布鞋',     // Day 3 (10/25)
+            '輕便簡約 / 準備返台'          // Day 4 (10/26)
+          ];
+          return tips[selectedDayIdx.value] || '秋季保暖防風';
         });
 
         const openLightbox = (url) => {
@@ -1228,6 +1294,7 @@
           activePocketTab,
           lightboxImage,
           countdownText,
+          currentOutfitTip,
           openLightbox,
           handleImgError,
           handleSpotImgError,
