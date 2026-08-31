@@ -104,7 +104,7 @@
         </div>
       </header>
 
-      <!-- 橫向滑動日期選單 (跟著頁首一起凍結置頂) -->
+      <!-- 橫向滑動日期選單 -->
       <div class="px-3 pt-3">
         <div class="flex space-x-2 overflow-x-auto no-scrollbar py-1 px-1">
           <button 
@@ -335,7 +335,12 @@
                   </div>
                   <div v-if="item.desc" class="flex items-start">
                     <i class="fa-solid fa-circle-info w-4 text-fuji text-[11px] mt-0.5 flex-shrink-0"></i>
-                    <p class="flex-1 text-gray-700 leading-relaxed text-[13px] break-words">{{ item.desc }}</p>
+                    <div class="flex-1 text-gray-700 leading-relaxed text-[13px] break-words">
+                      <!-- 支援多段落描述（例如炸雞卡片第二段超商提醒） -->
+                      <template v-for="(paragraph, pIdx) in item.desc.split('\n')" :key="pIdx">
+                        <p :class="pIdx > 0 ? 'mt-2 pt-2 border-t border-gray-200/60 font-medium text-amber-900' : ''">{{ paragraph }}</p>
+                      </template>
+                    </div>
                   </div>
                 </div>
 
@@ -353,17 +358,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div v-if="selectedDayIdx === 0" class="bg-blue-50/90 border border-blue-200 rounded-3xl p-4 text-[13px] text-blue-950 space-y-2 mt-3.5 shadow-xs overflow-hidden mx-1">
-          <div class="flex items-center gap-1.5 font-bold text-fuji-dark text-sm">
-            <i class="fa-solid fa-route text-fuji flex-shrink-0"></i> 💡 【Day 1 班機抵達與延誤應變指南】
-          </div>
-          <ul class="space-y-1 text-blue-900 leading-relaxed text-[13px]">
-            <li><span class="font-bold text-emerald-700">● 正常抵達：</span> 全部照原行程順走。</li>
-            <li><span class="font-bold text-amber-700">● 延誤約 20～30 分鐘：</span> 梨湖木筏海邊縮短拍照時間。</li>
-            <li><span class="font-bold text-rose-700">● 延誤超過 30～40 分鐘：</span> 直接刪除梨湖海邊，優先保住 NORABA 海鮮拉麵 ＋ 13:30 預約之 SOGILBYEOLHA。</li>
-          </ul>
         </div>
 
         <div v-if="selectedDayIdx === 2" class="bg-amber-50/90 border border-amber-200 rounded-3xl p-4 text-[13px] text-amber-950 space-y-1.5 mt-3.5 shadow-xs overflow-hidden mx-1">
@@ -593,12 +587,12 @@
                 </div>
                 <span class="text-[10px] text-gray-400 truncate">直飛濟州</span>
               </div>
-              <div class="w-16 min-w-0 flex-shrink-0 text-right">
+              <div class="w-24 min-w-0 flex-shrink-0 text-right">
                 <p class="text-sm font-bold text-warmgray-dark">09:35</p>
                 <p class="text-[11px] text-gray-500 truncate">CJU 濟州國際機場</p>
               </div>
             </div>
-            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李：1 件共 20kg</p>
+            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李 : 1 件共 20kg</p>
           </div>
 
           <!-- 回程 -->
@@ -608,7 +602,7 @@
               <span class="text-gray-500 font-medium">2026/10/26 (一)</span>
             </div>
             <div class="flex items-center justify-between text-center my-1 gap-1">
-              <div class="w-16 min-w-0 flex-shrink-0 text-left">
+              <div class="w-24 min-w-0 flex-shrink-0 text-left">
                 <p class="text-sm font-bold text-warmgray-dark">11:40</p>
                 <p class="text-[11px] text-gray-500 truncate">CJU 濟州國際機場</p>
               </div>
@@ -624,7 +618,7 @@
                 <p class="text-[11px] text-gray-500 truncate">TPE 桃機 T1</p>
               </div>
             </div>
-            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李：1 件共 25kg (單件不超30kg)</p>
+            <p class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded-xl truncate">加購託運行李 : 1 件共 25kg (單件不超30kg)</p>
           </div>
         </div>
       </section>
@@ -774,7 +768,6 @@
           }
         });
 
-        // 根據目前選擇的每日行程日，動態對應當日穿搭建議
         const currentOutfitTip = computed(() => {
           const tips = [
             '薄長袖 / 防風外套 (早晚涼)', // Day 1 (10/23)
@@ -953,7 +946,7 @@
                 category: '美食',
                 highlightTag: '🍗 建議事先預訂',
                 hours: '16:00 - 23:00',
-                desc: '招牌奶油炸雞建議事先預訂外帶，避免現場等待影響18:30包車結束時間。',
+                desc: '招牌奶油炸雞建議事先預訂外帶，避免現場等待影響18:30包車結束時間。\n\n⚠️ 超商採買特別提醒：晚上在 Cheetah Chicken 附近超商採買時，請記得同時購買 10/24（Day 2）8 人的早餐與飲用水，隔天一早不用再另外找早餐店！',
                 transitFromPrev: '前往 Cheetah Chicken｜치타치킨（車程約25分鐘，17:20–17:45）',
                 blogUrl: 'https://allinjeju.com/blog/zh-tw/food-zh-tw/cheetah-chicken-jeju-zh-tw/',
                 image: './images/spots/d1_cheetah_chicken.png',
@@ -976,7 +969,7 @@
           {
             weekday: 'SAT',
             dateNumber: '10/24',
-            title: '東部・自然秋景 ➔ 橘子咖啡廳 ➔ 月汀里黑豬肉',
+            title: '東部・山君不離 ➔ London Bagel Museum ➔ 松堂童話村 ➔ 月汀里黑豬肉',
             charterTime: '09:30~18:30 (9hrs)',
             weather: { condition: '微風晴朗', icon: 'fa-solid fa-cloud-sun', temp: '18°C', feelTemp: '17°C' },
             spots: [
@@ -984,17 +977,6 @@
                 startTime: '09:30',
                 endTime: '10:30',
                 timeRange: '09:30–10:30',
-                nameZh: '前往山君不離',
-                nameKo: '산굼부리 이동',
-                nameEn: 'Transfer to Sangumburi',
-                category: '住宿',
-                noNav: true,
-                desc: '前往山君不離｜산굼부리（車程約60分鐘，09:30–10:30）。'
-              },
-              {
-                startTime: '10:30',
-                endTime: '11:50',
-                timeRange: '10:30–11:50',
                 nameZh: '山君不離',
                 nameKo: '산굼부리',
                 nameEn: 'Sangumburi',
@@ -1003,70 +985,70 @@
                 hours: '09:00 - 18:00',
                 ticket: '成人約 6,000 韓元',
                 desc: '賞10月金色芒草海，停留約80分鐘。',
-                transitFromPrev: '前往山君不離｜산굼부리（車程約60分鐘）',
+                transitFromPrev: '前往山君不離｜산굼부리（車程約60分鐘，08:30–09:30）',
                 blogUrl: 'https://damei17.com/sangumburi/',
                 image: './images/spots/d2_sangumburi.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1508873696983-2df5293cb32b?w=800&auto=format&fit=crop&q=80'
               },
               {
-                startTime: '12:05',
-                endTime: '13:35',
-                timeRange: '12:05–13:35',
+                startTime: '12:20',
+                endTime: '13:40',
+                timeRange: '12:20–13:40',
+                nameZh: '【輕午餐】London Bagel Museum Jeju',
+                nameKo: '런던베이글뮤지엄 제주',
+                nameEn: 'London Bagel Museum Jeju',
+                category: '美食',
+                highlightTag: '🥯 預留約80分鐘',
+                hours: '08:00 - 18:00',
+                desc: '貝果＋Cream Cheese＋飲料，預留約80分鐘，包含候位、購買與用餐。若週六候位過長請改外帶，避免影響後續行程。',
+                transitFromPrev: '前往 London Bagel Museum Jeju｜런던베이글뮤지엄 제주（車程約30分鐘，11:50–12:20）',
+                blogUrl: 'https://mamahuhu.blog/overseas/london-bagel-museum-jeju/',
+                image: './images/spots/d2_london_bagel.jpg',
+                fallbackImage: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop&q=80'
+              },
+              {
+                startTime: '14:10',
+                endTime: '15:30',
+                timeRange: '14:10–15:30',
                 nameZh: '松堂童話村（橡子共和國 Corico）',
                 nameKo: '송당동화마을',
                 nameEn: 'Songdang Fairy Tale Village',
                 category: '景點',
-                highlightTag: '🌳 散步約90分鐘',
+                highlightTag: '🌳 散步約80分鐘',
                 hours: '10:00 - 19:00',
                 ticket: '園區免門票',
-                desc: '吉卜力周邊＋童話庭園散步約90分鐘。',
-                transitFromPrev: '前往松堂童話村（車程約15分鐘，11:50–12:05）',
+                desc: '吉卜力周邊＋童話庭園散步約80分鐘。',
+                transitFromPrev: '前往松堂童話村（車程約30分鐘，13:40–14:10）',
                 blogUrl: 'https://vocus.cc/article/6a79e484fd897800010940b8',
                 image: './images/spots/d2_songdang.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?w=800&auto=format&fit=crop&q=80'
               },
               {
-                startTime: '13:55',
-                endTime: '15:15',
-                timeRange: '13:55–15:15',
-                nameZh: '【下午茶】Cafe The Container',
-                nameKo: '카페 더 콘테이너',
-                nameEn: 'Cafe The Container',
-                category: '咖啡',
-                highlightTag: '🍊 預留約80分鐘',
-                hours: '10:30 - 17:00 (週三休)',
-                desc: '橘子咖啡廳，預留約80分鐘。',
-                transitFromPrev: '前往 Cafe The Container｜카페 더 콘테이너（車程約20分鐘，13:35–13:55）',
-                blogUrl: 'https://mamahuhu.blog/overseas/cafe-the-container/',
-                image: './images/spots/d2_container.png',
-                fallbackImage: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=800&auto=format&fit=crop&q=80'
-              },
-              {
-                startTime: '15:45',
-                endTime: '17:15',
-                timeRange: '15:45–17:15',
+                startTime: '16:00',
+                endTime: '17:20',
+                timeRange: '16:00–17:20',
                 nameZh: '【晚餐】月高家 月汀里本店',
                 nameKo: '월고집',
                 nameEn: 'Wolgojip',
                 category: '美食',
-                highlightTag: '🥩 預留約90分鐘',
+                highlightTag: '🥩 預留約80分鐘',
                 hours: '11:00 - 22:00',
-                desc: '專人代烤黑豬肉大餐，預留約90分鐘。',
-                transitFromPrev: '前往月高家 月汀里本店｜월고집（車程約30分鐘，15:15–15:45）',
+                desc: '專人代烤黑豬肉，預留約80分鐘。',
+                transitFromPrev: '前往月高家 月汀里本店｜월고집（車程約30分鐘，15:30–16:00）',
                 blogUrl: 'https://debjp.pixnet.net/blog',
                 image: './images/spots/d2_wolgojip.png',
                 fallbackImage: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80'
               },
               {
-                startTime: '17:15',
+                startTime: '17:20',
                 endTime: '18:30',
-                timeRange: '17:15–18:30 回住宿',
-                nameZh: '前往民宿（車程預留約75分鐘）',
+                timeRange: '17:20–18:30',
+                nameZh: '前往民宿',
                 nameKo: '숙소 복귀',
                 nameEn: 'Return to Accommodation',
                 category: '住宿',
-                desc: '17:15–18:30 前往民宿（車程預留約75分鐘），18:30 包車結束。',
-                transitFromPrev: '前往民宿（車程預留約75分鐘，17:15–18:30）'
+                desc: '車程預留約70分鐘，18:30 包車結束。',
+                transitFromPrev: '前往民宿（車程預留約70分鐘，17:20–18:30）'
               }
             ]
           },
@@ -1285,7 +1267,8 @@
           { id: 5, nameZh: '真露 Fresh 燒酒', nameKo: '참이슬 fresh', feature: '經典燒酒・不甜・好入口' },
           { id: 6, nameZh: 'Cass Light 啤酒', nameKo: '카스 라이트 (Cass Light)', feature: '清爽型啤酒・熱量較低' },
           { id: 7, nameZh: 'Kirin 一番搾', nameKo: '기린 이치방', feature: '麥香濃厚・經典啤酒' },
-          { id: 8, nameZh: '罐裝葡萄酒 (白/紅)', nameKo: '캔 와인 (Nadia/Katia)', feature: '綠色白葡萄更推薦・果香濃郁' }
+          { id: 8, nameZh: '罐裝葡萄酒 (白/紅)', nameKo: '캔 와인 (Nadia/Katia)', feature: '綠色白葡萄更推薦・果香濃郁' },
+          { id: 9, nameZh: '蘋果汽酒 (Magners)', nameKo: '매그너스 사이다', feature: '蘋果香氣、清爽解膩' }
         ]);
 
         return {
